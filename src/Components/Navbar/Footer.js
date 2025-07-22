@@ -1,0 +1,138 @@
+// Footer.js
+import React from "react";
+import {
+  Box,
+  Flex,
+  Text,
+  Link,
+  VStack,
+  HStack,
+  IconButton,
+  Image,
+} from "@chakra-ui/react";
+import {
+  FaFacebookF,
+  FaLinkedinIn,
+  FaInstagram,
+  FaTwitter,
+  FaYoutube,
+} from "react-icons/fa";
+import { MdLocationOn, MdPhone, MdEmail } from "react-icons/md";
+
+const Footer = () => {
+  return (
+    <Box bg="black" color="white" py={10} px={5}>
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        maxW="1200px"
+        mx="auto"
+        justify="space-between"
+        gap={10}
+      >
+        {/* Logo + Social Icons */}
+        <VStack align="flex-start" spacing={5}>
+          <Image src="/logo.png" alt="Logo" h="50px" />
+          <Text>SATISFYING ALL LEGAL NEEDS</Text>
+          <HStack spacing={4}>
+            <IconButton
+              as="a"
+              href="#"
+              icon={<FaFacebookF />}
+              bg="gold"
+              borderRadius="full"
+              color="black"
+              _hover={{ bg: "gray.700", color: "white" }}
+            />
+            <IconButton
+              as="a"
+              href="#"
+              icon={<FaLinkedinIn />}
+              bg="gold"
+              borderRadius="full"
+              color="black"
+              _hover={{ bg: "gray.700", color: "white" }}
+            />
+            <IconButton
+              as="a"
+              href="#"
+              icon={<FaInstagram />}
+              bg="gold"
+              borderRadius="full"
+              color="black"
+              _hover={{ bg: "gray.700", color: "white" }}
+            />
+            <IconButton
+              as="a"
+              href="#"
+              icon={<FaTwitter />}
+              bg="gold"
+              borderRadius="full"
+              color="black"
+              _hover={{ bg: "gray.700", color: "white" }}
+            />
+            <IconButton
+              as="a"
+              href="#"
+              icon={<FaYoutube />}
+              bg="gold"
+              borderRadius="full"
+              color="black"
+              _hover={{ bg: "gray.700", color: "white" }}
+            />
+          </HStack>
+        </VStack>
+
+        {/* Pages */}
+        <VStack align="flex-start" spacing={3}>
+          <Text fontWeight="bold" borderBottom="2px solid gold">
+            Pages
+          </Text>
+          <Link href="#">Home</Link>
+          <Link href="#">About Us</Link>
+          <Link href="#">Articles</Link>
+          <Link href="#">Events</Link>
+          <Link href="#">Contact</Link>
+          <Link href="#">Privacy and Security</Link>
+          <Link href="#">Terms and Conditions</Link>
+        </VStack>
+
+        {/* Other Pages */}
+        <VStack align="flex-start" spacing={3}>
+          <Text fontWeight="bold" borderBottom="2px solid gold">
+            Other Pages
+          </Text>
+          <Link href="#">Legal law jobs</Link>
+          <Link href="#">Legal law programs</Link>
+          <Link href="#">Law Internship</Link>
+          <Link href="#">Posting</Link>
+        </VStack>
+
+        {/* Quick Contact */}
+        <VStack align="flex-start" spacing={3}>
+          <Text fontWeight="bold" borderBottom="2px solid gold">
+            Quick Contact
+          </Text>
+          <HStack align="flex-start">
+            <MdLocationOn size="20" />
+            <Text>
+              Office No.101, <br />
+              Himland House, Commercial Complex, Karampura,
+              <br />
+              Delhi-110015, India
+            </Text>
+          </HStack>
+          <HStack>
+            <MdPhone size="20" />
+            <Text>8171974067</Text>
+          </HStack>
+          <HStack>
+            <MdEmail size="20" />
+            <Text>info@lawvs.com</Text>
+          </HStack>
+        </VStack>
+      </Flex>
+    </Box>
+  );
+};
+
+export default Footer;
