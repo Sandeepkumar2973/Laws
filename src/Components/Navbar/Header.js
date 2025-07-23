@@ -1,5 +1,5 @@
 // src/components/Header.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
   Flex,
@@ -27,91 +27,109 @@ import {
   FaTimes,
 } from "react-icons/fa";
 
-const TopHeader = () => {
-  return (
-    <Box bg="#2E3338" color="white" px={{ base: 4, md: 8 }} py={2}>
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        align="center"
-        justify="space-between"
-        gap={2}
-      >
-        {/* Contact Info */}
-        <HStack spacing={6}>
-          <HStack spacing={2}>
-            <Icon as={FaPhone} boxSize={4} />
-            <Text fontSize="sm">8171974067</Text>
-          </HStack>
-          <HStack spacing={2}>
-            <Icon as={FaEnvelope} boxSize={4} />
-            <Text fontSize="sm">info@lawvs.com</Text>
-          </HStack>
+// ─── TopHeader ─────────────────────────────────────────────
+const TopHeader = React.forwardRef((props, ref) => (
+  <Box
+    ref={ref}
+    bg="#2E3338"
+    color="white"
+    px={{ base: 4, md: 8 }}
+    py={2}
+  >
+    <Flex
+      direction={{ base: "column", md: "row" }}
+      align="center"
+      justify="space-between"
+      gap={2}
+    >
+      {/* Contact Info */}
+      <HStack spacing={6}>
+        <HStack spacing={2}>
+          <Icon as={FaPhone} boxSize={4} />
+          <Text fontSize="sm">8171974067</Text>
         </HStack>
-
-        {/* Buttons */}
-        <HStack spacing={3}>
-          <Button
-            size="sm"
-            bg="#D29B3F"
-            _hover={{ bg: "#c68a2f" }}
-            color="white"
-            borderRadius="full"
-            px={4}
-          >
-            Job/Internship Seeker
-          </Button>
-          <Button
-            size="sm"
-            bg="#D29B3F"
-            _hover={{ bg: "#c68a2f" }}
-            color="white"
-            borderRadius="full"
-            px={4}
-          >
-            Job/Internship Posting
-          </Button>
+        <HStack spacing={2}>
+          <Icon as={FaEnvelope} boxSize={4} />
+          <Text fontSize="sm">info@lawvs.com</Text>
         </HStack>
+      </HStack>
 
-        {/* Social Icons */}
-        <HStack spacing={3}>
-          {[FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaTwitter].map(
-            (IconType, idx) => (
-              <Circle size="32px" bg="#D29B3F" key={idx}>
-                <Icon as={IconType} color="white" boxSize={4} />
-              </Circle>
-            )
-          )}
-        </HStack>
-      </Flex>
-    </Box>
-  );
-};
+      {/* Buttons */}
+      <HStack spacing={3}>
+        <Button
+          size="sm"
+          bg="#D29B3F"
+          _hover={{ bg: "#c68a2f" }}
+          color="white"
+          borderRadius="full"
+          px={4}
+        >
+          Job/Internship Seeker
+        </Button>
+        <Button
+          size="sm"
+          bg="#D29B3F"
+          _hover={{ bg: "#c68a2f" }}
+          color="white"
+          borderRadius="full"
+          px={4}
+        >
+          Job/Internship Posting
+        </Button>
+      </HStack>
 
+      {/* Social Icons */}
+      <HStack spacing={3}>
+        {[FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaTwitter].map(
+          (IconType, idx) => (
+            <Circle size="32px" bg="#D29B3F" key={idx}>
+              <Icon as={IconType} color="white" boxSize={4} />
+            </Circle>
+          )
+        )}
+      </HStack>
+    </Flex>
+  </Box>
+));
+
+// ─── MainHeader ────────────────────────────────────────────
 const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
-    <Box bg="white" px={{ base: 4, md: 8 }} py={4} boxShadow="sm">
-      <Flex
-        direction="row"
-        align="center"
-        justify="space-between"
-        wrap="wrap"
-      >
+    <Box
+      bg="white"
+      px={{ base: 4, md: 8 }}
+      py={4}
+      boxShadow="sm"
+      position="sticky"
+      top="0"
+      zIndex="999"
+    >
+      <Flex align="center" justify="space-between" wrap="wrap">
         {/* Logo and Tagline */}
         <HStack spacing={4}>
-          <Image src="/logo.png" alt="Logo" boxSize="60px" objectFit="contain" />
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            boxSize="60px"
+            objectFit="contain"
+          />
           <VStack align="start" spacing={0}>
             <Text fontSize="2xl" fontWeight="bold" color="#2E3338">
               LAW<span style={{ color: "#D29B3F" }}>VS</span>™
             </Text>
             <Text fontSize="xs" color="gray.600">
-              SATISFYING ALL <span style={{ color: "#D29B3F", fontWeight: 600 }}>LEGAL</span> NEEDS
+              SATISFYING ALL{" "}
+              <span style={{ color: "#D29B3F", fontWeight: 600 }}>
+                LEGAL
+              </span>{" "}
+              NEEDS
             </Text>
           </VStack>
         </HStack>
 
-        {/* Hamburger Icon on Mobile */}
+        {/* Navigation Links or Menu Button */}
         {isMobile ? (
           <IconButton
             icon={isMobileNavOpen ? <FaTimes /> : <FaBars />}
@@ -138,7 +156,7 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
         )}
       </Flex>
 
-      {/* Collapsible Mobile Nav */}
+      {/* Mobile Dropdown Menu */}
       <Collapse in={isMobileNavOpen} animateOpacity>
         <VStack
           mt={4}
@@ -162,40 +180,45 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
   );
 };
 
+// ─── Header Wrapper ────────────────────────────────────────
 const Header = () => {
   const [showTopHeader, setShowTopHeader] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const prevScrollY = useRef(0);
 
-  const toggleMobileNav = () => {
-    setIsMobileNavOpen((prev) => !prev);
-  };
+  const toggleMobileNav = () => setIsMobileNavOpen((prev) => !prev);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      const currentY = window.scrollY;
 
-      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+      if (currentY > prevScrollY.current && currentY > 100) {
         setShowTopHeader(false);
       } else {
         setShowTopHeader(true);
       }
 
-      setLastScrollY(currentScrollY);
+      prevScrollY.current = currentY;
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   return (
-    <Box position="sticky" top="0" zIndex="999" bg="white" boxShadow="md">
-      {showTopHeader && <TopHeader />}
+    <>
+      <Box
+        transform={showTopHeader ? "translateY(0)" : "translateY(-100%)"}
+        transition="transform 0.3s ease"
+      >
+        <TopHeader />
+      </Box>
+
       <MainHeader
         isMobileNavOpen={isMobileNavOpen}
         toggleMobileNav={toggleMobileNav}
       />
-    </Box>
+    </>
   );
 };
 
