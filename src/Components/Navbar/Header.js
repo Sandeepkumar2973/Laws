@@ -27,6 +27,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 
+import logo from './../Assets/logo/logo.png'; // Adjust the path as necessary
 // ─── TopHeader ─────────────────────────────────────────────
 const TopHeader = React.forwardRef((props, ref) => (
   <Box
@@ -46,11 +47,11 @@ const TopHeader = React.forwardRef((props, ref) => (
       <HStack spacing={6}>
         <HStack spacing={2}>
           <Icon as={FaPhone} boxSize={4} />
-          <Text fontSize="sm">8171974067</Text>
+          <Text fontSize="" mt='10px'>8171974067</Text>
         </HStack>
         <HStack spacing={2}>
           <Icon as={FaEnvelope} boxSize={4} />
-          <Text fontSize="sm">info@lawvs.com</Text>
+          <Text fontSize="" mt='10px'>info@lawvs.com</Text>
         </HStack>
       </HStack>
 
@@ -108,27 +109,17 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
     >
       <Flex align="center" justify="space-between" wrap="wrap">
         {/* Logo and Tagline */}
-        <HStack spacing={4}>
+       <HStack spacing={0} m={0} p={0}>
           <Image
-            src="/logo.png"
+            src={logo}
             alt="Logo"
-            boxSize="60px"
+            height="70px"       // Keep original height
+            width="200px"       // Increase width
             objectFit="contain"
+            m={0}
+            p={0}
           />
-          <VStack align="start" spacing={0}>
-            <Text fontSize="2xl" fontWeight="bold" color="#2E3338">
-              LAW<span style={{ color: "#D29B3F" }}>VS</span>™
-            </Text>
-            <Text fontSize="xs" color="gray.600">
-              SATISFYING ALL{" "}
-              <span style={{ color: "#D29B3F", fontWeight: 600 }}>
-                LEGAL
-              </span>{" "}
-              NEEDS
-            </Text>
-          </VStack>
         </HStack>
-
         {/* Navigation Links or Menu Button */}
         {isMobile ? (
           <IconButton
