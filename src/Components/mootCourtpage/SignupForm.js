@@ -15,7 +15,7 @@ import {
   Select,
   Flex,
   Image,
-  Text,
+  Stack,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useForm } from "react-hook-form";
@@ -49,70 +49,91 @@ export default function SignupForm() {
         rounded="xl"
         shadow="lg"
         w="full"
-        maxW="md"
+        maxW="xl"
       >
         <Flex direction="column" align="center" mb={6}>
           <Image src={logo} alt="Logo" maxW="120px" mb={4} />
-          <Heading size="lg">User Signup</Heading>
+          <Heading size="lg" textAlign="center">
+            MootCourt Registration
+          </Heading>
         </Flex>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={4}>
-            <FormControl isInvalid={errors.name}>
-              <FormLabel>Name</FormLabel>
-              <Input
-                placeholder="Enter your name"
-                {...register("name", { required: "Name is required" })}
-              />
-              <FormErrorMessage>
-                {errors.name && errors.name.message}
-              </FormErrorMessage>
-            </FormControl>
+            {/* Name & Institution */}
+            <Stack
+              direction={{ base: "column", md: "row" }}
+              spacing={6}
+              w="full"
+            >
+              <FormControl isInvalid={errors.name}>
+                <FormLabel>Name</FormLabel>
+                <Input
+                  placeholder="Enter your name"
+                  {...register("name", { required: "Name is required" })}
+                />
+                <FormErrorMessage>
+                  {errors.name && errors.name.message}
+                </FormErrorMessage>
+              </FormControl>
 
-            <FormControl isInvalid={errors.institution}>
-              <FormLabel>Institution</FormLabel>
-              <Input
-                placeholder="Enter your institution"
-                {...register("institution", {
-                  required: "Institution is required",
-                })}
-              />
-              <FormErrorMessage>
-                {errors.institution && errors.institution.message}
-              </FormErrorMessage>
-            </FormControl>
+              <FormControl isInvalid={errors.institution}>
+                <FormLabel>Institution</FormLabel>
+                <Input
+                  placeholder="Enter your institution"
+                  {...register("institution", {
+                    required: "Institution is required",
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.institution && errors.institution.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Stack>
 
-            <FormControl isInvalid={errors.course}>
-              <FormLabel>Course</FormLabel>
-              <Select
-                placeholder="Select your course"
-                {...register("course", { required: "Course is required" })}
-              >
-                <option value="BA LLB / BBA LLB">BA LLB / BBA LLB</option>
-                <option value="LLB">LLB</option>
-              </Select>
-              <FormErrorMessage>
-                {errors.course && errors.course.message}
-              </FormErrorMessage>
-            </FormControl>
+            {/* Course */}
+            <Stack
+              direction={{ base: "column", md: "row" }}
+              spacing={4}
+              w="full"
+            >
+              <FormControl isInvalid={errors.course}>
+                <FormLabel>Course</FormLabel>
+                <Select
+                  placeholder="Select your course"
+                  {...register("course", { required: "Course is required" })}
+                >
+                  <option value="BA LLB / BBA LLB">BA LLB / BBA LLB</option>
+                  <option value="LLB">LLB</option>
+                  <option value="LLM">LLM</option>
+                </Select>
+                <FormErrorMessage>
+                  {errors.course && errors.course.message}
+                </FormErrorMessage>
+              </FormControl>
 
-            <FormControl isInvalid={errors.year}>
-              <FormLabel>Year of Study</FormLabel>
-              <Select
-                placeholder="Select your year"
-                {...register("year", { required: "Year of Study is required" })}
-              >
-                <option value="1">1st Year</option>
-                <option value="2">2nd Year</option>
-                <option value="3">3rd Year</option>
-                <option value="4">4th Year</option>
-                <option value="5">5th Year</option>
-              </Select>
-              <FormErrorMessage>
-                {errors.year && errors.year.message}
-              </FormErrorMessage>
-            </FormControl>
+              {/* Year */}
+              <FormControl isInvalid={errors.year}>
+                <FormLabel>Year of Study</FormLabel>
+                <Select
+                  placeholder="Select your year"
+                  {...register("year", {
+                    required: "Year of Study is required",
+                  })}
+                >
+                  <option value="1">1st Year</option>
+                  <option value="2">2nd Year</option>
+                  <option value="3">3rd Year</option>
+                  <option value="4">4th Year</option>
+                  <option value="5">5th Year</option>
+                </Select>
+                <FormErrorMessage>
+                  {errors.year && errors.year.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Stack>
 
+            {/* Email */}
             <FormControl isInvalid={errors.email}>
               <FormLabel>Email</FormLabel>
               <Input
@@ -131,19 +152,7 @@ export default function SignupForm() {
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl isInvalid={errors.collegeId}>
-              <FormLabel>College ID</FormLabel>
-              <Input
-                placeholder="Enter your college ID"
-                {...register("collegeId", {
-                  required: "College ID is required",
-                })}
-              />
-              <FormErrorMessage>
-                {errors.collegeId && errors.collegeId.message}
-              </FormErrorMessage>
-            </FormControl>
-
+            {/* Mobile */}
             <FormControl isInvalid={errors.mobile}>
               <FormLabel>Mobile Number</FormLabel>
               <Input
@@ -162,6 +171,7 @@ export default function SignupForm() {
               </FormErrorMessage>
             </FormControl>
 
+            {/* Password */}
             <FormControl isInvalid={errors.password}>
               <FormLabel>Password</FormLabel>
               <InputGroup>

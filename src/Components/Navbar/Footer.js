@@ -9,6 +9,8 @@ import {
   HStack,
   IconButton,
   Image,
+  Circle,
+  Icon,
 } from "@chakra-ui/react";
 import {
   FaFacebookF,
@@ -18,10 +20,21 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { MdLocationOn, MdPhone, MdEmail } from "react-icons/md";
-import logo from './../Assets/logo/logo.png'; // Adjust the path as necessary
+import logo from "./../Assets/logo/logo.png"; // Adjust the path as necessary
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
+
 const Footer = () => {
+  const socialLinks = [
+    { icon: FaFacebookF, url: "https://www.facebook.com/lawvslegalservices" },
+    { icon: FaLinkedinIn, url: "https://www.linkedin.com/company/lawvs.com/" },
+    { icon: FaInstagram, url: "https://www.instagram.com/law_vs/" },
+    {
+      icon: FaYoutube,
+      url: "https://www.youtube.com/channel/UCznIzuaDRopc1wbfisboIVw",
+    },
+    { icon: FaTwitter, url: "https://x.com/LawvsF" },
+  ];
   return (
     <Box bg="black" color="white" py={10} px={5}>
       <Flex
@@ -34,55 +47,34 @@ const Footer = () => {
         {/* Logo + Social Icons */}
         <VStack align="flex-start" spacing={5}>
           <ChakraLink as={RouterLink} to="/">
-          <Image src={logo} alt="Logo"  height="70px" width="200px" color="white" />
+            <Image
+              src={logo}
+              alt="Logo"
+              height="70px"
+              width="200px"
+              color="white"
+            />
           </ChakraLink>
           <Text>SATISFYING ALL LEGAL NEEDS</Text>
-          <HStack spacing={4}>
-            <IconButton
-              as="a"
-              href="#"
-              icon={<FaFacebookF />}
-              bg="gold"
-              borderRadius="full"
-              color="black"
-              _hover={{ bg: "gray.700", color: "white" }}
-            />
-            <IconButton
-              as="a"
-              href="#"
-              icon={<FaLinkedinIn />}
-              bg="gold"
-              borderRadius="full"
-              color="black"
-              _hover={{ bg: "gray.700", color: "white" }}
-            />
-            <IconButton
-              as="a"
-              href="#"
-              icon={<FaInstagram />}
-              bg="gold"
-              borderRadius="full"
-              color="black"
-              _hover={{ bg: "gray.700", color: "white" }}
-            />
-            <IconButton
-              as="a"
-              href="#"
-              icon={<FaTwitter />}
-              bg="gold"
-              borderRadius="full"
-              color="black"
-              _hover={{ bg: "gray.700", color: "white" }}
-            />
-            <IconButton
-              as="a"
-              href="#"
-              icon={<FaYoutube />}
-              bg="gold"
-              borderRadius="full"
-              color="black"
-              _hover={{ bg: "gray.700", color: "white" }}
-            />
+          <HStack spacing={3}>
+            {socialLinks.map((social, idx) => (
+              <Link
+                href={social.url}
+                isExternal // adds target="_blank" rel="noopener noreferrer"
+                key={idx}
+                _hover={{ textDecoration: "none" }}
+              >
+                <Circle
+                  size="32px"
+                  bg="#D29B3F"
+                  borderRadius="full"
+                  color="black"
+                  _hover={{ bg: "gray.700", color: "white" }}
+                >
+                  <Icon as={social.icon} color="white" boxSize={4} />
+                </Circle>
+              </Link>
+            ))}
           </HStack>
         </VStack>
 
@@ -118,9 +110,9 @@ const Footer = () => {
           </Text>
           <HStack align="flex-start">
             <MdLocationOn size="20" />
-            <Text>
+            <Text align={"left"}>
               Office No.101, <br />
-              Himland House, Commercial Complex, Karampura,
+              Himland House, Commercial Complex,<br/> Karampura,
               <br />
               Delhi-110015, India
             </Text>

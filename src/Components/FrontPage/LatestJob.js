@@ -10,8 +10,11 @@ import {
   SimpleGrid,
   Center,
 } from "@chakra-ui/react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-const authors = [
+const jobs = [
   {
     name: "Aarav Sharma",
     rank: 1,
@@ -44,8 +47,46 @@ const authors = [
     type: "Internship Seeker",
     img: null,
   },
+  {
+    name: "Simran Kaur",
+    rank: 4,
+    news: 6,
+    articles: 8,
+    type: "Internship Seeker",
+    img: null,
+  },
 ];
-
+// Example slider settings
+const settings = {
+  dots: false,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 4,
+  slidesToScroll: 1,
+  autoplay: jobs.length > 4, // only autoplay if more than 4
+  autoplaySpeed: 1000, // 1 seconds
+  // rtl: false, // <-- make sure this is false (or just omit it)
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 4,
+      },
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 2,
+      },
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+      },
+    },
+  ],
+};
 const LatestJob = () => {
   return (
     <Box px={{ base: 4, md: 16 }} py={12}>
@@ -58,11 +99,11 @@ const LatestJob = () => {
         borderColor="yellow.800"
         w="fit-content"
       >
-        Latest Jobs
+        Latest Job Openings
       </Heading>
 
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={6}>
-        {authors.map((author, index) => (
+      <Slider {...settings}>
+        {jobs.map((job, index) => (
           <Box
             key={index}
             bg="white"
@@ -71,17 +112,19 @@ const LatestJob = () => {
             shadow="md"
             p={6}
             textAlign="center"
+            // mx={2} // add margin between slides
+            margin={2}
           >
             <Center mb={3}>
               <Avatar
-                src={author.img || "https://via.placeholder.com/150"}
-                name={author.name}
+                src={job.img || "https://via.placeholder.com/150"}
+                name={job.name}
                 size="xl"
               />
             </Center>
 
             <Text fontSize="lg" fontWeight="medium">
-              {author.name}
+              {job.name}
             </Text>
 
             <Box mt={2}>
@@ -92,7 +135,7 @@ const LatestJob = () => {
                 py={1}
                 borderRadius="md"
               >
-                Rank #{author.rank}
+                Rank #{job.rank}
               </Badge>
             </Box>
 
@@ -107,22 +150,22 @@ const LatestJob = () => {
                 <Text as="span" color="gray.500">
                   Type:
                 </Text>{" "}
-                {author.type}
+                {job.type}
               </Text>
               <Text>
                 <Text as="span" color="gray.500">
                   News:
                 </Text>{" "}
-                {author.news} |{" "}
+                {job.news} |{" "}
                 <Text as="span" color="gray.500">
                   Articles:
                 </Text>{" "}
-                {author.articles}
+                {job.articles}
               </Text>
             </VStack>
           </Box>
         ))}
-      </SimpleGrid>
+      </Slider>
     </Box>
   );
 };

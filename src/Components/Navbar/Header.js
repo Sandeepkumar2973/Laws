@@ -17,23 +17,38 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Link,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   FaPhone,
   FaEnvelope,
-  FaFacebookF,
-  FaLinkedinIn,
-  FaInstagram,
-  FaYoutube,
-  FaTwitter,
   FaBars,
   FaTimes,
+  FaWhatsapp,
 } from "react-icons/fa";
 
 import logo from "../Assets/logo/logo.png";
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
+import {
+  FaFacebookF,
+  FaLinkedinIn,
+  FaInstagram,
+  FaYoutube,
+  FaTwitter,
+} from "react-icons/fa";
+// Social media links
+const socialLinks = [
+  { icon: FaFacebookF, url: "https://www.facebook.com/lawvslegalservices" },
+  { icon: FaLinkedinIn, url: "https://www.linkedin.com/company/lawvs.com/" },
+  { icon: FaInstagram, url: "https://www.instagram.com/law_vs/" },
+  {
+    icon: FaYoutube,
+    url: "https://www.youtube.com/channel/UCznIzuaDRopc1wbfisboIVw",
+  },
+  { icon: FaTwitter, url: "https://x.com/LawvsF" },
+];
 // ─── JobsMenu ──────────────────────────────────────────────
 const JobsMenu = () => (
   <Menu>
@@ -82,12 +97,26 @@ const TopHeader = React.forwardRef((props, ref) => (
       {/* Contact Info */}
       <HStack spacing={6}>
         <HStack spacing={2}>
-          <Icon as={FaPhone} boxSize={4} />
-          <Text mt="10px">8171974067</Text>
+          <Link
+            href="https://wa.me/8171974067"
+            isExternal
+            mt="10px"
+            _hover={{ textDecoration: "underline" }}
+          >
+            <Icon as={FaWhatsapp} boxSize={6} m={2} color={"green.500"} />
+            8171974067
+          </Link>
         </HStack>
+
         <HStack spacing={2}>
-          <Icon as={FaEnvelope} boxSize={4} />
-          <Text mt="10px">info@lawvs.com</Text>
+          <Link
+            href="mailto:info@lawvs.com"
+            mt="10px"
+            _hover={{ textDecoration: "underline" }}
+          >
+            <Icon as={FaEnvelope} boxSize={4} m={2} />
+            info@lawvs.com
+          </Link>
         </HStack>
       </HStack>
 
@@ -99,7 +128,7 @@ const TopHeader = React.forwardRef((props, ref) => (
           textDecoration="none"
           _hover={{ textDecoration: "none" }}
           size="sm"
-          bg="#D29B3F"          
+          bg="#D29B3F"
           color="white"
           borderRadius="full"
           padding={2}
@@ -113,7 +142,7 @@ const TopHeader = React.forwardRef((props, ref) => (
           textDecoration="none"
           _hover={{ textDecoration: "none" }}
           size="sm"
-          bg="#D29B3F"          
+          bg="#D29B3F"
           color="white"
           borderRadius="full"
           padding={2}
@@ -125,13 +154,24 @@ const TopHeader = React.forwardRef((props, ref) => (
 
       {/* Social Icons */}
       <HStack spacing={3}>
-        {[FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaTwitter].map(
-          (IconType, idx) => (
-            <Circle size="32px" bg="#D29B3F" key={idx}>
-              <Icon as={IconType} color="white" boxSize={4} />
+        {socialLinks.map((social, idx) => (
+          <Link
+            href={social.url}
+            isExternal // adds target="_blank" rel="noopener noreferrer"
+            key={idx}
+            _hover={{ textDecoration: "none" }}
+          >
+            <Circle
+              size="32px"
+              bg="#D29B3F"
+              borderRadius="full"
+              color="black"
+              _hover={{ bg: "gray.700", color: "white" }}
+            >
+              <Icon as={social.icon} color="white" boxSize={4} />
             </Circle>
-          )
-        )}
+          </Link>
+        ))}
       </HStack>
     </Flex>
   </Box>
@@ -256,13 +296,27 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
           textDecoration="none"
         >
           <JobsMenu />
-          <ChakraLink to="#">Legal Drafts</ChakraLink>
-          <ChakraLink to="#">Top Stories</ChakraLink>
-          <ChakraLink to="#">Library</ChakraLink>
-          <ChakraLink to="#">Opportunity</ChakraLink>
-          <ChakraLink to="#">Exams Preparation</ChakraLink>
-          <ChakraLink to="#">Q & A</ChakraLink>
-          <ChakraLink to="#">Contact Us</ChakraLink>
+          <ChakraLink as={RouterLink} to="/legal-draft">
+            Legal Drafts
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="/top-stories">
+            Top Stories
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="/library">
+            Library
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="/opportunity">
+            Opportunity
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="/exam-preparation">
+            Exams Preparation
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="/q-and-a">
+            Q & A
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="/contact">
+            Contact Us
+          </ChakraLink>
         </VStack>
       </Collapse>
     </Box>

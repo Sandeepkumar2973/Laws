@@ -29,7 +29,7 @@ export default function AdminAuthLogin() {
         <Input placeholder="Enter email" />
         <Input placeholder="Password" type="password" />
         <Flex justify="space-between" align="center">
-          <ChakraLink as={RouterLink} to="/admin-auth-forget" fontWeight="bold" fontStyle="italic">
+          <ChakraLink as={RouterLink} to="/admin-auth-forget" fontWeight="bold" fontStyle="italic" textColor={"orange.600"}>
             Forgot Password?
           </ChakraLink>
           {/* <Button colorScheme="yellow">Submit</Button> */}
@@ -43,7 +43,7 @@ export default function AdminAuthLogin() {
           {/* <Link href="#" textDecoration="underline" fontStyle="italic">
             Click here to Register
           </Link> */}
-          <ChakraLink as={RouterLink} to="/admin-auth-register">
+          <ChakraLink as={RouterLink} to="/admin-auth-register" textColor={"orange.600"} fontStyle="italic">
             Click here to Register
           </ChakraLink>
         </Text>

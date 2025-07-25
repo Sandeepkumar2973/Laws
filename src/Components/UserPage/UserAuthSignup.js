@@ -23,7 +23,7 @@ export default function UserAuthSignup() {
   const leftContent = (
     <>
       <Heading mb={6} fontSize="xl" color="orange.700">
-        Registration
+       Job Seeker Registration
       </Heading>
       <VStack spacing={4} align="stretch">
         <Input placeholder="Enter your full name" />
@@ -40,9 +40,9 @@ export default function UserAuthSignup() {
       </VStack>
       <Text mt={4}>
         Already Registered?{" "}
-       <ChakraLink as={RouterLink} to="/user-auth-login">
-                   Click here to login
-                 </ChakraLink>
+        <ChakraLink as={RouterLink} to="/user-auth-login" textColor={"orange.600"} fontStyle="italic">
+          Click here to login
+        </ChakraLink>
       </Text>
     </>
   );

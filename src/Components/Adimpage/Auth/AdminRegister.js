@@ -28,7 +28,7 @@ export default function AdminAuthRegister() {
         Job/Internship Posting Registration
       </Heading>
       <VStack spacing={4} align="stretch">
-        <Input placeholder="Enter your full name" />
+        <Input placeholder="Name of company/Firm /Advocate" />
         <Input placeholder="Enter your email" />
         <Input placeholder="Enter your number" />
         <Select placeholder="What are you looking for?">
@@ -42,7 +42,7 @@ export default function AdminAuthRegister() {
       </VStack>
       <Text mt={4}>
         Already Registered?{" "}
-        <ChakraLink as={RouterLink} to="/admin-auth-login">
+        <ChakraLink as={RouterLink} to="/admin-auth-login" textColor={"orange.600"} fontStyle="italic">
           Click here to login
         </ChakraLink>
       </Text>

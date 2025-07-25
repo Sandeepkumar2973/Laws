@@ -29,7 +29,7 @@ export default function UserAuthLogin() {
         <Input placeholder="Password" type="password" />
         <Flex justify="space-between" align="center">
           
-          <ChakraLink as={RouterLink} to="/user-auth-forget" fontWeight="bold" fontStyle="italic">
+          <ChakraLink as={RouterLink} to="/user-auth-forget" fontWeight="bold" fontStyle="italic" textColor={"orange.600"}>
             Forgot Password?
           </ChakraLink>
           {/* <Button colorScheme="yellow">Submit</Button> */}
@@ -43,7 +43,7 @@ export default function UserAuthLogin() {
           {/* <Link href="#" textDecoration="underline" fontStyle="italic">
             Click here to Register
           </Link> */}
-          <ChakraLink as={RouterLink} to="/user-auth-signup" >
+          <ChakraLink as={RouterLink} to="/user-auth-signup" textColor={"orange.600"} fontStyle="italic">
             Click here to Register
           </ChakraLink>
         </Text>
