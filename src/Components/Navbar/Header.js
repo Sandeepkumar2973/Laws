@@ -7,14 +7,18 @@ import {
   Icon,
   Button,
   HStack,
-  Link,
   Image,
   VStack,
   Circle,
   useBreakpointValue,
   Collapse,
   IconButton,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   FaPhone,
   FaEnvelope,
@@ -27,11 +31,43 @@ import {
   FaTimes,
 } from "react-icons/fa";
 
-import logo from './../Assets/logo/logo.png'; // Adjust the path as necessary
+import logo from "../Assets/logo/logo.png";
+import { Link as RouterLink } from "react-router-dom";
+import { Link as ChakraLink } from "@chakra-ui/react";
+// ─── JobsMenu ──────────────────────────────────────────────
+const JobsMenu = () => (
+  <Menu>
+    <MenuButton
+      as={Button}
+      rightIcon={<ChevronDownIcon />}
+      variant="ghost"
+      _hover={{ bg: "gray.100" }}
+      _expanded={{ bg: "gray.200" }}
+    >
+      Search Jobs
+    </MenuButton>
+    <MenuList>
+      <MenuItem as="a" to="#">
+        Jobs By Practice Area
+      </MenuItem>
+      <MenuItem as="a" to="#">
+        Jobs By Location
+      </MenuItem>
+      <MenuItem as="a" to="#">
+        Jobs By Qualification
+      </MenuItem>
+      <MenuItem as="a" to="#">
+        Browse All Jobs
+      </MenuItem>
+    </MenuList>
+  </Menu>
+);
+
 // ─── TopHeader ─────────────────────────────────────────────
 const TopHeader = React.forwardRef((props, ref) => (
   <Box
     ref={ref}
+    {...props} // ✅ Pass props to avoid Chakra warnings
     bg="#2E3338"
     color="white"
     px={{ base: 4, md: 8 }}
@@ -47,36 +83,44 @@ const TopHeader = React.forwardRef((props, ref) => (
       <HStack spacing={6}>
         <HStack spacing={2}>
           <Icon as={FaPhone} boxSize={4} />
-          <Text fontSize="" mt='10px'>8171974067</Text>
+          <Text mt="10px">8171974067</Text>
         </HStack>
         <HStack spacing={2}>
           <Icon as={FaEnvelope} boxSize={4} />
-          <Text fontSize="" mt='10px'>info@lawvs.com</Text>
+          <Text mt="10px">info@lawvs.com</Text>
         </HStack>
       </HStack>
 
       {/* Buttons */}
       <HStack spacing={3}>
-        <Button
+        <ChakraLink
+          as={RouterLink}
+          to="/user-auth-login"
+          textDecoration="none"
+          _hover={{ textDecoration: "none" }}
           size="sm"
-          bg="#D29B3F"
-          _hover={{ bg: "#c68a2f" }}
+          bg="#D29B3F"          
           color="white"
           borderRadius="full"
-          px={4}
+          padding={2}
+          px={6}
         >
           Job/Internship Seeker
-        </Button>
-        <Button
+        </ChakraLink>
+        <ChakraLink
+          as={RouterLink}
+          to="/admin-auth-login"
+          textDecoration="none"
+          _hover={{ textDecoration: "none" }}
           size="sm"
-          bg="#D29B3F"
-          _hover={{ bg: "#c68a2f" }}
+          bg="#D29B3F"          
           color="white"
           borderRadius="full"
-          px={4}
+          padding={2}
+          px={6}
         >
-          Job/Internship Posting
-        </Button>
+          Job/Internship Post
+        </ChakraLink>
       </HStack>
 
       {/* Social Icons */}
@@ -108,19 +152,22 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
       zIndex="999"
     >
       <Flex align="center" justify="space-between" wrap="wrap">
-        {/* Logo and Tagline */}
-       <HStack spacing={0} m={0} p={0}>
-          <Image
-            src={logo}
-            alt="Logo"
-            height="70px"       // Keep original height
-            width="200px"       // Increase width
-            objectFit="contain"
-            m={0}
-            p={0}
-          />
+        {/* Logo */}
+        <HStack spacing={0} m={0} p={0}>
+          <ChakraLink as={RouterLink} to="/">
+            <Image
+              src={logo}
+              alt="Logo"
+              height="70px"
+              width="200px"
+              objectFit="contain"
+              m={0}
+              p={0}
+            />
+          </ChakraLink>
         </HStack>
-        {/* Navigation Links or Menu Button */}
+
+        {/* Navigation */}
         {isMobile ? (
           <IconButton
             icon={isMobileNavOpen ? <FaTimes /> : <FaBars />}
@@ -134,15 +181,65 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
             fontSize="sm"
             fontWeight="medium"
             color="gray.700"
+            as="nav"
           >
-            <Link href="#">Search Jobs ▾</Link>
-            <Link href="#">Legal Drafts</Link>
-            <Link href="#">Top Stories</Link>
-            <Link href="#">Library</Link>
-            <Link href="#">Opportunity</Link>
-            <Link href="#">Exams preparation</Link>
-            <Link href="#">Q & A</Link>
-            <Link href="#">Contact Us</Link>
+            <JobsMenu />
+            <ChakraLink
+              as={RouterLink}
+              to="/legal-draft"
+              textDecoration="none"
+              _hover={{ textDecoration: "none" }}
+            >
+              Legal Drafts
+            </ChakraLink>
+            <ChakraLink
+              as={RouterLink}
+              to="/top-stories"
+              textDecoration="none"
+              _hover={{ textDecoration: "none" }}
+            >
+              Top Stories
+            </ChakraLink>
+            <ChakraLink
+              as={RouterLink}
+              to="/library"
+              textDecoration="none"
+              _hover={{ textDecoration: "none" }}
+            >
+              Library
+            </ChakraLink>
+            <ChakraLink
+              as={RouterLink}
+              to="/opportunity"
+              textDecoration="none"
+              _hover={{ textDecoration: "none" }}
+            >
+              Opportunity
+            </ChakraLink>
+            <ChakraLink
+              as={RouterLink}
+              to="/exam-preparation"
+              textDecoration="none"
+              _hover={{ textDecoration: "none" }}
+            >
+              Exams Preparation
+            </ChakraLink>
+            <ChakraLink
+              as={RouterLink}
+              to="/q-and-a"
+              textDecoration="none"
+              _hover={{ textDecoration: "none" }}
+            >
+              Q & A
+            </ChakraLink>
+            <ChakraLink
+              as={RouterLink}
+              to="/contact"
+              textDecoration="none"
+              _hover={{ textDecoration: "none" }}
+            >
+              Contact Us
+            </ChakraLink>
           </HStack>
         )}
       </Flex>
@@ -156,15 +253,16 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
           fontWeight="medium"
           color="gray.700"
           align="start"
+          textDecoration="none"
         >
-          <Link href="#">Search Jobs ▾</Link>
-          <Link href="#">Legal Drafts</Link>
-          <Link href="#">Top Stories</Link>
-          <Link href="#">Library</Link>
-          <Link href="#">Opportunity</Link>
-          <Link href="#">Exams preparation</Link>
-          <Link href="#">Q & A</Link>
-          <Link href="#">Contact Us</Link>
+          <JobsMenu />
+          <ChakraLink to="#">Legal Drafts</ChakraLink>
+          <ChakraLink to="#">Top Stories</ChakraLink>
+          <ChakraLink to="#">Library</ChakraLink>
+          <ChakraLink to="#">Opportunity</ChakraLink>
+          <ChakraLink to="#">Exams Preparation</ChakraLink>
+          <ChakraLink to="#">Q & A</ChakraLink>
+          <ChakraLink to="#">Contact Us</ChakraLink>
         </VStack>
       </Collapse>
     </Box>

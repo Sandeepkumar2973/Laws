@@ -18,9 +18,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as mod from "./../../url";
-import logo from "../Assets/logo/198cd4a6-9bef-4b76-89b2-03c80467d2ba.png";
+import logo from "../Assets/logo/logo.png";
 import logo1 from "../Assets/logo/bgg.jpg"
-const Login = () => {
+const Userlogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
@@ -94,52 +94,7 @@ const Login = () => {
         p={{ base: 4, md: 10 }}
         justify="space-between"
         align="center"
-      >
-        {isDesktop && (
-          <Box color="white" p={6} maxW="50%">
-            <Image
-              src={logo}
-              alt="Logo"
-              maxW="300px"
-              mb={6}
-            />
-            <Box color="#2D3748"> {/* Dark gray text for good readability */}
-              <Text fontSize="3xl" fontWeight="extrabold" color="teal.500">
-                Recruit Smarter, Faster, Better.
-              </Text>
-
-              <Text mt={4} fontSize="lg" fontWeight="medium">
-                Welcome to the <Text as="span" color="blue.500" fontWeight="bold">Admin Job Portal</Text> —
-                your dedicated platform for posting jobs and managing top talent effortlessly.
-              </Text>
-
-              <Text mt={3} fontSize="md" fontWeight="normal">
-                From startups to enterprises, empower your hiring process with powerful features
-                designed to help you find the <Text as="span" color="green.500" fontWeight="semibold">right candidates</Text> quickly and efficiently.
-              </Text>
-
-              <Box mt={5} pl={4} as="ul" style={{ listStyleType: 'disc' }}>
-                <li>
-                  <Text as="span" fontWeight="semibold" color="white.700">Post and manage job listings in minutes</Text>
-                </li>
-                <li>
-                  <Text as="span" fontWeight="semibold" color="gray.700">Track candidate applications in real-time</Text>
-                </li>
-                <li>
-                  <Text as="span" fontWeight="semibold" color="gray.700">Shortlist and filter applicants with ease</Text>
-                </li>
-                <li>
-                  <Text as="span" fontWeight="semibold" color="gray.700">Reach verified talent across multiple locations</Text>
-                </li>
-              </Box>
-
-              <Text mt={6} fontSize="sm" color="gray.500">
-                Ready to start hiring? <Text as="span" fontWeight="bold" color="blue.600">Log in and take control.</Text>
-              </Text>
-            </Box>
-
-          </Box>
-        )}
+      >       
 
         <Box
           w="100%"
@@ -158,7 +113,7 @@ const Login = () => {
               mb={4}
             />
             <Text fontSize="2xl" fontWeight="600">
-              Admin Login
+              User Login
             </Text>
           </Flex>
 
@@ -224,4 +179,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Userlogin;

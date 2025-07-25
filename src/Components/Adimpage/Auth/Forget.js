@@ -22,11 +22,11 @@ import {
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import bookImage from "../Assets/book.jpg";
-import "./Auth.css";
-import * as mod from "./../../url";
+// import bookImage from "../Assets/book.jpg";
+// import "./Auth.css";
+import * as mod from "./../../../url";
 
-const Forget = () => {
+const AdminAuthForget = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
@@ -102,7 +102,7 @@ const Forget = () => {
         height="100vh"
         alignItems="center"
         justifyContent="center"
-        backgroundImage={`url(${bookImage})`}
+        // backgroundImage={`url(${bookImage})`}
         backgroundSize="cover"
         backgroundPosition="center"
       >
@@ -117,7 +117,7 @@ const Forget = () => {
             padding="10px"
             borderRadius="30px"
           >
-            LMS ADMIN PORTAl
+             ADMIN PORTAl
           </Container>
           <Text fontSize="x-large" fontWeight="700">
             Admin Forget Password
@@ -212,4 +212,4 @@ const Forget = () => {
   );
 };
 
-export default Forget;
+export default AdminAuthForget;

@@ -18,7 +18,9 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { MdLocationOn, MdPhone, MdEmail } from "react-icons/md";
-
+import logo from './../Assets/logo/logo.png'; // Adjust the path as necessary
+import { Link as RouterLink } from "react-router-dom";
+import { Link as ChakraLink } from "@chakra-ui/react";
 const Footer = () => {
   return (
     <Box bg="black" color="white" py={10} px={5}>
@@ -31,7 +33,9 @@ const Footer = () => {
       >
         {/* Logo + Social Icons */}
         <VStack align="flex-start" spacing={5}>
-          <Image src="/logo.png" alt="Logo" h="50px" />
+          <ChakraLink as={RouterLink} to="/">
+          <Image src={logo} alt="Logo"  height="70px" width="200px" color="white" />
+          </ChakraLink>
           <Text>SATISFYING ALL LEGAL NEEDS</Text>
           <HStack spacing={4}>
             <IconButton

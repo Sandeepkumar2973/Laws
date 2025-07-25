@@ -13,51 +13,55 @@ const LegalBanner = () => {
       alignItems="center"
       px={{ base: 4, md: 16 }}
     >
-      <Box maxW="lg" color="white">
-        <Heading
-          fontSize={{ base: "3xl", md: "5xl" }}
-          fontWeight="bold"
-          mb={6}
-          lineHeight="1.2"
-        >
-          legal portal to <br /> satisfy all legal <br /> needs!
-        </Heading>
-
-        <Flex
-          bg="white"
-          borderRadius="full"
-          overflow="hidden"
-          maxW="lg"
-          w="full"
-          alignItems="center"
-        >
-          <Flex alignItems="center" px={4}>
-            <Icon as={FaSearch} color="goldenrod" boxSize={5} />
-          </Flex>
-
-          <Input
-            placeholder="Search for legal services..."
-            border="none"
-            flex={1}
-            _focus={{ outline: "none" }}
-          />
-
-          <Flex alignItems="center" px={4} borderLeft="1px solid #ddd">
-            <Icon as={FaMapMarkerAlt} color="goldenrod" boxSize={5} />
-          </Flex>
-
-          <Button
-            bg="goldenrod"
-            color="white"
-            borderRadius="none"
-            px={8}
-            py={6}
-            _hover={{ bg: "gold" }}
+      <Flex justifyContent="flex-end" pr={{ base: 4, md: 12 }}>
+        <Box maxW="lg" color="white">
+          <Heading
+            fontSize={{ base: "3xl", md: "5xl" }}
+            fontWeight="bold"
+            mb={6}
+            lineHeight="1.2"
+            mt={6}
           >
-            Search
-          </Button>
-        </Flex>
-      </Box>
+            legal portal to <br /> satisfy all legal <br /> needs!
+          </Heading>
+
+          <Flex
+            bg="white"
+            borderRadius="full"
+            overflow="hidden"
+            maxW="lg"
+            w="full"
+            alignItems="center"
+            mt={"148px"}
+          >
+            <Flex alignItems="center" px={4}>
+              <Icon as={FaSearch} color="goldenrod" boxSize={5} />
+            </Flex>
+
+            <Input
+              placeholder="Search for legal services..."
+              border="none"
+              flex={1}
+              _focus={{ outline: "none" }}
+            />
+
+            <Flex alignItems="center" px={4} borderLeft="1px solid #ddd">
+              <Icon as={FaMapMarkerAlt} color="goldenrod" boxSize={5} />
+            </Flex>
+
+            <Button
+              bg="goldenrod"
+              color="white"
+              borderRadius="none"
+              px={8}
+              py={6}
+              _hover={{ bg: "gold" }}
+            >
+              Search
+            </Button>
+          </Flex>
+        </Box>
+      </Flex>
     </Box>
   );
 };
