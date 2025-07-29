@@ -1,18 +1,17 @@
-import React from "react";
 import {
   Box,
-  SimpleGrid,
   Image,
   Text,
-  Input,
-  Button,
-  InputGroup,
-  InputRightElement,
+  Heading,
   VStack,
+  HStack,
+  Link as ChakraLink,
   Container,
 } from "@chakra-ui/react";
+import { Link, useParams } from "react-router-dom";
+import Header from "../../Navbar/Header";
+import Footer from "../../Navbar/Footer";
 import draftimage from "../../Assets/lawsImage/draft.jpg"; // Adjust the path as necessary
-import { Link } from "react-router-dom";
 
 const drafts = [
   {
@@ -92,70 +91,74 @@ const drafts = [
     image: draftimage,
   },
 ];
+export default function SingleDraft() {
+  const { id } = useParams();
+  const draft = drafts.find((d) => d.id === Number(id));
+  const latestDrafts = drafts.filter((d) => d.id !== Number(id)).slice(0, 5);
 
-export default function DraftsGrid() {
+  if (!draft) return <Text>Draft not found</Text>;
+
   return (
-    <Container maxW="7xl" py={12}>
-      {/* Search Bar */}
-      <InputGroup size="lg" mb={8}>
-        <Input
-          placeholder="Search drafts"
-          borderRadius="md"
-          borderColor="gray.300"
-        />
-        <InputRightElement width="6rem">
-          <Button h="100%" colorScheme="blue" borderRadius="md">
-            Search
-          </Button>
-        </InputRightElement>
-      </InputGroup>
+    <>
+      <Header />
+      <Container maxW="7xl" py={8}>
+        <HStack
+          align="start"
+          spacing={8}
+          flexDir={{ base: "column", md: "row" }}
+        >
+          {/* Left Side */}
+          <Box flex="3" align="start" p={4} m={4}>
+            {/* <Image src={draft.image} alt={draft.title} mb={4} /> */}
+            <Heading mb={2}>{draft.title}</Heading>
+            <Text color="gray.500" mb={4}>
+              {drafts.author} • {drafts.date}
+            </Text>
+            <Text>{drafts.description} (Full content here...)</Text>
+            <Text>
+              Lorem ipsum dolor sit amet... (add enough dummy content so page is
+              scrollable)
+            </Text>
+          </Box>
 
-      {/* Drafts Cards */}
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={8}>
-        {drafts.map((d, i) => (
+          {/* Right Side Sticky Latest */}
           <Box
-            key={i}
-            borderWidth="1px"
+            flex="1"
+            position="sticky"
+            top="100px"
+            align="start"
+            border="1px solid #e2e8f0"
             borderRadius="md"
-            overflow="hidden"
-            as={Link}
-            to={`/drafts/${d.id}`}
             p={4}
-            boxShadow="md"
+            maxW="500px"
+            minH="500px"
           >
-            <VStack
-              spacing={4}
-              as="a"
-              href={`/drafts/${d.id}`}
-              color="white"
-              _hover={{
-                textDecoration: "none",
-                cursor: "pointer",
-                backgroundColor: "gray.50",
-              }}
-            >
-              <Image
-                src={d.image}
-                alt="Draft"
-                boxSize="80px"
-                objectFit="contain"
-              />
-              <Box
-                bg="navy"
-                color="white"
-                p={3}
-                textAlign="center"
-                borderRadius="md"
-                fontWeight="semibold"
-                fontSize="sm"
-                lineHeight="short"
-              >
-                <Text noOfLines={3}>{d.title.toUpperCase()}</Text>
-              </Box>
+            <Heading size="md" mb={4}>
+              Latest Stories
+            </Heading>
+            <VStack align="start" spacing={4}>
+              {latestDrafts.map((d) => (
+                <HStack key={d.id} spacing={3} align="start">
+                  <Image
+                    src={d.image}
+                    alt={d.title}
+                    boxSize="60px"
+                    objectFit="cover"
+                  />
+                  <ChakraLink
+                    as={Link}
+                    to={`/drafts/${d.id}`}
+                    fontWeight="bold"
+                  >
+                    {d.title}
+                  </ChakraLink>
+                </HStack>
+              ))}
             </VStack>
           </Box>
-        ))}
-      </SimpleGrid>
-    </Container>
+        </HStack>
+      </Container>
+      <Footer />
+    </>
   );
 }

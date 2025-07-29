@@ -12,6 +12,7 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import AllStories from "./AllStories";
+import SingleStory from "./SingleStory";
 export const TopStories = () => {
   return (
     <>
@@ -47,6 +48,7 @@ export const TopStories = () => {
         </Breadcrumb>
       </Box>
       <AllStories />
+      <SingleStory/>
       <Footer />
     </>
   );

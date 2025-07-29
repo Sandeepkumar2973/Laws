@@ -19,8 +19,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as mod from "./../../url";
 import logo from "../Assets/logo/logo.png";
-import logo1 from "../Assets/logo/bgg.jpg"
-const Userlogin = () => {
+import logo1 from "../Assets/logo/bgg.jpg";
+import { Link as RouterLink } from "react-router-dom";
+import { Link as ChakraLink } from "@chakra-ui/react";
+const MootUserlogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
@@ -36,12 +38,15 @@ const Userlogin = () => {
     event.preventDefault();
     setLoading(true);
     try {
-      const { data } = await axios.post(`${mod.api_url}/api/v1/admin/login-admin`, {
-        email,
-        password,
-      });
-
-      if (data.data) {
+      const { data } = await axios.post(
+        `${mod.api_url}/api/v1/MootUser/mootuser_login`,
+        {
+          email,
+          password,
+        }
+      );
+      console.log(data, "data");
+      if (data.user) {
         toast({
           title: "Login successful!",
           status: "success",
@@ -49,8 +54,8 @@ const Userlogin = () => {
           isClosable: true,
         });
 
-        sessionStorage.setItem("AdminjobInfo", JSON.stringify(data));
-        navigate("/");
+        localStorage.setItem("MootUserInfo", JSON.stringify(data));
+        navigate("/moot-user-dashboard");
         window.location.reload();
         setEmail("");
         setPassword("");
@@ -94,8 +99,7 @@ const Userlogin = () => {
         p={{ base: 4, md: 10 }}
         justify="space-between"
         align="center"
-      >       
-
+      >
         <Box
           w="100%"
           maxW="500px"
@@ -106,12 +110,7 @@ const Userlogin = () => {
           mx="auto"
         >
           <Flex direction="column" align="center" mb={6}>
-            <Image
-              src={logo}
-              alt="Logo"
-              maxW="150px"
-              mb={4}
-            />
+            <Image src={logo} alt="Logo" maxW="150px" mb={4} />
             <Text fontSize="2xl" fontWeight="600">
               User Login
             </Text>
@@ -155,14 +154,26 @@ const Userlogin = () => {
                 {loading ? "Logging in..." : "Login"}
               </Button>
 
-              <Link to="/forget" style={{ width: "100%" }}>
-                <Button colorScheme="red" w="100%">
+              <ChakraLink as={RouterLink} to="/moot-user-forget" style={{ width: "100%" }}>
+                {/* <Button colorScheme="red" w="100%"> */}
                   Forgot Password?
-                </Button>
-              </Link>
+                {/* </Button> */}
+              </ChakraLink>
             </VStack>
           </form>
-
+          <Flex justify="center" mt={4}>
+            <Text fontSize="sm" color="gray.500">
+              Register an account?
+              <ChakraLink
+                as={RouterLink}
+                to="/moot-user-signup"
+                color="blue.500"
+                href="/moot-user-signup"
+              >
+                Create account
+              </ChakraLink>
+            </Text>
+          </Flex>
           <Text fontSize="xs" color="gray.500" mt={4} textAlign="center">
             By continuing you agree to our{" "}
             <Link color="blue.500" href="#">
@@ -179,4 +190,4 @@ const Userlogin = () => {
   );
 };
 
-export default Userlogin;
+export default MootUserlogin;

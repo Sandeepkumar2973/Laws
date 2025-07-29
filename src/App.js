@@ -21,14 +21,14 @@ import UserDetailPage from "./Components/AllUsers/UserDetailPage";
 import AdminNotifications from "./Components/Navbar/Notification";
 import Message from "./Components/Message/Message";
 import SignupForm from "./Components/mootCourtpage/SignupForm";
-import Userlogin from "./Components/mootCourtpage/UserLogin";
+import MootUserlogin from "./Components/mootCourtpage/UserLogin";
 import UserDashboard from "./Components/mootCourtpage/UserDashboard";
 import ProfileUpdate from "./Components/mootCourtpage/UserProfileUpdate";
 import { TopStories } from "./Components/LawPages/TopStoryPage/TopStories";
-import { Library } from "./Components/LawPages/Library";
-import { ExamPreparation } from "./Components/LawPages/ExamPreparation";
-import { QAndA } from "./Components/LawPages/QAndA";
-import { Opportunity } from "./Components/LawPages/Opportunity";
+import  Library  from "./Components/LawPages/Library/Library";
+import { ExamPreparation } from "./Components/LawPages/ExamPreparation/ExamPreparation";
+import { QAndA } from "./Components/LawPages/QueAndAns/AllQuestions.js";
+import  Opportunity  from "./Components/LawPages/Opertunity/OpportunitySection.js";
 import { LegalDraft } from "./Components/LawPages/LegalDraftPage/LegalDraft";
 import ContactUs from "./Components/LawPages/ContactUs";
 import UserAuthSignup from "./Components/UserPage/UserAuthSignup";
@@ -37,23 +37,27 @@ import AdminAuthLogin from "./Components/Adimpage/Auth/AdminLogin";
 import AdminAuthForget from "./Components/Adimpage/Auth/Forget";
 import AdminAuthRegister from "./Components/Adimpage/Auth/AdminRegister";
 import { UserAuthForgetPass } from "./Components/UserPage/UserAuthFogetPass";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import MultiSpeakerForm from "./Components/mootCourtpage/MultiSpeakerForm";
+import ForgotPassword from "./Components/mootCourtpage/ForgotPassword";
+import SingleStory from "./Components/LawPages/TopStoryPage/SingleStory.js";
+import SingleDraft from "./Components/LawPages/LegalDraftPage/SinglePageDraft.js";
 
 function App() {
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // useEffect(() => {
-  //   const AdminjobInfo = sessionStorage.getItem("AdminjobInfo");
-  //   if (AdminjobInfo) {
-  //     const parsedUserInfo = JSON.parse(AdminjobInfo);
-  //     if (parsedUserInfo.data.token) {
+  //   const userInfo = localStorage.getItem("MootUserInfo");
+  //   console.log(userInfo, "userInfo");
+  //   if (userInfo) {
+  //     const parsedUserInfo = JSON.parse(userInfo);
+  //     if (parsedUserInfo.token) {
   //       setIsAuthenticated(true);
   //     } else {
   //       setIsAuthenticated(false);
-
   //     }
   //   } else {
   //     setIsAuthenticated(false);
-
   //   }
   // }, []);
 
@@ -65,16 +69,17 @@ function App() {
             {/* // isAuthenticated ? ( */}
             <>
               <Route path="/" element={<FrontPage />} />
-              <Route path="/signup" element={<SignupForm />} />
-              <Route path="/user-dashboard" element={<UserDashboard />} />
-              <Route path="/user-profile-update" element={<ProfileUpdate />} />
+              <Route path="/moot-user-signup" element={<SignupForm />} />
+              {/* <Route path="/moot-MultiSpeakerForm" element={<MultiSpeakerForm />} /> */}
+              <Route
+                path="/moot-user-profile-update"
+                element={<ProfileUpdate />}
+              />
               <Route path="/update-job/:id" element={<UpdateJob />} />
               <Route path="/all-application" element={<UserApplications />} />
               <Route path="/all-users" element={<AllUsers />} />
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/create-job" element={<CreateCourse />} />
-              <Route path="/message" element={<Message />} />
-              {/* <Route path="/live-class" element={<Liveclass />} /> */}
               <Route path="/manage-job" element={<ManageCourse />} />
               <Route path="/admin-profile" element={<Profile />} />
               <Route path="*" element={<Navigate to="/" />} />
@@ -87,8 +92,8 @@ function App() {
             {/* // ) : ( */}
             <>
               {/* <Route path="/login" element={<Login />} /> */}
-              <Route path="/user-login" element={<Userlogin />} />
-              <Route path="/forget" element={<Forget />} />
+              <Route path="/moot-user-login" element={<MootUserlogin />} />
+              <Route path="/moot-user-forget" element={<ForgotPassword />} />
               <Route path="/register" element={<Register />} />
               <Route path="*" element={<Navigate to="/login" />} />
             </>
@@ -96,7 +101,10 @@ function App() {
             {/* // header routes Pages */}
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/legal-draft" element={<LegalDraft />} />
+            <Route path="/drafts/:id" element={<SingleDraft />} />
+
             <Route path="/top-stories" element={<TopStories />} />
+            <Route path="/stories/:id" element={<SingleStory />} />
             <Route path="/library" element={<Library />} />
             <Route path="/exam-preparation" element={<ExamPreparation />} />
             <Route path="/q-and-a" element={<QAndA />} />
@@ -111,6 +119,15 @@ function App() {
             <Route
               path="/admin-auth-register"
               element={<AdminAuthRegister />}
+            />
+            {/* Protected Routes  by mootusers */}
+            <Route
+              path="/moot-user-dashboard"
+              element={
+                <ProtectedRoute allowedRoles={["mootUser"]}>
+                  <UserDashboard />
+                </ProtectedRoute>
+              }
             />
           </Routes>
         </Router>

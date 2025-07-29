@@ -1,6 +1,5 @@
-
-
 import { Box, Image, Text, SimpleGrid, Container } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const stories = [
   {
@@ -8,7 +7,8 @@ const stories = [
     title: "Supreme Court Issues Notice to Madhya Pradesh Govt",
     author: "Garima Rajput",
     date: "28-Jun-25",
-    description: "Supreme Court seeks explanation from the Madhya Pradesh government for not implementing the promised...",
+    description:
+      "Supreme Court seeks explanation from the Madhya Pradesh government for not implementing the promised...",
     image: "/images/blog1.jpg",
   },
   {
@@ -16,7 +16,8 @@ const stories = [
     title: "Chief Justice Sanjiv Gavai Initiates Judicial Reforms",
     author: "Garima Rajput",
     date: "27-Jun-25",
-    description: "Chief Justice Sanjiv Gavai has launched a series of reforms aimed at increasing transparency and...",
+    description:
+      "Chief Justice Sanjiv Gavai has launched a series of reforms aimed at increasing transparency and...",
     image: "/images/blog2.jpg",
   },
   {
@@ -24,7 +25,8 @@ const stories = [
     title: "Supreme Court Issues Notice to Madhya Pradesh Govt",
     author: "Garima Rajput",
     date: "28-Jun-25",
-    description: "Supreme Court seeks explanation from the Madhya Pradesh government for not implementing the promised...",
+    description:
+      "Supreme Court seeks explanation from the Madhya Pradesh government for not implementing the promised...",
     image: "/images/blog1.jpg",
   },
   {
@@ -32,7 +34,8 @@ const stories = [
     title: "Chief Justice Sanjiv Gavai Initiates Judicial Reforms",
     author: "Garima Rajput",
     date: "27-Jun-25",
-    description: "Chief Justice Sanjiv Gavai has launched a series of reforms aimed at increasing transparency and...",
+    description:
+      "Chief Justice Sanjiv Gavai has launched a series of reforms aimed at increasing transparency and...",
     image: "/images/blog2.jpg",
   },
   {
@@ -40,7 +43,8 @@ const stories = [
     title: "Supreme Court Issues Notice to Madhya Pradesh Govt",
     author: "Garima Rajput",
     date: "28-Jun-25",
-    description: "Supreme Court seeks explanation from the Madhya Pradesh government for not implementing the promised...",
+    description:
+      "Supreme Court seeks explanation from the Madhya Pradesh government for not implementing the promised...",
     image: "/images/blog1.jpg",
   },
   {
@@ -48,7 +52,8 @@ const stories = [
     title: "Chief Justice Sanjiv Gavai Initiates Judicial Reforms",
     author: "Garima Rajput",
     date: "27-Jun-25",
-    description: "Chief Justice Sanjiv Gavai has launched a series of reforms aimed at increasing transparency and...",
+    description:
+      "Chief Justice Sanjiv Gavai has launched a series of reforms aimed at increasing transparency and...",
     image: "/images/blog2.jpg",
   },
   {
@@ -56,7 +61,8 @@ const stories = [
     title: "Supreme Court Issues Notice to Madhya Pradesh Govt",
     author: "Garima Rajput",
     date: "28-Jun-25",
-    description: "Supreme Court seeks explanation from the Madhya Pradesh government for not implementing the promised...",
+    description:
+      "Supreme Court seeks explanation from the Madhya Pradesh government for not implementing the promised...",
     image: "/images/blog1.jpg",
   },
   {
@@ -64,7 +70,8 @@ const stories = [
     title: "Chief Justice Sanjiv Gavai Initiates Judicial Reforms",
     author: "Garima Rajput",
     date: "27-Jun-25",
-    description: "Chief Justice Sanjiv Gavai has launched a series of reforms aimed at increasing transparency and...",
+    description:
+      "Chief Justice Sanjiv Gavai has launched a series of reforms aimed at increasing transparency and...",
     image: "/images/blog2.jpg",
   },
   // Add more...
@@ -83,14 +90,26 @@ export default function AllStories() {
             boxShadow="md"
             transition="all 0.3s"
             _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-            as="a"
-            href={`/blogs/${story.id}`}
+            as={Link}
+            to={`/stories/${story.id}`}
             p={4}
           >
-            <Image src={story.image} alt={story.title} w="100%" h="200px" objectFit="cover" />
+            <Image
+              src={story.image}
+              alt={story.title}
+              w="100%"
+              h="200px"
+              objectFit="cover"
+            />
 
-            <Box p={4} px={6} margin={2}> 
-              <Text align={"left"} fontSize="xl" fontWeight="bold" mb={2} noOfLines={2}>
+            <Box p={4} px={6} margin={2}>
+              <Text
+                align={"left"}
+                fontSize="xl"
+                fontWeight="bold"
+                mb={2}
+                noOfLines={2}
+              >
                 {story.title}
               </Text>
 

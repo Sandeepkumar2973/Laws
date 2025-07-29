@@ -54,11 +54,11 @@ export const LegalDraft = () => {
         {/* Content Section */}
         <Container maxW="6xl" py={16}>
           <Stack spacing={6}>
-            <Heading as="h2" size="lg">
+            <Heading as="h2" size="md" align="left" fontFamily={"Apple-system, BlinkMacSystemFont,  Roboto, Arial, 'Noto Sans', sans-serif"}>
               What is legal drafting? Why is legal drafting important? How to
               draft legal documents?
             </Heading>
-            <Text align="left" fontSize="lg" color="gray.700" lineHeight="tall">
+            <Text align="left" fontSize="lg" color="gray.700" lineHeight="tall" fontFamily={"Apple-system, BlinkMacSystemFont,  Roboto, Arial, 'Noto Sans', sans-serif"}>
               Legal drafting is the meticulous art of composing legal documents,
               encompassing contracts, agreements, wills, deeds, and pleadings,
               with precision, clarity, and adherence to legal accuracy. It

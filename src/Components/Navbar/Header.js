@@ -124,6 +124,20 @@ const TopHeader = React.forwardRef((props, ref) => (
       <HStack spacing={3}>
         <ChakraLink
           as={RouterLink}
+          to="/moot-user-signup"
+          textDecoration="none"
+          _hover={{ textDecoration: "none" }}
+          size="sm"
+          bg="#D29B3F"
+          color="white"
+          borderRadius="full"
+          padding={2}
+          px={6}
+        >
+          Moot Court Participation
+        </ChakraLink>
+        <ChakraLink
+          as={RouterLink}
           to="/user-auth-login"
           textDecoration="none"
           _hover={{ textDecoration: "none" }}
