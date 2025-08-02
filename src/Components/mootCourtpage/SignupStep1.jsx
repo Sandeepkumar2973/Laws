@@ -17,6 +17,9 @@ import { useForm } from "react-hook-form";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
+import axios from "axios";
+import * as mod from "../../url";
+
 export default function SignupStep1({ setStep, setBasicData, toast }) {
   const {
     register,
@@ -32,7 +35,7 @@ export default function SignupStep1({ setStep, setBasicData, toast }) {
 
   const mobile = watch("mobile");
 
-  const sendOtp = () => {
+  const sendOtp = async () => {
     if (!mobile || mobile.length !== 10) {
       toast({
         title: "Enter valid mobile number first",
@@ -43,47 +46,93 @@ export default function SignupStep1({ setStep, setBasicData, toast }) {
       return;
     }
 
-    const randomOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    setSentOtp(randomOtp);
+    try {
+      const response = await axios.post(
+        `${mod.api_url}/api/v1/MootUser/send-otp`,
+        { mobile }, // ✅ Send mobile in body
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-    toast({
-      title: "OTP Sent (Dummy)",
-      description: `OTP: ${randomOtp}`,
-      status: "info",
-      duration: 5000,
-      isClosable: true,
-    });
-  };
-
-  const verifyOtp = () => {
-    if (otp === sentOtp) {
-      setOtpVerified(true);
+      // You may log or temporarily display OTP for dev only (not in prod)
       toast({
-        title: "OTP Verified Successfully",
+        title: "OTP Sent Successfully",
+        description: `OTP has been sent to ${mobile}`,
         status: "success",
-        duration: 3000,
+        duration: 4000,
         isClosable: true,
       });
-    } else {
+    } catch (error) {
       toast({
-        title: "Invalid OTP",
+        title: "Failed to send OTP",
+        description: error?.response?.data?.message || "Server error",
         status: "error",
-        duration: 3000,
+        duration: 4000,
         isClosable: true,
       });
     }
   };
 
-  const onSubmit = (data) => {
-    if (!otpVerified) {
+  // ✅ Verify OTP (calls backend to verify it)
+  const verifyOtp = async () => {
+    if (!otp || otp.length !== 6) {
       toast({
-        title: "Please verify OTP first",
+        title: "Enter a valid 6-digit OTP",
         status: "warning",
         duration: 3000,
         isClosable: true,
       });
       return;
     }
+
+    try {
+      const response = await axios.post(
+        `${mod.api_url}/api/v1/MootUser/verify-otp`,
+        { mobile, otp },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      // If backend confirms OTP is valid
+      if (response.data.success) {
+        setOtpVerified(true);
+        toast({
+          title: "OTP Verified Successfully",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Invalid OTP",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "OTP Verification Failed",
+        description: error?.response?.data?.message || "Server error",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const onSubmit = (data) => {
+    // if (!otpVerified) {
+    //   toast({
+    //     title: "Please verify OTP first",
+    //     status: "warning",
+    //     duration: 3000,
+    //     isClosable: true,
+    //   });
+    //   return;
+    // }
 
     // ✅ Save the Step 1 data in parent state only
     setBasicData(data);
@@ -134,9 +183,9 @@ export default function SignupStep1({ setStep, setBasicData, toast }) {
                   },
                 })}
               />
-              <Button mt={2} size="sm" onClick={sendOtp}>
+              {/* <Button mt={2} size="sm" onClick={sendOtp}>
                 Send OTP
-              </Button>
+              </Button> */}
               <FormErrorMessage>{errors.mobile?.message}</FormErrorMessage>
             </Flex>
           </FormControl>

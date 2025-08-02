@@ -1,13 +1,24 @@
 // src/routes/ProtectedRoute.jsx
 import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
+import { Spinner, Center } from "@chakra-ui/react";
 import { AuthContext } from "../Components/contextApi/AuthContext";
 
 export default function ProtectedRoute({ children, allowedRoles }) {
   const { currentUser, loading } = useContext(AuthContext);
 
   if (loading) {
-    return <div>Loading...</div>; // or a spinner
+    return (
+      <Center minH="100vh">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </Center>
+    );
   }
 
   if (!currentUser) {

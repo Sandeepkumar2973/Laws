@@ -1,19 +1,29 @@
-// src/components/SignupStep2.jsx
-
 import React, { useState } from "react";
 import {
   VStack,
+  SimpleGrid,
+  Box,
   Input,
   Select,
   Heading,
   Button,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
   useToast,
+  Image,
+  Spinner,
 } from "@chakra-ui/react";
 import axios from "axios";
+import * as mod from "../../url"; // Replace this with your actual API module
 
-export default function SignupStep2({ basicData, toast, navigate }) {
+const CLOUDINARY_UPLOAD_PRESET = "unsigned_preset"; // your created preset
+const CLOUDINARY_CLOUD_NAME = "dwikskvzt"; // Your Cloudinary cloud name
+
+export default function SignupStep2({ basicData, navigate }) {
+  const toast = useToast();
+
   const [formData, setFormData] = useState({
-    // Speaker 1
     name1: "",
     gender1: "",
     university1: "",
@@ -21,8 +31,6 @@ export default function SignupStep2({ basicData, toast, navigate }) {
     course1: "",
     contact1: "",
     collegeId1: "",
-
-    // Speaker 2
     name2: "",
     gender2: "",
     university2: "",
@@ -30,8 +38,6 @@ export default function SignupStep2({ basicData, toast, navigate }) {
     course2: "",
     contact2: "",
     collegeId2: "",
-
-    // Researcher
     name3: "",
     gender3: "",
     university3: "",
@@ -41,12 +47,67 @@ export default function SignupStep2({ basicData, toast, navigate }) {
     collegeId3: "",
   });
 
+  const [errors, setErrors] = useState({});
+  const [uploading, setUploading] = useState({});
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const handleImageUpload = async (e, fieldName) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploading((prev) => ({ ...prev, [fieldName]: true }));
+
+    const form = new FormData();
+    form.append("file", file);
+    form.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+    try {
+      const res = await axios.post(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+        form
+      );
+      setFormData((prev) => ({ ...prev, [fieldName]: res.data.secure_url }));
+      setErrors((prev) => ({ ...prev, [fieldName]: "" }));
+    } catch (error) {
+      toast({
+        title: "Image Upload Failed",
+        description: error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setUploading((prev) => ({ ...prev, [fieldName]: false }));
+    }
+  };
+
+  const validateFields = () => {
+    const newErrors = {};
+    Object.entries(formData).forEach(([key, value]) => {
+      if (!value.trim()) {
+        newErrors[key] = "This field is required";
+      }
+    });
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleFinalSubmit = async () => {
+    if (!validateFields()) {
+      toast({
+        title: "Please fill in all fields.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
     const finalData = {
       ...basicData,
       teamMembers: [
@@ -82,10 +143,10 @@ export default function SignupStep2({ basicData, toast, navigate }) {
         },
       ],
     };
-    console.log(finalData, "Final Data to Submit");
+
     try {
       await axios.post(
-        "http://localhost:8000/api/v1/MootUser/mootuser_signup",
+        `${mod.api_url}/api/v1/MootUser/mootuser_signup`,
         finalData,
         {
           headers: { "Content-Type": "application/json" },
@@ -99,8 +160,7 @@ export default function SignupStep2({ basicData, toast, navigate }) {
         isClosable: true,
       });
 
-      // Optional: navigate to login or dashboard
-      navigate("/moot-user-dashboard");
+      navigate("/moot-user-login");
     } catch (error) {
       toast({
         title: "Registration Failed",
@@ -112,128 +172,145 @@ export default function SignupStep2({ basicData, toast, navigate }) {
     }
   };
 
+  const renderField = (label, name, type = "input", options = []) => (
+    <FormControl isInvalid={errors[name]}>
+      <FormLabel>{label}</FormLabel>
+      {type === "input" ? (
+        <Input name={name} value={formData[name]} onChange={handleChange} />
+      ) : (
+        <Select
+          placeholder={`Select ${label}`}
+          name={name}
+          value={formData[name]}
+          onChange={handleChange}
+        >
+          {options.map((opt) => (
+            <option key={opt}>{opt}</option>
+          ))}
+        </Select>
+      )}
+      {errors[name] && <FormErrorMessage>{errors[name]}</FormErrorMessage>}
+    </FormControl>
+  );
+
+  const renderImageUpload = (label, name) => (
+    <FormControl isInvalid={errors[name]}>
+      <FormLabel>{label}</FormLabel>
+      <Input
+        type="file"
+        accept="image/*"
+        onChange={(e) => handleImageUpload(e, name)}
+      />
+      {uploading[name] && <Spinner size="sm" ml={2} />}
+      {formData[name] && (
+        <Image
+          src={formData[name]}
+          alt="Uploaded ID"
+          width="100%"
+          maxW="250px"
+          mt={2}
+          borderRadius="md"
+          boxShadow="md"
+        />
+      )}
+      {errors[name] && <FormErrorMessage>{errors[name]}</FormErrorMessage>}
+    </FormControl>
+  );
+
   return (
-    <VStack spacing={4} align="stretch">
-      <Heading size="md">Speaker 1</Heading>
-      <Input placeholder="Full Name" name="name1" onChange={handleChange} />
-      <Select placeholder="Gender" name="gender1" onChange={handleChange}>
-        <option>Male</option>
-        <option>Female</option>
-        <option>Other</option>
-      </Select>
-      <Input
-        placeholder="University"
-        name="university1"
-        onChange={handleChange}
-      />
-      <Select placeholder="Year" name="year1" onChange={handleChange}>
-        <option>1st</option>
-        <option>2nd</option>
-        <option>3rd</option>
-        <option>4th</option>
-        <option>5th</option>
-      </Select>
-      <Select placeholder="Course" name="course1" onChange={handleChange}>
-        <option>B.A. LL.B.</option>
-        <option>B.Com LL.B.</option>
-        <option>B.Sc. LL.B.</option>
-        <option>BBA LL.B.</option>
-        <option>LL.B.</option>
-        <option>B.A Legal Studies</option>
-        <option>B.A Criminology & Criminal Justice</option>
-      </Select>
-      <Input
-        placeholder="Contact Number"
-        name="contact1"
-        onChange={handleChange}
-      />
-      <Input
-        placeholder="College ID"
-        name="collegeId1"
-        onChange={handleChange}
-      />
+    <Box w="100%" mx="auto">
+      <VStack spacing={6} align="stretch" width="100%">
+        <Heading size="md">Speaker 1</Heading>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+          {renderField("Full Name", "name1")}
+          {renderField("Gender", "gender1", "select", [
+            "Male",
+            "Female",
+            "Other",
+          ])}
+          {renderField("University", "university1")}
+          {renderField("Year", "year1", "select", [
+            "1st",
+            "2nd",
+            "3rd",
+            "4th",
+            "5th",
+          ])}
+          {renderField("Course", "course1", "select", [
+            "B.A. LL.B.",
+            "B.Com LL.B.",
+            "B.Sc. LL.B.",
+            "BBA LL.B.",
+            "LL.B.",
+            "B.A Legal Studies",
+            "B.A Criminology & Criminal Justice",
+          ])}
+          {renderField("Contact Number", "contact1")}
+          {renderImageUpload("College ID Image", "collegeId1")}
+        </SimpleGrid>
 
-      <Heading size="md">Speaker 2</Heading>
-      <Input placeholder="Full Name" name="name2" onChange={handleChange} />
-      <Select placeholder="Gender" name="gender2" onChange={handleChange}>
-        <option>Male</option>
-        <option>Female</option>
-        <option>Other</option>
-      </Select>
-      <Input
-        placeholder="University"
-        name="university2"
-        onChange={handleChange}
-      />
-      <Select placeholder="Year" name="year2" onChange={handleChange}>
-        <option>1st</option>
-        <option>2nd</option>
-        <option>3rd</option>
-        <option>4th</option>
-        <option>5th</option>
-      </Select>
-      <Select placeholder="Course" name="course2" onChange={handleChange}>
-        <option>B.A. LL.B.</option>
-        <option>B.Com LL.B.</option>
-        <option>B.Sc. LL.B.</option>
-        <option>BBA LL.B.</option>
-        <option>LL.B.</option>
-        <option>B.A Legal Studies</option>
-        <option>B.A Criminology & Criminal Justice</option>
-      </Select>
-      <Input
-        placeholder="Contact Number"
-        name="contact2"
-        onChange={handleChange}
-      />
-      <Input
-        placeholder="College ID"
-        name="collegeId2"
-        onChange={handleChange}
-      />
+        <Heading size="md">Speaker 2</Heading>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+          {renderField("Full Name", "name2")}
+          {renderField("Gender", "gender2", "select", [
+            "Male",
+            "Female",
+            "Other",
+          ])}
+          {renderField("University", "university2")}
+          {renderField("Year", "year2", "select", [
+            "1st",
+            "2nd",
+            "3rd",
+            "4th",
+            "5th",
+          ])}
+          {renderField("Course", "course2", "select", [
+            "B.A. LL.B.",
+            "B.Com LL.B.",
+            "B.Sc. LL.B.",
+            "BBA LL.B.",
+            "LL.B.",
+            "B.A Legal Studies",
+            "B.A Criminology & Criminal Justice",
+          ])}
+          {renderField("Contact Number", "contact2")}
+          {renderImageUpload("College ID Image", "collegeId2")}
+        </SimpleGrid>
 
-      <Heading size="md">Researcher</Heading>
-      <Input placeholder="Full Name" name="name3" onChange={handleChange} />
-      <Select placeholder="Gender" name="gender3" onChange={handleChange}>
-        <option>Male</option>
-        <option>Female</option>
-        <option>Other</option>
-      </Select>
-      <Input
-        placeholder="University"
-        name="university3"
-        onChange={handleChange}
-      />
-      <Select placeholder="Year" name="year3" onChange={handleChange}>
-        <option>1st</option>
-        <option>2nd</option>
-        <option>3rd</option>
-        <option>4th</option>
-        <option>5th</option>
-      </Select>
-      <Select placeholder="Course" name="course3" onChange={handleChange}>
-        <option>B.A. LL.B.</option>
-        <option>B.Com LL.B.</option>
-        <option>B.Sc. LL.B.</option>
-        <option>BBA LL.B.</option>
-        <option>LL.B.</option>
-        <option>B.A Legal Studies</option>
-        <option>B.A Criminology & Criminal Justice</option>
-      </Select>
-      <Input
-        placeholder="Contact Number"
-        name="contact3"
-        onChange={handleChange}
-      />
-      <Input
-        placeholder="College ID"
-        name="collegeId3"
-        onChange={handleChange}
-      />
+        <Heading size="md">Researcher</Heading>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+          {renderField("Full Name", "name3")}
+          {renderField("Gender", "gender3", "select", [
+            "Male",
+            "Female",
+            "Other",
+          ])}
+          {renderField("University", "university3")}
+          {renderField("Year", "year3", "select", [
+            "1st",
+            "2nd",
+            "3rd",
+            "4th",
+            "5th",
+          ])}
+          {renderField("Course", "course3", "select", [
+            "B.A. LL.B.",
+            "B.Com LL.B.",
+            "B.Sc. LL.B.",
+            "BBA LL.B.",
+            "LL.B.",
+            "B.A Legal Studies",
+            "B.A Criminology & Criminal Justice",
+          ])}
+          {renderField("Contact Number", "contact3")}
+          {renderImageUpload("College ID Image", "collegeId3")}
+        </SimpleGrid>
 
-      <Button colorScheme="blue" onClick={handleFinalSubmit}>
-        Submit Registration
-      </Button>
-    </VStack>
+        <Button colorScheme="blue" onClick={handleFinalSubmit} width="full">
+          Submit Registration
+        </Button>
+      </VStack>
+    </Box>
   );
 }

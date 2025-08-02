@@ -1,10 +1,9 @@
 // src/pages/RegisterPage.jsx
-import React from "react";
+import React, { useState } from "react";
 import {
   Heading,
   VStack,
   Input,
-  Select,
   Checkbox,
   Button,
   Text,
@@ -12,37 +11,176 @@ import {
   List,
   ListItem,
   ListIcon,
-  Box,
+  useToast,
 } from "@chakra-ui/react";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import AuthLayout from "./AuthLayout";
-import "./button.css";
 import { Link as RouterLink } from "react-router-dom";
-import { Link as ChakraLink } from "@chakra-ui/react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 export default function UserAuthSignup() {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    termsAgreed: false,
+  });
+
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // ✅ Basic validation
+    if (
+      !formData.fullName ||
+      !formData.email ||
+      !formData.phone ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill out all fields.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: "Validation Error",
+        description: "Passwords do not match.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (!formData.termsAgreed) {
+      toast({
+        title: "Terms Required",
+        description: "Please agree to the Terms and Conditions.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    // ✅ Call API
+    try {
+      await axios.post(
+        "http://localhost:8000/api/v1/user/create-user",
+        {
+          fullName: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      toast({
+        title: "Registration Successful",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      navigate("/user-auth-login");
+    } catch (error) {
+      toast({
+        title: "Registration Failed",
+        description:
+          error.response?.data?.message || "Something went wrong.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
   const leftContent = (
     <>
       <Heading mb={6} fontSize="xl" color="orange.700">
-       Job Seeker Registration
+        Job Seeker Registration
       </Heading>
-      <VStack spacing={4} align="stretch">
-        <Input placeholder="Enter your full name" />
-        <Input placeholder="Enter your email" />
-        <Input placeholder="Enter your number" />
-        <Select placeholder="What are you looking for?">
-          <option>Job</option>
-          <option>Internship</option>
-        </Select>
-        <Input placeholder="Password" type="password" />
-        <Input placeholder="Confirm Password" type="password" />
-        <Checkbox>I agree to the Terms and Conditions</Checkbox>
-        <Button colorScheme="yellow">Submit</Button>
-      </VStack>
+      <form onSubmit={handleSubmit}>
+        <VStack spacing={4} align="stretch">
+          <Input
+            placeholder="Enter your full name"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+          />
+          <Input
+            placeholder="Enter your email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            type="email"
+          />
+          <Input
+            placeholder="Enter your mobile number"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            type="tel"
+          />
+          <Input
+            placeholder="Password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            type="password"
+          />
+          <Input
+            placeholder="Confirm Password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            type="password"
+          />
+          <Checkbox
+            name="termsAgreed"
+            isChecked={formData.termsAgreed}
+            onChange={handleChange}
+          >
+            I agree to the Terms and Conditions
+          </Checkbox>
+          <Button type="submit" colorScheme="yellow">
+            Submit
+          </Button>
+        </VStack>
+      </form>
       <Text mt={4}>
         Already Registered?{" "}
-        <ChakraLink as={RouterLink} to="/user-auth-login" textColor={"orange.600"} fontStyle="italic">
+        <Link
+          as={RouterLink}
+          to="/user-auth-login"
+          textColor={"orange.600"}
+          fontStyle="italic"
+        >
           Click here to login
-        </ChakraLink>
+        </Link>
       </Text>
     </>
   );
@@ -66,7 +204,6 @@ export default function UserAuthSignup() {
           Find a job and grow your career.
         </ListItem>
       </List>
-      <div id="pointer"></div>
     </>
   );
 

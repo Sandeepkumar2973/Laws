@@ -17,11 +17,14 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
-
+import logo from "../Assets/logo/logo.png";
+import * as mod from "../../url";
+import axios from "axios";
 export default function ForgotPassword() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -34,13 +37,16 @@ export default function ForgotPassword() {
   const [otp, setOtp] = useState("");
   const [otpVerified, setOtpVerified] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [otpSent, setOtpSent] = useState(false); // track if clicked
+  const email = watch("email");
 
-  const mobile = watch("mobile");
+  const sendOtp = async () => {
+    if (otpSent) return; // prevent double click
 
-  const sendOtp = () => {
-    if (!mobile || !/^[0-9]{10}$/.test(mobile)) {
+    setOtpSent(true); // update state immediately
+    if (!email || !/^[\w.-]+@[\w.-]+\.\w{2,}$/.test(email)) {
       toast({
-        title: "Enter a valid 10-digit mobile number",
+        title: "Enter a valid email address",
         status: "warning",
         duration: 3000,
         isClosable: true,
@@ -48,30 +54,62 @@ export default function ForgotPassword() {
       return;
     }
 
-    const randomOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    setSentOtp(randomOtp);
+    try {
+      const { data } = await axios.post(
+        `${mod.api_url}/api/v1/MootUser/send-otp`,
+        {
+          email,
+        }
+      );
 
-    toast({
-      title: "OTP Sent (Dummy)",
-      description: `OTP: ${randomOtp}`,
-      status: "info",
-      duration: 5000,
-      isClosable: true,
-    });
-  };
-
-  const verifyOtp = () => {
-    if (otp === sentOtp) {
-      setOtpVerified(true);
+      if (data.success) {
+        toast({
+          title: "OTP Sent Successfully",
+          description: data.message,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        setSentOtp("sent");
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (err) {
       toast({
-        title: "OTP Verified Successfully",
-        status: "success",
-        duration: 3000,
+        title: "Error sending OTP",
+        description: err.response?.data?.message || err.message,
+        status: "error",
+        duration: 5000,
         isClosable: true,
       });
-    } else {
+    }
+  };
+
+  const verifyOtp = async () => {
+    try {
+      const { data } = await axios.post(
+        `${mod.api_url}/api/v1/MootUser/verify-otp`,
+        {
+          email,
+          otp,
+        }
+      );
+
+      if (data.success) {
+        setOtpVerified(true);
+        toast({
+          title: "OTP Verified Successfully",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (err) {
       toast({
-        title: "Invalid OTP",
+        title: "OTP Verification Failed",
+        description: err.response?.data?.message || err.message,
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -79,7 +117,8 @@ export default function ForgotPassword() {
     }
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    // console.log(data, "data");
     if (!otpVerified) {
       toast({
         title: "Please verify OTP first",
@@ -90,15 +129,37 @@ export default function ForgotPassword() {
       return;
     }
 
-    console.log("New Password Data:", data);
+    try {
+      const res = await axios.post(
+        `${mod.api_url}/api/v1/MootUser/moot-user-newpass`,
+        {
+          email: data.email,
+          otp,
+          newPassword: data.password,
+        }
+      );
 
-    toast({
-      title: "Password Reset Successfully",
-      description: "You can now login with your new password.",
-      status: "success",
-      duration: 4000,
-      isClosable: true,
-    });
+      if (res.data.success) {
+        toast({
+          title: "Password Reset Successfully",
+          description: "You can now login with your new password.",
+          status: "success",
+          duration: 4000,
+          isClosable: true,
+        });
+      } else {
+        throw new Error(res.data.message);
+      }
+      navigate("/moot-user-login");
+    } catch (err) {
+      toast({
+        title: "Failed to Reset Password",
+        description: err.response?.data?.message || err.message,
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -114,31 +175,34 @@ export default function ForgotPassword() {
       >
         {/* ✅ Logo */}
         <Flex justify="center" mb={6}>
-          <Image
-            src="https://via.placeholder.com/150x50?text=Your+Logo"
-            alt="Logo"
-            h="50px"
-          />
+          <Image src={logo} alt="Logo" h="50px" />
         </Flex>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={4}>
-            <FormControl isInvalid={errors.mobile}>
-              <FormLabel>Mobile Number</FormLabel>
+            <FormControl isInvalid={errors.email}>
+              <FormLabel>Email </FormLabel>
               <Input
-                placeholder="Enter 10-digit mobile number"
-                {...register("mobile", {
-                  required: "Mobile number is required",
+                placeholder="Enter registered email "
+                {...register("email", {
+                  required: "Email  is required",
                   pattern: {
-                    value: /^[0-9]{10}$/,
-                    message: "Invalid mobile number",
+                    value: /^[\w.-]+@[\w.-]+\.\w{2,}$/,
+                    message: "Invalid email format",
                   },
                 })}
               />
-              <Button mt={2} size="sm" onClick={sendOtp}>
-                Send OTP
+              <Button
+                mt={2}
+                size="sm"
+                colorScheme={otpSent ? "green" : "blue"}
+                onClick={sendOtp}
+                isDisabled={otpSent}
+              >
+                {otpSent ? "OTP Sent" : "Send OTP"}
               </Button>
-              <FormErrorMessage>{errors.mobile?.message}</FormErrorMessage>
+
+              <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
             </FormControl>
 
             {sentOtp && !otpVerified && (

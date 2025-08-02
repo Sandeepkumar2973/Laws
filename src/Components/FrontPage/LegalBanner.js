@@ -5,8 +5,8 @@ const LegalBanner = () => {
   return (
     <Box
       w="100%"
-      h={{ base: "80vh", md: "90vh" }}
-      bgImage="url('https://plus.unsplash.com/premium_photo-1661769577787-9811af17f98d?q=80&w=1953&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"
+      h={{ base: "50vh", md: "60vh" }}
+      bgImage="url('https://lawvs.com/public/lawvs/assets/images/law-banner.png')"
       bgSize="cover"
       bgPosition="center"
       display="flex"
@@ -32,7 +32,7 @@ const LegalBanner = () => {
             maxW="lg"
             w="full"
             alignItems="center"
-            mt={"148px"}
+            mt={"120px"}
           >
             <Flex alignItems="center" px={4}>
               <Icon as={FaSearch} color="goldenrod" boxSize={5} />

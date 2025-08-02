@@ -16,7 +16,7 @@ export default function SignupForm() {
   return (
     <Flex
       minH="100vh"
-      bgGradient="linear(to-r, blue.200, yellow.100)"
+      // bgGradient="linear(to-r, blue.200, yellow.100)"
       align="center"
       justify="center"
       px={4}
@@ -27,11 +27,15 @@ export default function SignupForm() {
         rounded="xl"
         shadow="lg"
         w="full"
-        maxW="xl"
+        maxW="1000px"
       >
         <Flex direction="column" align="center" mb={6}>
-          <Image src={logo} alt="Logo" maxW="120px" mb={4} />
-          <Heading size="lg" textAlign="center">
+          <Image src={logo} alt="Logo" maxW="220px" mb={4} />
+          <Heading
+            size="lg"
+            textAlign="center"
+            bgGradient="linear(to-r, blue.200, yellow.100)"
+          >
             Moot Court Registration
           </Heading>
         </Flex>

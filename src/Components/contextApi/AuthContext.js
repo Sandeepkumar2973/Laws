@@ -9,8 +9,8 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const moot = JSON.parse(localStorage.getItem("MootUserInfo"));
-    const admin = JSON.parse(localStorage.getItem("admininfo"));
-    const user = JSON.parse(localStorage.getItem("userinfo"));
+    const admin = JSON.parse(localStorage.getItem("lawvsadmininfo"));
+    const user = JSON.parse(localStorage.getItem("lawvsuserinfo"));
 
     if (admin?.token) {
       setCurrentUser(admin);

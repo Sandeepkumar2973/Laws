@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import * as mod from "./../../url";
+import * as mod from "../../url";
 import logo from "../Assets/logo/logo.png";
 import logo1 from "../Assets/logo/bgg.jpg";
 import { Link as RouterLink } from "react-router-dom";
@@ -154,9 +154,13 @@ const MootUserlogin = () => {
                 {loading ? "Logging in..." : "Login"}
               </Button>
 
-              <ChakraLink as={RouterLink} to="/moot-user-forget" style={{ width: "100%" }}>
+              <ChakraLink
+                as={RouterLink}
+                to="/moot-user-forget"
+                style={{ width: "100%" }}
+              >
                 {/* <Button colorScheme="red" w="100%"> */}
-                  Forgot Password?
+                Forgot Password?
                 {/* </Button> */}
               </ChakraLink>
             </VStack>

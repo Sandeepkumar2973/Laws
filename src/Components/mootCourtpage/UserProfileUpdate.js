@@ -17,18 +17,20 @@ import {
 import { useForm, useFieldArray } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import * as mod from "../../url";
+import Header from "../Navbar/Header";
+import Footer from "../Navbar/Footer";
 const ProfileUpdatePage = () => {
   const [mootUser, setMootUser] = useState(null);
   const toast = useToast();
-const Navigate = useNavigate();
+  const Navigate = useNavigate();
   const { register, handleSubmit, control, reset } = useForm({
     defaultValues: {},
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "participations",
+    email: "participations",
   });
 
   const userId = JSON.parse(localStorage.getItem("MootUserInfo"));
@@ -38,7 +40,7 @@ const Navigate = useNavigate();
   const getMootUserById = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/v1/MootUser/get_mootuser_profile/${UserID}`,
+        `${mod.api_url}/api/v1/MootUser/get_mootuser_profile/${UserID}`,
         {
           headers: {
             Authorization: `${token}`,
@@ -70,8 +72,8 @@ const Navigate = useNavigate();
   useEffect(() => {
     if (mootUser) {
       reset({
-        name: mootUser.name,
-        college: mootUser.institution,
+        email: mootUser.email,
+        mobile: mootUser.mobile,
         yearOfStudy: mootUser.pursuingYear,
         collegeId: mootUser.collegeId || "",
         participations: mootUser.participations || [],
@@ -96,7 +98,7 @@ const Navigate = useNavigate();
 
     try {
       const response = await axios.put(
-        "http://localhost:8000/api/v1/MootUser/update_mootuser_profile",
+        `${mod.api_url}/api/v1/MootUser/update_mootuser_profile`,
         updatedProfile,
         {
           headers: {
@@ -126,6 +128,8 @@ const Navigate = useNavigate();
   };
 
   return (
+    <>
+    <Header/>
     <Flex direction={{ base: "column", md: "row" }} minH="100vh" bg="gray.50">
       {/* Left Sidebar */}
       <Box
@@ -136,11 +140,11 @@ const Navigate = useNavigate();
         borderRightWidth={{ md: "1px" }}
       >
         <Flex direction="column" align="center">
-          <Avatar size="2xl" name={mootUser?.name} mb={4} />
+          <Avatar size="2xl" name={mootUser?.institution} mb={4} />
           <Text fontSize="xl" fontWeight="bold">
-            {mootUser?.name}
+            {mootUser?.institution}
           </Text>
-          <Text>{mootUser?.collegeId}</Text>
+          <Text>{mootUser?.MootCourtId}</Text>
         </Flex>
       </Box>
 
@@ -153,16 +157,16 @@ const Navigate = useNavigate();
         <form onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={4} align="stretch">
             <FormControl>
-              <FormLabel>Name</FormLabel>
-              <Input {...register("name")} isReadOnly />
+              <FormLabel>Email</FormLabel>
+              <Input {...register("email")} isReadOnly />
             </FormControl>
 
             <FormControl>
-              <FormLabel>College</FormLabel>
-              <Input {...register("college")} isReadOnly />
+              <FormLabel>Mobile</FormLabel>
+              <Input {...register("mobile")} isReadOnly />
             </FormControl>
 
-            <FormControl>
+            {/* <FormControl>
               <FormLabel>Year of Study</FormLabel>
               <Select {...register("yearOfStudy")} isReadOnly>
                 <option value="1st Year">1st Year</option>
@@ -171,21 +175,31 @@ const Navigate = useNavigate();
                 <option value="4th Year">4th Year</option>
                 <option value="5th Year">5th Year</option>
               </Select>
-            </FormControl>
+            </FormControl> */}
 
-            <FormControl>
+            {/* <FormControl>
               <FormLabel>College ID</FormLabel>
               <Input {...register("collegeId")} />
-            </FormControl>
+            </FormControl> */}
 
             {/* Participations */}
             <Box borderWidth="1px" borderRadius="md" p={4}>
-              <Text fontWeight="bold" mb={2}>Participations</Text>
+              <Text fontWeight="bold" mb={2}>
+                Participations
+              </Text>
               {fields.map((field, index) => (
-                <Box key={field.id} mb={4} p={2} borderWidth="1px" borderRadius="md">
+                <Box
+                  key={field.id}
+                  mb={4}
+                  p={2}
+                  borderWidth="1px"
+                  borderRadius="md"
+                >
                   <FormControl mb={2}>
                     <FormLabel>Competition Name</FormLabel>
-                    <Input {...register(`participations.${index}.competitionName`)} />
+                    <Input
+                      {...register(`participations.${index}.competitionName`)}
+                    />
                   </FormControl>
                   <FormControl mb={2}>
                     <FormLabel>Role</FormLabel>
@@ -197,16 +211,30 @@ const Navigate = useNavigate();
                   </FormControl>
                   <FormControl mb={2}>
                     <FormLabel>Year</FormLabel>
-                    <Input type="number" {...register(`participations.${index}.year`)} />
+                    <Input
+                      type="number"
+                      {...register(`participations.${index}.year`)}
+                    />
                   </FormControl>
-                  <Button size="sm" colorScheme="red" onClick={() => remove(index)}>Remove</Button>
+                  <Button
+                    size="sm"
+                    colorScheme="red"
+                    onClick={() => remove(index)}
+                  >
+                    Remove
+                  </Button>
                 </Box>
               ))}
               <Button
                 size="sm"
                 colorScheme="blue"
                 onClick={() =>
-                  append({ competitionName: "", role: "", position: "", year: "" })
+                  append({
+                    competitionName: "",
+                    role: "",
+                    position: "",
+                    year: "",
+                  })
                 }
               >
                 Add Participation
@@ -242,6 +270,8 @@ const Navigate = useNavigate();
         </form>
       </Box>
     </Flex>
+    <Footer/>
+    </>
   );
 };
 

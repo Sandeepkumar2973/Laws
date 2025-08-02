@@ -31,6 +31,8 @@ import {
 import logo from "../Assets/logo/logo.png";
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
+import { ChevronRightIcon } from "@chakra-ui/icons";
+
 import {
   FaFacebookF,
   FaLinkedinIn,
@@ -38,6 +40,8 @@ import {
   FaYoutube,
   FaTwitter,
 } from "react-icons/fa";
+import DashHeader from "./Headerdashoard";
+
 // Social media links
 const socialLinks = [
   { icon: FaFacebookF, url: "https://www.facebook.com/lawvslegalservices" },
@@ -49,34 +53,148 @@ const socialLinks = [
   },
   { icon: FaTwitter, url: "https://x.com/LawvsF" },
 ];
+
+// dashboard
+
 // ─── JobsMenu ──────────────────────────────────────────────
-const JobsMenu = () => (
-  <Menu>
-    <MenuButton
-      as={Button}
-      rightIcon={<ChevronDownIcon />}
-      variant="ghost"
-      _hover={{ bg: "gray.100" }}
-      _expanded={{ bg: "gray.200" }}
+const JobsMenu = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Box
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
     >
-      Search Jobs
-    </MenuButton>
-    <MenuList>
-      <MenuItem as="a" to="#">
-        Jobs By Practice Area
-      </MenuItem>
-      <MenuItem as="a" to="#">
-        Jobs By Location
-      </MenuItem>
-      <MenuItem as="a" to="#">
-        Jobs By Qualification
-      </MenuItem>
-      <MenuItem as="a" to="#">
-        Browse All Jobs
-      </MenuItem>
-    </MenuList>
-  </Menu>
-);
+      <Menu isOpen={isOpen}>
+        <MenuButton
+          as={Button}
+          rightIcon={<ChevronDownIcon />}
+          variant="ghost"
+          _hover={{ bg: "gray.100" }}
+          _expanded={{ bg: "gray.200" }}
+        >
+          Search Jobs
+        </MenuButton>
+        <MenuList>
+          <MenuItem>Jobs By Practice Area</MenuItem>
+          <MenuItem>Jobs By Location</MenuItem>
+          <MenuItem>Jobs By Qualification</MenuItem>
+          <MenuItem>Browse All Jobs</MenuItem>
+        </MenuList>
+      </Menu>
+    </Box>
+  );
+};
+
+const MootCourtMenu = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  // Dynamically adjust submenu position based on screen size
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
+  return (
+    <Box
+      onMouseEnter={() => setIsMenuOpen(true)}
+      onMouseLeave={() => {
+        setIsMenuOpen(false);
+        setIsSubmenuOpen(false);
+      }}
+    >
+      <Menu isOpen={isMenuOpen}>
+        <MenuButton
+          as={Button}
+          rightIcon={<ChevronDownIcon />}
+          variant="ghost"
+          _hover={{ bg: "gray.100" }}
+          _expanded={{ bg: "gray.200" }}
+        >
+          Moot Court
+        </MenuButton>
+
+        <MenuList>
+          {/* Submenu */}
+          <Box
+            position="relative"
+            onMouseEnter={() => setIsSubmenuOpen(true)}
+            onMouseLeave={() => setIsSubmenuOpen(false)}
+          >
+            <MenuItem>
+              INSTRUCTIONS FOR PARTICIPANTS
+              <ChevronRightIcon ml="auto" />
+            </MenuItem>
+
+            {isSubmenuOpen && (
+              <MenuList
+                position="absolute"
+                top={isMobile ? "100%" : "90%"}
+                left={isMobile ? "30%" : "80%"}
+                mt={isMobile ? "0" : "-1"}
+                zIndex="popover"
+                w="max-content"
+              >
+                <MenuItem>
+                  <ChakraLink as={RouterLink} to={"/moot-user-signup"}>
+                    REGISTRATION FORM
+                  </ChakraLink>
+                </MenuItem>
+                <MenuItem>
+                  <ChakraLink as={RouterLink} to={"/rulesAnd_regulation"}>
+                    RULES AND REGULATIONS OF COMPETITION
+                  </ChakraLink>
+                </MenuItem>
+                {/* <MenuItem>
+                  <ChakraLink as={RouterLink} to={"/moot_proposition"}>
+                    MOOT PROPOSITION
+                  </ChakraLink>
+                </MenuItem> */}
+                <MenuItem>
+                  <ChakraLink as={RouterLink} to={"/steps_to_register"}>
+                    STEPS TO REGISTER
+                  </ChakraLink>
+                </MenuItem>
+                <MenuItem>
+                  <ChakraLink as={RouterLink} to={"/ask_que_for_team"}>
+                    FAQ FOR TEAM
+                  </ChakraLink>
+                </MenuItem>
+                <MenuItem>
+                  <ChakraLink as={RouterLink} to={"/moot_map"}>
+                    MOOT MAP
+                  </ChakraLink>
+                </MenuItem>
+              </MenuList>
+            )}
+          </Box>
+
+          <MenuItem>
+            <ChakraLink as={RouterLink} to={"/organiging_committee"}>
+              ORGANIZING COMMITTEE
+            </ChakraLink>
+          </MenuItem>
+          {/* <MenuItem>
+            <ChakraLink as={RouterLink} to={""}>
+              {" "}
+              PANEL OF ADVISORS{" "}
+            </ChakraLink>
+          </MenuItem> */}
+          <MenuItem>
+            <ChakraLink as={RouterLink} to={"/information_for_Judges"}>
+              INFORMATION FOR JUDGES
+            </ChakraLink>
+          </MenuItem>
+          <MenuItem>
+            <ChakraLink as={RouterLink} to={"/askque_for_judges"}>
+              FAQ FOR JUDGES
+            </ChakraLink>
+          </MenuItem>
+        </MenuList>
+      </Menu>
+    </Box>
+  );
+};
+
+// export default MootCourtMenu;
 
 // ─── TopHeader ─────────────────────────────────────────────
 const TopHeader = React.forwardRef((props, ref) => (
@@ -122,7 +240,7 @@ const TopHeader = React.forwardRef((props, ref) => (
 
       {/* Buttons */}
       <HStack spacing={3}>
-        <ChakraLink
+        {/* <ChakraLink
           as={RouterLink}
           to="/moot-user-signup"
           textDecoration="none"
@@ -135,7 +253,7 @@ const TopHeader = React.forwardRef((props, ref) => (
           px={6}
         >
           Moot Court Participation
-        </ChakraLink>
+        </ChakraLink> */}
         <ChakraLink
           as={RouterLink}
           to="/user-auth-login"
@@ -237,6 +355,7 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
             color="gray.700"
             as="nav"
           >
+            <MootCourtMenu />
             <JobsMenu />
             <ChakraLink
               as={RouterLink}
@@ -294,6 +413,7 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
             >
               Contact Us
             </ChakraLink>
+            <DashHeader />
           </HStack>
         )}
       </Flex>
@@ -309,26 +429,27 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
           align="start"
           textDecoration="none"
         >
+          <MootCourtMenu />
           <JobsMenu />
-          <ChakraLink as={RouterLink} to="/legal-draft">
+          <ChakraLink as={RouterLink} to="/legal-draft" marginLeft={3}>
             Legal Drafts
           </ChakraLink>
-          <ChakraLink as={RouterLink} to="/top-stories">
+          <ChakraLink as={RouterLink} to="/top-stories" marginLeft={3}>
             Top Stories
           </ChakraLink>
-          <ChakraLink as={RouterLink} to="/library">
+          <ChakraLink as={RouterLink} to="/library" marginLeft={3}>
             Library
           </ChakraLink>
-          <ChakraLink as={RouterLink} to="/opportunity">
+          <ChakraLink as={RouterLink} to="/opportunity" marginLeft={3}>
             Opportunity
           </ChakraLink>
-          <ChakraLink as={RouterLink} to="/exam-preparation">
+          <ChakraLink as={RouterLink} to="/exam-preparation" marginLeft={3}>
             Exams Preparation
           </ChakraLink>
-          <ChakraLink as={RouterLink} to="/q-and-a">
+          <ChakraLink as={RouterLink} to="/q-and-a" marginLeft={3}>
             Q & A
           </ChakraLink>
-          <ChakraLink as={RouterLink} to="/contact">
+          <ChakraLink as={RouterLink} to="/contact" marginLeft={3}>
             Contact Us
           </ChakraLink>
         </VStack>

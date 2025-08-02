@@ -21,14 +21,14 @@ import UserDetailPage from "./Components/AllUsers/UserDetailPage";
 import AdminNotifications from "./Components/Navbar/Notification";
 import Message from "./Components/Message/Message";
 import SignupForm from "./Components/mootCourtpage/SignupForm";
-import MootUserlogin from "./Components/mootCourtpage/UserLogin";
+import MootUserlogin from "./Components/mootCourtpage/MootUserLogin.js";
 import UserDashboard from "./Components/mootCourtpage/UserDashboard";
 import ProfileUpdate from "./Components/mootCourtpage/UserProfileUpdate";
 import { TopStories } from "./Components/LawPages/TopStoryPage/TopStories";
-import  Library  from "./Components/LawPages/Library/Library";
+import Library from "./Components/LawPages/Library/Library";
 import { ExamPreparation } from "./Components/LawPages/ExamPreparation/ExamPreparation";
 import { QAndA } from "./Components/LawPages/QueAndAns/AllQuestions.js";
-import  Opportunity  from "./Components/LawPages/Opertunity/OpportunitySection.js";
+import Opportunity from "./Components/LawPages/Opertunity/OpportunitySection.js";
 import { LegalDraft } from "./Components/LawPages/LegalDraftPage/LegalDraft";
 import ContactUs from "./Components/LawPages/ContactUs";
 import UserAuthSignup from "./Components/UserPage/UserAuthSignup";
@@ -42,6 +42,18 @@ import MultiSpeakerForm from "./Components/mootCourtpage/MultiSpeakerForm";
 import ForgotPassword from "./Components/mootCourtpage/ForgotPassword";
 import SingleStory from "./Components/LawPages/TopStoryPage/SingleStory.js";
 import SingleDraft from "./Components/LawPages/LegalDraftPage/SinglePageDraft.js";
+import { UserDashBoard } from "./Components/UserPage/UserDashBoard.js";
+import AdminHome from "./Components/AdminProfile/AdminHome.js";
+import { AskQueForjudges } from "./Components/mootCourtpage/mootCourtPage/AskQueForjudges.js";
+import InformationOfJudges from "./Components/mootCourtpage/mootCourtPage/InformationOfJudges.js";
+import { PanelOfAdvisoers } from "./Components/mootCourtpage/mootCourtPage/PanelOfAdvisoers.js";
+import { AskQueForTeam } from "./Components/mootCourtpage/mootCourtPage/instructionpage/AskQueForTeam.js";
+import { MootMap } from "./Components/mootCourtpage/mootCourtPage/instructionpage/MootMap.js";
+import { MootProposition } from "./Components/mootCourtpage/mootCourtPage/instructionpage/MootProposition.js";
+import { RegisterationForm } from "./Components/mootCourtpage/mootCourtPage/instructionpage/RegisterationForm.js";
+import StepsToRegister from "./Components/mootCourtpage/mootCourtPage/instructionpage/StepsToRegister.js";
+import { OrganizingCommittee } from "./Components/mootCourtpage/mootCourtPage/OrganizingCommittee.js";
+import RulesAndRegulation from "./Components/mootCourtpage/mootCourtPage/instructionpage/RulesAndRegulation.js";
 
 function App() {
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -109,13 +121,41 @@ function App() {
             <Route path="/exam-preparation" element={<ExamPreparation />} />
             <Route path="/q-and-a" element={<QAndA />} />
             <Route path="/opportunity" element={<Opportunity />} />
+            {/* ............... moot court pages............. */}
+            <Route
+              path="/organiging_committee"
+              element={<OrganizingCommittee />}
+            />
+            <Route path="/askque_for_judges" element={<AskQueForjudges />} />
+            <Route
+              path="/information_for_Judges"
+              element={<InformationOfJudges />}
+            />
+            <Route
+              path="/rulesAnd_regulation"
+              element={<RulesAndRegulation />}
+            />
+            <Route path="/panel_of_advisor" element={<PanelOfAdvisoers />} />
+            <Route path="/ask_que_for_team" element={<AskQueForTeam />} />
+            <Route path="/moot_map" element={<MootMap />} />
+            <Route path="/moot_proposition" element={<MootProposition />} />
+            <Route
+              path="/registrationfor_form"
+              element={<RegisterationForm />}
+            />
+            <Route path="/steps_to_register" element={<StepsToRegister />} />
+
             {/* JobSeeker user routes          */}
             <Route path="/user-auth-signup" element={<UserAuthSignup />} />
             <Route path="/user-auth-login" element={<UserAuthLogin />} />
             <Route path="/user-auth-forget" element={<UserAuthForgetPass />} />
+            <Route path="/user-auth-dashboard" element={<UserDashBoard />} />
+
             {/* Admin  routes */}
             <Route path="/admin-auth-login" element={<AdminAuthLogin />} />
             <Route path="/admin-auth-forget" element={<AdminAuthForget />} />
+            <Route path="/admin-dashboard" element={<AdminHome />} />
+
             <Route
               path="/admin-auth-register"
               element={<AdminAuthRegister />}

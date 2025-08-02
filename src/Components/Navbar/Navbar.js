@@ -16,13 +16,7 @@ import {
   useColorModeValue,
   Box,
 } from "@chakra-ui/react";
-import {
-  FiSearch,
-  FiBell,
-  FiMoon,
-  FiLogOut,
-  FiUser,
-} from "react-icons/fi";
+import { FiSearch, FiBell, FiMoon, FiLogOut, FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import logo from "../Assets/logo/198cd4a6-9bef-4b76-89b2-03c80467d2ba.png";
 import axios from "axios";
@@ -57,7 +51,7 @@ const Navbar = () => {
         }
       );
       const allNotifications = res.data?.data || [];
-      const unread = allNotifications.filter(n => !n.isRead).length;
+      const unread = allNotifications.filter((n) => !n.isRead).length;
       setNotificationCount(unread);
     } catch (err) {
       console.error("Failed to fetch notifications");
@@ -89,7 +83,11 @@ const Navbar = () => {
     >
       <Flex align="center" gap={3}>
         <Link to="/">
-          <img src={logo} alt="logo" style={{ width: "150px", margin: 0, padding: 0 }} />
+          <img
+            src={logo}
+            alt="logo"
+            style={{ width: "150px", margin: 0, padding: 0 }}
+          />
         </Link>
         {/* <Text fontWeight="bold" fontSize="xl">LOGO</Text> */}
       </Flex>
@@ -111,10 +109,10 @@ const Navbar = () => {
         <Box position="relative">
           <Link to="/message">
             <IconButton
-              icon={<FiMessageCircle boxSize={6} />}  // Increase icon size here (default is 4)
+              icon={<FiMessageCircle boxSize={6} />} // Increase icon size here (default is 4)
               variant="ghost"
               aria-label="Messages"
-              size="lg"         // Optional: change button padding/size
+              size="lg" // Optional: change button padding/size
             />
             {messageCount > 0 && (
               <Badge
@@ -131,7 +129,6 @@ const Navbar = () => {
             )}
           </Link>
         </Box>
-
 
         <Box position="relative">
           <Link to="/admin-notifications">
