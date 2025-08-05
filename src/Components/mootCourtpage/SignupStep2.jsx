@@ -13,6 +13,8 @@ import {
   useToast,
   Image,
   Spinner,
+  Text,
+  Progress,
 } from "@chakra-ui/react";
 import axios from "axios";
 import * as mod from "../../url"; // Replace this with your actual API module
@@ -60,17 +62,29 @@ export default function SignupStep2({ basicData, navigate }) {
     const file = e.target.files[0];
     if (!file) return;
 
-    setUploading((prev) => ({ ...prev, [fieldName]: true }));
-
     const form = new FormData();
     form.append("file", file);
     form.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
+    setUploading((prev) => ({ ...prev, [fieldName]: 0 }));
+
     try {
       const res = await axios.post(
         `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-        form
+        form,
+        {
+          onUploadProgress: (progressEvent) => {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setUploading((prev) => ({
+              ...prev,
+              [fieldName]: percentCompleted,
+            }));
+          },
+        }
       );
+
       setFormData((prev) => ({ ...prev, [fieldName]: res.data.secure_url }));
       setErrors((prev) => ({ ...prev, [fieldName]: "" }));
     } catch (error) {
@@ -82,7 +96,15 @@ export default function SignupStep2({ basicData, navigate }) {
         isClosable: true,
       });
     } finally {
-      setUploading((prev) => ({ ...prev, [fieldName]: false }));
+      // Set progress to 100% briefly, then hide after short delay
+      setUploading((prev) => ({ ...prev, [fieldName]: 100 }));
+      setTimeout(() => {
+        setUploading((prev) => {
+          const updated = { ...prev };
+          delete updated[fieldName];
+          return updated;
+        });
+      }, 5000);
     }
   };
 
@@ -194,14 +216,28 @@ export default function SignupStep2({ basicData, navigate }) {
   );
 
   const renderImageUpload = (label, name) => (
-    <FormControl isInvalid={errors[name]}>
+    <FormControl isInvalid={errors[name]} mb={4}>
       <FormLabel>{label}</FormLabel>
       <Input
         type="file"
         accept="image/*"
         onChange={(e) => handleImageUpload(e, name)}
       />
-      {uploading[name] && <Spinner size="sm" ml={2} />}
+
+      {typeof uploading[name] === "number" && (
+        <Box mt={2}>
+          <Progress
+            value={uploading[name]}
+            size="sm"
+            colorScheme="green"
+            borderRadius="md"
+          />
+          <Text fontSize="sm" mt={1}>
+            Uploading... {uploading[name]}%
+          </Text>
+        </Box>
+      )}
+
       {formData[name] && (
         <Image
           src={formData[name]}
@@ -213,6 +249,7 @@ export default function SignupStep2({ basicData, navigate }) {
           boxShadow="md"
         />
       )}
+
       {errors[name] && <FormErrorMessage>{errors[name]}</FormErrorMessage>}
     </FormControl>
   );
@@ -220,7 +257,7 @@ export default function SignupStep2({ basicData, navigate }) {
   return (
     <Box w="100%" mx="auto">
       <VStack spacing={6} align="stretch" width="100%">
-        <Heading size="md">Speaker 1</Heading>
+        <Heading size="md" bg="#D29B3F" p={3}>Speaker 1</Heading>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
           {renderField("Full Name", "name1")}
           {renderField("Gender", "gender1", "select", [
@@ -249,7 +286,7 @@ export default function SignupStep2({ basicData, navigate }) {
           {renderImageUpload("College ID Image", "collegeId1")}
         </SimpleGrid>
 
-        <Heading size="md">Speaker 2</Heading>
+        <Heading size="md" bg="#D29B3F" p={3}>Speaker 2</Heading>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
           {renderField("Full Name", "name2")}
           {renderField("Gender", "gender2", "select", [
@@ -278,7 +315,7 @@ export default function SignupStep2({ basicData, navigate }) {
           {renderImageUpload("College ID Image", "collegeId2")}
         </SimpleGrid>
 
-        <Heading size="md">Researcher</Heading>
+        <Heading size="md" bg="#D29B3F" p={3}>Researcher</Heading>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
           {renderField("Full Name", "name3")}
           {renderField("Gender", "gender3", "select", [

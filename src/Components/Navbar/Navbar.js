@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { FiSearch, FiBell, FiMoon, FiLogOut, FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import logo from "../Assets/logo/198cd4a6-9bef-4b76-89b2-03c80467d2ba.png";
+import logo from "../Assets/logo/logo.png";
 import axios from "axios";
 import { FiMessageCircle } from "react-icons/fi";
 import * as mod from "../../url";

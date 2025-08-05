@@ -34,7 +34,6 @@ export default function SignupStep1({ setStep, setBasicData, toast }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const mobile = watch("mobile");
-
   const sendOtp = async () => {
     if (!mobile || mobile.length !== 10) {
       toast({
@@ -73,8 +72,7 @@ export default function SignupStep1({ setStep, setBasicData, toast }) {
       });
     }
   };
-
-  // ✅ Verify OTP (calls backend to verify it)
+  
   const verifyOtp = async () => {
     if (!otp || otp.length !== 6) {
       toast({

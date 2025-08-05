@@ -1,67 +1,31 @@
 import React from "react";
-import {
-  Box,
-  Heading,
-  Text,
-  VStack,
-  Stack,
-  Highlight,
-  Link,
-  Button,
-  useColorModeValue,
-  Image,
-  Container,
-} from "@chakra-ui/react";
-import { PhoneIcon, EmailIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { Container, Box } from "@chakra-ui/react";
+import { Worker, Viewer } from "@react-pdf-viewer/core";
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import inforforjudge from "../../Assets/mootcourt/inforforjudge.pdf";
 import Header from "../../Navbar/Header";
 import Footer from "../../Navbar/Footer";
 
 const InformationOfJudges = () => {
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
+
   return (
-    <>
-      {/* <Header /> */}
-
-      <Container
-        // bgGradient="linear(to-r, teal.100, blue.50)"
-        maxW="100%"
-        // py={4}
-        // px={2}
-        m={0}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-      >
-        <Box
-          w={{ base: "100%", md: "80%", lg: "100%" }}
-          h={{ base: "80vh", md: "90vh", lg: "700px" }}
-          // my={4}
-          boxShadow="md"
-          borderRadius="md"
-          overflow="hidden"
-          bg="white"
-        >
-          <object
-            data={inforforjudge}
-            type="application/pdf"
-            width="100%"
-            height="100%"
-          >
-            <p style={{ padding: "1rem", textAlign: "center" }}>
-              PDF could not be displayed. You can{" "}
-              <Link href={inforforjudge} isExternal color="blue.500">
-                download the PDF <ExternalLinkIcon mx="2px" />
-              </Link>
-              .
-            </p>
-          </object>
-        </Box>
-      </Container>
-
-      {/* <Footer /> */}
-    </>
+    <Container
+      minW="100%"
+      minH="100%"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Box w="100%" h="700px">
+        <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
+          <Viewer fileUrl={inforforjudge} plugins={[defaultLayoutPluginInstance]} />
+        </Worker>
+      </Box>
+    </Container>
   );
 };
 
