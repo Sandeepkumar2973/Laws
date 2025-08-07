@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   SimpleGrid,
@@ -11,99 +11,52 @@ import {
   VStack,
   Container,
 } from "@chakra-ui/react";
-import draftimage from "../../Assets/lawsImage/draft.jpg"; // Adjust the path as necessary
+import draftimage from "../../Assets/lawsImage/draft.jpg";
 import { Link } from "react-router-dom";
-
-const drafts = [
-  {
-    id: 1,
-    title:
-      "Petition for Dissolution of Marriage by a Decree of Divorce Amended by the Mar...",
-    des: "This draft is a petition for the dissolution of marriage by a decree of divorce, amended by the Marriage Laws (Amendment) Act, 2019. It includes details about the parties involved, grounds for divorce, and other relevant information.",
-    image: draftimage,
-  },
-  {
-    id: 2,
-    title: "Suit for Permanent Injunction",
-    des: "This draft is a suit for a permanent injunction to restrain the defendant from committing a particular act.",
-    image: draftimage,
-  },
-  {
-    id: 3,
-    title: "Revision Petition under Section 25-B (1) of DRC Act",
-    des: "This draft is a revision petition under Section 25-B (1) of the DRC Act challenging the eviction order passed by the lower court.",
-    image: draftimage,
-  },
-  {
-    id: 4,
-    title: "Maintenance for Wife under Section 125 of CrPC",
-    des: "This draft is a petition for maintenance for the wife under Section 125 of the Criminal Procedure Code, seeking financial support from the husband.",
-    image: draftimage,
-  },
-  {
-    id: 5,
-    title: "Criminal Appellate Jurisdiction SLP 438",
-    des: "This draft is a Special Leave Petition (SLP) under Section 438 of the Criminal Procedure Code, seeking anticipatory bail in a criminal case.",
-    image: draftimage,
-  },
-  {
-    id: 6,
-    title:
-      "Writ Petition under Article 226 of the Constitution of India to be filed before ...",
-    des: "This draft is a writ petition under Article 226 of the Constitution of India, seeking a specific relief from the High Court.",
-    image: draftimage,
-  },
-  {
-    id: 7,
-    title:
-      "Petition for Dissolution of Marriage by a Decree of Divorce Amended by the Mar...",
-    des: "This draft is a petition for the dissolution of marriage by a decree of divorce, amended by the Marriage Laws (Amendment) Act, 2019. It includes details about the parties involved, grounds for divorce, and other relevant information.",
-    image: draftimage,
-  },
-  {
-    id: 8,
-    title: "Suit for Permanent Injunction",
-    des: "This draft is a suit for a permanent injunction to restrain the defendant from committing a particular act.",
-    image: draftimage,
-  },
-  {
-    id: 9,
-    title: "Revision Petition under Section 25-B (1) of DRC Act",
-    des: "This draft is a revision petition under Section 25-B (1) of the DRC Act challenging the eviction order passed by the lower court.",
-    image: draftimage,
-  },
-  {
-    id: 10,
-    title: "Maintenance for Wife under Section 125 of CrPC",
-    des: "This draft is a petition for maintenance for the wife under Section 125 of the Criminal Procedure Code, seeking financial support from the husband.",
-    image: draftimage,
-  },
-  {
-    id: 11,
-    title: "Criminal Appellate Jurisdiction SLP 438",
-    des: "This draft is a Special Leave Petition (SLP) under Section 438 of the Criminal Procedure Code, seeking anticipatory bail in a criminal case.",
-    image: draftimage,
-  },
-  {
-    id: 12,
-    title:
-      "Writ Petition under Article 226 of the Constitution of India to be filed before ...",
-    des: "This draft is a writ petition under Article 226 of the Constitution of India, seeking a specific relief from the High Court.",
-    image: draftimage,
-  },
-];
+import axios from "axios";
+import * as mod from "../../../url";
 
 export default function DraftsGrid() {
+  const [allDrafts, setAllDrafts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState(""); // <-- New state
+
+  // Fetch drafts from API
+  const fetchAllDrafts = async () => {
+    try {
+      const { data } = await axios.get(
+        `${mod.api_url}/api/v1/draft/get_active_drafts`
+      );
+      setAllDrafts(data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching drafts:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllDrafts();
+  }, []);
+
+  // Filter drafts by title
+  const filteredDrafts = allDrafts.filter((draft) =>
+    draft.subTitle.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <Container maxW="7xl" py={12}>
       {/* Search Bar */}
       <InputGroup size="lg" mb={8}>
         <Input
-          placeholder="Search drafts"
+          placeholder="Search drafts by name"
           borderRadius="md"
           borderColor="gray.300"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <InputRightElement width="6rem">
+        <InputRightElement width="5rem">
           <Button h="100%" colorScheme="blue" borderRadius="md">
             Search
           </Button>
@@ -111,51 +64,58 @@ export default function DraftsGrid() {
       </InputGroup>
 
       {/* Drafts Cards */}
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={8}>
-        {drafts.map((d, i) => (
-          <Box
-            key={i}
-            borderWidth="1px"
-            borderRadius="md"
-            overflow="hidden"
-            as={Link}
-            to={`/drafts/${d.id}`}
-            p={4}
-            boxShadow="md"
-          >
-            <VStack
-              spacing={4}
-              as="a"
-              href={`/drafts/${d.id}`}
-              color="white"
-              _hover={{
-                textDecoration: "none",
-                cursor: "pointer",
-                backgroundColor: "gray.50",
-              }}
+      {/* Drafts Cards */}
+      {filteredDrafts.length === 0 ? (
+        <Box textAlign="center" py={20}>
+          <Text fontSize="xl" color="gray.500">
+            No drafts found matching your search.
+          </Text>
+        </Box>
+      ) : (
+        <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={8}>
+          {filteredDrafts.map((d, i) => (
+            <Box
+              key={i}
+              borderWidth="1px"
+              borderRadius="md"
+              overflow="hidden"
+              as={Link}
+              to={`/drafts/${d.slug}`}
+              p={4}
+              boxShadow="md"
             >
-              <Image
-                src={d.image}
-                alt="Draft"
-                boxSize="80px"
-                objectFit="contain"
-              />
-              <Box
-                bg="navy"
+              <VStack
+                spacing={4}
                 color="white"
-                p={3}
-                textAlign="center"
-                borderRadius="md"
-                fontWeight="semibold"
-                fontSize="sm"
-                lineHeight="short"
+                _hover={{
+                  textDecoration: "none",
+                  cursor: "pointer",
+                  backgroundColor: "gray.50",
+                }}
               >
-                <Text noOfLines={3}>{d.title.toUpperCase()}</Text>
-              </Box>
-            </VStack>
-          </Box>
-        ))}
-      </SimpleGrid>
+                <Image
+                  src={draftimage}
+                  alt="Draft"
+                  boxSize="80px"
+                  objectFit="contain"
+                />
+                <Box
+                  bg="blue.500"
+                  color="white"
+                  p={3}
+                  textAlign="center"
+                  borderRadius="md"
+                  fontWeight="semibold"
+                  fontSize="sm"
+                  lineHeight="short"
+                >
+                  <Text noOfLines={3}>{d.title.toUpperCase()}</Text>
+                </Box>
+              </VStack>
+            </Box>
+          ))}
+        </SimpleGrid>
+      )}
     </Container>
   );
 }

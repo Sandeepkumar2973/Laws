@@ -52,8 +52,9 @@ import { MootMap } from "./Components/mootCourtpage/mootCourtPage/instructionpag
 import { MootProposition } from "./Components/mootCourtpage/mootCourtPage/instructionpage/MootProposition.js";
 import { RegisterationForm } from "./Components/mootCourtpage/mootCourtPage/instructionpage/RegisterationForm.js";
 import StepsToRegister from "./Components/mootCourtpage/mootCourtPage/instructionpage/StepsToRegister.js";
-import { OrganizingCommittee } from "./Components/mootCourtpage/mootCourtPage/OrganizingCommittee.js";
+import { OrganizingCommittee } from "./Components/mootCourtpage/mootCourtPage/ORGANIZINGCOMMITTEE.js";
 import RulesAndRegulation from "./Components/mootCourtpage/mootCourtPage/instructionpage/RulesAndRegulation.js";
+import SampleDraftForm from "./Components/LawPages/LegalDraftPage/SampleDraftForm.js";
 
 function App() {
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -82,7 +83,7 @@ function App() {
             <>
               <Route path="/" element={<FrontPage />} />
               <Route path="/moot-user-signup" element={<SignupForm />} />
-              {/* <Route path="/moot-MultiSpeakerForm" element={<MultiSpeakerForm />} /> */}
+              <Route path="/SampleDraftForm" element={<SampleDraftForm />} />
               <Route
                 path="/moot-user-profile-update"
                 element={<ProfileUpdate />}
@@ -113,7 +114,7 @@ function App() {
             {/* // header routes Pages */}
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/legal-draft" element={<LegalDraft />} />
-            <Route path="/drafts/:id" element={<SingleDraft />} />
+            <Route path="/drafts/:slug" element={<SingleDraft />} />
 
             <Route path="/top-stories" element={<TopStories />} />
             <Route path="/stories/:id" element={<SingleStory />} />
