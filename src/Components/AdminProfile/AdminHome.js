@@ -30,10 +30,10 @@ const AdminHome = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const boxBg = useColorModeValue("white", "gray.800");
-  const AdminjobInfo = sessionStorage.getItem("AdminjobInfo");
-  const parsedUserInfo = JSON.parse(AdminjobInfo);
-  const adminId = parsedUserInfo?.data?.admin?.id;
-  const token = parsedUserInfo?.data?.token;
+  const userInfo = JSON.parse(localStorage.getItem("lawvsadmininfo"));
+  const token = userInfo?.token;
+  const adminId = userInfo;
+  console.log(adminId, "adminId");
   // Replace this with the actual admin ID (e.g. from auth context)
 
   useEffect(() => {

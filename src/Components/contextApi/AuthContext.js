@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     const moot = JSON.parse(localStorage.getItem("MootUserInfo"));
     const admin = JSON.parse(localStorage.getItem("lawvsadmininfo"));
     const user = JSON.parse(localStorage.getItem("lawvsuserinfo"));
-
+    console.log(admin, "admin");
     if (admin?.token) {
       setCurrentUser(admin);
     } else if (moot?.token) {

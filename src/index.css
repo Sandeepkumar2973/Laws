@@ -1,13 +1,50 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+.custom-quill .ql-editor {
+  height: calc(60vh - 42px); /* subtract toolbar height (approx) */
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+/* Show line-height values in dropdown */
+.ql-lineheight .ql-picker-label::before,
+.ql-lineheight .ql-picker-item::before {
+  content: attr(data-value);
+}
+
+/* Add an A↕ icon to line-height dropdown */
+.ql-lineheight .ql-picker-label::after {
+  content: "A↕";
+  font-size: 14px;
+  margin-left: 4px;
+  color: #444;
+}
+
+/* Table borders */
+.ql-editor table {
+  border-collapse: collapse;
+}
+.ql-editor table td,
+.ql-editor table th {
+  border: 1px solid #ccc;
+  padding: 4px;
+}
+.ql-editor {
+  white-space: pre-wrap; /* preserves spaces and line breaks */
+}
+
+.ql-editor {
+  white-space: pre-wrap !important;
+  line-height: 1.8;
+  font-family: "Courier New", monospace;
 }

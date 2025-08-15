@@ -22,10 +22,10 @@ export const LegalDraft = () => {
         {/* Top Banner Section */}
         <Box
           bgGradient="linear(to-r, gray.50, gray.100)"
-          py={{ base: 12, md: 20 }}
+          py={{ base: 10, md: 15 }}
           textAlign="center"
         >
-          <Heading as="h1" size="2xl" mb={2}>
+          <Heading as="h1" size="2xl" m={1}>
             Legal Drafts
           </Heading>
           <Text fontSize="2xl" color="orange.600" fontWeight="bold">
@@ -52,7 +52,7 @@ export const LegalDraft = () => {
         </Box>
 
         {/* Content Section */}
-        <Container maxW="7xl" py={10}>
+        <Container maxW="7xl" py={1}>
           <Stack spacing={6}>
             <Heading
               as="h2"

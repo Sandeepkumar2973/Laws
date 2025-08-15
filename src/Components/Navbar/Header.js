@@ -166,18 +166,19 @@ const MootCourtMenu = () => {
               </MenuList>
             )}
           </Box>
+          <MenuItem>
+            <ChakraLink as={RouterLink} to={"/brochure_&_praposition"}>
+              {" "}
+              BROCHURE{" "}
+            </ChakraLink>
+          </MenuItem>
 
           <MenuItem>
             <ChakraLink as={RouterLink} to={"/organiging_committee"}>
               ORGANIZING COMMITTEE
             </ChakraLink>
           </MenuItem>
-          {/* <MenuItem>
-            <ChakraLink as={RouterLink} to={""}>
-              {" "}
-              PANEL OF ADVISORS{" "}
-            </ChakraLink>
-          </MenuItem> */}
+
           <MenuItem>
             <ChakraLink as={RouterLink} to={"/information_for_Judges"}>
               INFORMATION FOR JUDGES

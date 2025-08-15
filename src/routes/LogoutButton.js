@@ -20,7 +20,7 @@ const LogoutButton = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("MootUserInfo");
-    localStorage.removeItem("admininfo");
+    localStorage.removeItem("lawvsadmininfo");
     localStorage.removeItem("userinfo");
     setCurrentUser(null);
     onClose(); // close the dialog

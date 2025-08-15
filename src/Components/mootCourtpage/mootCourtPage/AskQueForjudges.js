@@ -20,9 +20,14 @@ export const AskQueForjudges = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <Box w="100%" h="700px">
-        <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
-          <Viewer fileUrl={askforjudge} plugins={[defaultLayoutPluginInstance]} />
+      <Box w="100%">
+        <Worker
+          workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+        >
+          <Viewer
+            fileUrl={askforjudge}
+            plugins={[defaultLayoutPluginInstance]}
+          />
         </Worker>
       </Box>
     </Container>

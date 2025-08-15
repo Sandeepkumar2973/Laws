@@ -10,6 +10,7 @@ import {
   InputRightElement,
   VStack,
   Container,
+  HStack,
 } from "@chakra-ui/react";
 import draftimage from "../../Assets/lawsImage/draft.jpg";
 import { Link } from "react-router-dom";
@@ -20,7 +21,8 @@ export default function DraftsGrid() {
   const [allDrafts, setAllDrafts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState(""); // <-- New state
+  const [searchQuery, setSearchQuery] = useState("");
+  const draftsPerPage = 12; // Number of drafts per page
 
   // Fetch drafts from API
   const fetchAllDrafts = async () => {
@@ -45,6 +47,22 @@ export default function DraftsGrid() {
     draft.subTitle.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Pagination logic
+  const indexOfLastDraft = currentPage * draftsPerPage;
+  const indexOfFirstDraft = indexOfLastDraft - draftsPerPage;
+  const currentDrafts = filteredDrafts.slice(
+    indexOfFirstDraft,
+    indexOfLastDraft
+  );
+
+  const totalPages = Math.ceil(filteredDrafts.length / draftsPerPage);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   return (
     <Container maxW="7xl" py={12}>
       {/* Search Bar */}
@@ -64,8 +82,7 @@ export default function DraftsGrid() {
       </InputGroup>
 
       {/* Drafts Cards */}
-      {/* Drafts Cards */}
-      {filteredDrafts.length === 0 ? (
+      {currentDrafts.length === 0 ? (
         <Box textAlign="center" py={20}>
           <Text fontSize="xl" color="gray.500">
             No drafts found matching your search.
@@ -73,7 +90,7 @@ export default function DraftsGrid() {
         </Box>
       ) : (
         <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={8}>
-          {filteredDrafts.map((d, i) => (
+          {currentDrafts.map((d, i) => (
             <Box
               key={i}
               borderWidth="1px"
@@ -100,7 +117,7 @@ export default function DraftsGrid() {
                   objectFit="contain"
                 />
                 <Box
-                  bg="blue.500"
+                  bg="blue.300"
                   color="white"
                   p={3}
                   textAlign="center"
@@ -115,6 +132,33 @@ export default function DraftsGrid() {
             </Box>
           ))}
         </SimpleGrid>
+      )}
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <HStack justify="center" mt={8} spacing={4}>
+          <Button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </Button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <Button
+              key={i + 1}
+              colorScheme={currentPage === i + 1 ? "blue" : "gray"}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </Button>
+          ))}
+          <Button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </Button>
+        </HStack>
       )}
     </Container>
   );

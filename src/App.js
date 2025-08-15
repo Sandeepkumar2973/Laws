@@ -46,7 +46,6 @@ import { UserDashBoard } from "./Components/UserPage/UserDashBoard.js";
 import AdminHome from "./Components/AdminProfile/AdminHome.js";
 import { AskQueForjudges } from "./Components/mootCourtpage/mootCourtPage/AskQueForjudges.js";
 import InformationOfJudges from "./Components/mootCourtpage/mootCourtPage/InformationOfJudges.js";
-import { PanelOfAdvisoers } from "./Components/mootCourtpage/mootCourtPage/PanelOfAdvisoers.js";
 import { AskQueForTeam } from "./Components/mootCourtpage/mootCourtPage/instructionpage/AskQueForTeam.js";
 import { MootMap } from "./Components/mootCourtpage/mootCourtPage/instructionpage/MootMap.js";
 import { MootProposition } from "./Components/mootCourtpage/mootCourtPage/instructionpage/MootProposition.js";
@@ -55,6 +54,7 @@ import StepsToRegister from "./Components/mootCourtpage/mootCourtPage/instructio
 import { OrganizingCommittee } from "./Components/mootCourtpage/mootCourtPage/ORGANIZINGCOMMITTEE.js";
 import RulesAndRegulation from "./Components/mootCourtpage/mootCourtPage/instructionpage/RulesAndRegulation.js";
 import SampleDraftForm from "./Components/LawPages/LegalDraftPage/SampleDraftForm.js";
+import { BrochurePage } from "./Components/mootCourtpage/mootCourtPage/Brochure.js";
 
 function App() {
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -115,7 +115,6 @@ function App() {
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/legal-draft" element={<LegalDraft />} />
             <Route path="/drafts/:slug" element={<SingleDraft />} />
-
             <Route path="/top-stories" element={<TopStories />} />
             <Route path="/stories/:id" element={<SingleStory />} />
             <Route path="/library" element={<Library />} />
@@ -136,7 +135,7 @@ function App() {
               path="/rulesAnd_regulation"
               element={<RulesAndRegulation />}
             />
-            <Route path="/panel_of_advisor" element={<PanelOfAdvisoers />} />
+            <Route path="/brochure_&_praposition" element={<BrochurePage />} />
             <Route path="/ask_que_for_team" element={<AskQueForTeam />} />
             <Route path="/moot_map" element={<MootMap />} />
             <Route path="/moot_proposition" element={<MootProposition />} />
@@ -145,21 +144,25 @@ function App() {
               element={<RegisterationForm />}
             />
             <Route path="/steps_to_register" element={<StepsToRegister />} />
-
             {/* JobSeeker user routes          */}
             <Route path="/user-auth-signup" element={<UserAuthSignup />} />
             <Route path="/user-auth-login" element={<UserAuthLogin />} />
             <Route path="/user-auth-forget" element={<UserAuthForgetPass />} />
             <Route path="/user-auth-dashboard" element={<UserDashBoard />} />
-
             {/* Admin  routes */}
             <Route path="/admin-auth-login" element={<AdminAuthLogin />} />
             <Route path="/admin-auth-forget" element={<AdminAuthForget />} />
-            <Route path="/admin-dashboard" element={<AdminHome />} />
-
             <Route
               path="/admin-auth-register"
               element={<AdminAuthRegister />}
+            />{" "}
+            <Route
+              path="/admin-dashboard"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AdminHome />
+                </ProtectedRoute>
+              }
             />
             {/* Protected Routes  by mootusers */}
             <Route

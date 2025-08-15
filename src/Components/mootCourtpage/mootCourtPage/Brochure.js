@@ -2,14 +2,11 @@ import React from "react";
 import { Container, Box } from "@chakra-ui/react";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
-
+import brochure from "../../Assets/mootcourt/brochure_repaired.pdf";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
-import inforforjudge from "../../Assets/mootcourt/inforforjudge.pdf";
-import Header from "../../Navbar/Header";
-import Footer from "../../Navbar/Footer";
 
-const InformationOfJudges = () => {
+export const BrochurePage = () => {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   return (
@@ -19,19 +16,13 @@ const InformationOfJudges = () => {
       display="flex"
       justifyContent="center"
       alignItems="center"
+      py={4}
     >
       <Box w="100%">
-        <Worker
-          workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
-        >
-          <Viewer
-            fileUrl={inforforjudge}
-            plugins={[defaultLayoutPluginInstance]}
-          />
+        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+          <Viewer fileUrl={brochure} plugins={[defaultLayoutPluginInstance]} />
         </Worker>
       </Box>
     </Container>
   );
 };
-
-export default InformationOfJudges;

@@ -12,6 +12,8 @@ import {
   Text,
   Spinner,
 } from "@chakra-ui/react";
+import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
 import { Link, useParams } from "react-router-dom";
 import Header from "../../Navbar/Header";
 import Footer from "../../Navbar/Footer";
@@ -50,7 +52,7 @@ export default function SingleDraft() {
         const { data } = await axios.get(
           `${mod.api_url}/api/v1/draft/get_drafts/${slug}`
         );
-        console.log(data, "data");
+        // console.log(data, "data");
         setDrafts(data);
       } catch (error) {
         console.error("Failed to fetch draft", error);
@@ -69,12 +71,20 @@ export default function SingleDraft() {
     <>
       <Header />
       <Container maxW="7xl" py={8}>
-        <Box p={4} m={4}>
+        <Box
+          p={4}
+          m={4}
+          borderRadius="6px"
+          overflow="hidden"
+          boxShadow="sm"
+          border="1px solid #e2e8f0"
+          bg="white"
+        >
           <Text color="gray.500" mb={4}>
             {drafts.author} {drafts.date}
           </Text>
 
-          <Box
+          {/* <Box
             px={6}
             py={4}
             w="100%"
@@ -130,7 +140,31 @@ export default function SingleDraft() {
             onPaste={(e) => e.preventDefault()}
             onContextMenu={(e) => e.preventDefault()}
             dangerouslySetInnerHTML={{ __html: drafts.des }}
-          />
+          /> */}
+          <Box
+            bg="white"
+            style={{
+              fontFamily: "Arial, sans-serif",
+              fontSize: "14pt",
+              lineHeight: "1.8",
+              whiteSpace: "pre-wrap",
+              textAlign: "justify",
+            }}
+          >
+            <ReactQuill
+              value={drafts.des} // HTML from backend
+              readOnly={true}
+              theme="bubble" // ✅ bubble theme has no border or toolbar
+              style={{
+                minHeight: "500px",
+                background: "transparent",
+                border: "none",
+                padding: 0,
+                margin: 0,
+                padding: "20px",
+              }}
+            />
+          </Box>
         </Box>
       </Container>
       <Footer />
