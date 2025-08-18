@@ -1,18 +1,14 @@
 import React from "react";
 import {
   Box,
-  Image,
+  Avatar,
   Text,
   Badge,
-  Avatar,
   VStack,
   Heading,
   SimpleGrid,
   Center,
 } from "@chakra-ui/react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 const jobs = [
   {
@@ -21,7 +17,7 @@ const jobs = [
     news: 15,
     articles: 12,
     type: "Internship Seeker",
-    img: "https://i.ibb.co/BBcKw9Z/avatar1.jpg",
+    img: null,
   },
   {
     name: "Priya Mehta",
@@ -29,7 +25,7 @@ const jobs = [
     news: 9,
     articles: 11,
     type: "Jobseeker",
-    img: "https://i.ibb.co/YbfjqG8/avatar2.jpg",
+    img: null,
   },
   {
     name: "Rohan Kapoor",
@@ -37,14 +33,6 @@ const jobs = [
     news: 7,
     articles: 9,
     type: "Jobseeker",
-    img: "https://i.ibb.co/f8RZ4nM/avatar3.jpg",
-  },
-  {
-    name: "Simran Kaur",
-    rank: 4,
-    news: 6,
-    articles: 8,
-    type: "Internship Seeker",
     img: null,
   },
   {
@@ -56,37 +44,7 @@ const jobs = [
     img: null,
   },
 ];
-// Example slider settings
-const settings = {
-  dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 4,
-  slidesToScroll: 1,
-  autoplay: jobs.length > 4, // only autoplay if more than 4
-  autoplaySpeed: 1000, // 1 seconds
-  // rtl: false, // <-- make sure this is false (or just omit it)
-  responsive: [
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 4,
-      },
-    },
-    {
-      breakpoint: 768,
-      settings: {
-        slidesToShow: 2,
-      },
-    },
-    {
-      breakpoint: 480,
-      settings: {
-        slidesToShow: 1,
-      },
-    },
-  ],
-};
+
 const LatestJob = () => {
   return (
     <Box px={{ base: 4, md: 16 }} py={12}>
@@ -94,7 +52,7 @@ const LatestJob = () => {
         as="h2"
         size="lg"
         color="yellow.700"
-        mb={4}
+        mb={6}
         borderBottom="2px solid"
         borderColor="yellow.800"
         w="fit-content"
@@ -102,7 +60,7 @@ const LatestJob = () => {
         Latest Job Openings
       </Heading>
 
-      <Slider {...settings}>
+      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={6}>
         {jobs.map((job, index) => (
           <Box
             key={index}
@@ -112,8 +70,6 @@ const LatestJob = () => {
             shadow="md"
             p={6}
             textAlign="center"
-            // mx={2} // add margin between slides
-            margin={2}
           >
             <Center mb={3}>
               <Avatar
@@ -165,7 +121,7 @@ const LatestJob = () => {
             </VStack>
           </Box>
         ))}
-      </Slider>
+      </SimpleGrid>
     </Box>
   );
 };

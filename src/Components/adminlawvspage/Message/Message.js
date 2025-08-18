@@ -13,9 +13,9 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-import * as mod from "../../url";
-import Home from "../Sidebar"; // Sidebar
-import Navbar from "../Navbar/Navbar";
+import * as mod from "../../../url";
+import Home from "../../Sidebar"; // Sidebar
+import Navbar from "../../Navbar/Navbar";
 
 const Message = () => {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -33,11 +33,14 @@ const Message = () => {
     // Get all users the admin can chat with
     const fetchUsers = async () => {
       try {
-        const { data } = await axios.get(`${mod.api_url}/api/v1/user/get-all-users`, {
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
+        const { data } = await axios.get(
+          `${mod.api_url}/api/v1/user/get-all-users`,
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
         setUsers(data?.users || []);
       } catch (err) {
         toast({
@@ -53,9 +56,12 @@ const Message = () => {
   const fetchMessages = async (userId) => {
     setSelectedUser(userId);
     try {
-      const { data } = await axios.get(`${mod.api_url}/api/v1/chat/get-messages/${userId}`, {
-        headers: { Authorization: `${token}` },
-      });
+      const { data } = await axios.get(
+        `${mod.api_url}/api/v1/chat/get-messages/${userId}`,
+        {
+          headers: { Authorization: `${token}` },
+        }
+      );
       setMessages(data?.messages || []);
     } catch (err) {
       toast({
@@ -80,7 +86,10 @@ const Message = () => {
         headers: { Authorization: `${token}` },
       });
 
-      setMessages((prev) => [...prev, { ...newMessage, createdAt: new Date() }]);
+      setMessages((prev) => [
+        ...prev,
+        { ...newMessage, createdAt: new Date() },
+      ]);
       setInputMessage("");
     } catch (err) {
       toast({
@@ -95,9 +104,19 @@ const Message = () => {
     <>
       <Navbar />
       <Box ml={{ base: 0, md: "0px" }} mt="100px" height="calc(100vh - 70px)">
-        <Flex height="100%" borderWidth="1px" borderRadius="md" overflow="hidden">
+        <Flex
+          height="100%"
+          borderWidth="1px"
+          borderRadius="md"
+          overflow="hidden"
+        >
           {/* Left Panel - Users */}
-          <Box width={{ base: "30%", md: "25%" }} borderRight="1px solid #ccc" p={4} overflowY="auto">
+          <Box
+            width={{ base: "30%", md: "25%" }}
+            borderRight="1px solid #ccc"
+            p={4}
+            overflowY="auto"
+          >
             <Text fontSize="xl" fontWeight="bold" mb={4}>
               Users
             </Text>
@@ -121,13 +140,21 @@ const Message = () => {
           </Box>
 
           {/* Right Panel - Chat Window */}
-          <Flex flex="1" direction="column" p={4} justify="space-between" bg="gray.50">
+          <Flex
+            flex="1"
+            direction="column"
+            p={4}
+            justify="space-between"
+            bg="gray.50"
+          >
             <Box flex="1" overflowY="auto" pr={2}>
               <VStack spacing={4} align="stretch">
                 {messages.map((msg, idx) => (
                   <Box
                     key={idx}
-                    alignSelf={msg.from === currentUserId ? "flex-end" : "flex-start"}
+                    alignSelf={
+                      msg.from === currentUserId ? "flex-end" : "flex-start"
+                    }
                     bg={msg.from === currentUserId ? "blue.300" : "gray.300"}
                     color="white"
                     px={4}
@@ -137,7 +164,10 @@ const Message = () => {
                   >
                     <Text>{msg.text}</Text>
                     <Text fontSize="xs" mt={1} textAlign="right">
-                      {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      {new Date(msg.createdAt).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
                     </Text>
                   </Box>
                 ))}

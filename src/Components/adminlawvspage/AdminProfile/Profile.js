@@ -15,10 +15,10 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Sidebar from "../Sidebar";
-import Navbar from "../Navbar/Navbar";
+import Sidebar from "../../Sidebar";
+import Navbar from "../../Navbar/Navbar";
 // import axiosInstance from "../../utils/axiosInstance";
-import * as mod from "../../url";
+import * as mod from "../../../url";
 
 const SIDEBAR_WIDTH = "250px";
 
@@ -112,24 +112,44 @@ const Profile = () => {
               </Td>
             </Tr>
             <Tr>
-              <Td bg="blue.500" color="white">Company Name</Td>
-              <Td bg="green.500" color="white">{companyName}</Td>
+              <Td bg="blue.500" color="white">
+                Company Name
+              </Td>
+              <Td bg="green.500" color="white">
+                {companyName}
+              </Td>
             </Tr>
             <Tr>
-              <Td bg="blue.500" color="white">Email</Td>
-              <Td bg="green.500" color="white">{email}</Td>
+              <Td bg="blue.500" color="white">
+                Email
+              </Td>
+              <Td bg="green.500" color="white">
+                {email}
+              </Td>
             </Tr>
             <Tr>
-              <Td bg="blue.500" color="white">Admin Name</Td>
-              <Td bg="green.500" color="white">{fullName}</Td>
+              <Td bg="blue.500" color="white">
+                Admin Name
+              </Td>
+              <Td bg="green.500" color="white">
+                {fullName}
+              </Td>
             </Tr>
             <Tr>
-              <Td bg="blue.500" color="white">Mobile</Td>
-              <Td bg="green.500" color="white">{"N/A"}</Td>
+              <Td bg="blue.500" color="white">
+                Mobile
+              </Td>
+              <Td bg="green.500" color="white">
+                {"N/A"}
+              </Td>
             </Tr>
             <Tr>
-              <Td bg="blue.500" color="white">Role</Td>
-              <Td bg="green.500" color="white">{role || "admin"}</Td>
+              <Td bg="blue.500" color="white">
+                Role
+              </Td>
+              <Td bg="green.500" color="white">
+                {role || "admin"}
+              </Td>
             </Tr>
           </Tbody>
         </Table>

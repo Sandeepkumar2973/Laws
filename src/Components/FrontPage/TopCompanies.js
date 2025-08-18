@@ -1,27 +1,34 @@
 // TopCompanies.js
 import React from "react";
-import { Box, Heading, Image, Text, SimpleGrid, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Image,
+  Text,
+  SimpleGrid,
+  VStack,
+} from "@chakra-ui/react";
 
 const companies = [
   {
-    name: "GLA UNIVERSITY",
-    img: "https://via.placeholder.com/150x150?text=GLA",
+    name: "BRAJ HOME",
+    img: "https://lawvs.com/media/admin/clients/1717159077_983db27b8d521d7278b3.png",
   },
   {
     name: "RMD MEDIAIDS",
-    img: "https://via.placeholder.com/150x150?text=RMD",
+    img: "https://lawvs.com/media/admin/clients/1717158972_8f2820d413230a9f8d5a.png",
   },
   {
     name: "D.BHARDWAJ LAW CHAMBER",
-    img: "https://via.placeholder.com/150x150?text=DB+Law",
+    img: "https://lawvs.com/media/admin/clients/1717831087_bc286ee3f6a6c44d0fdd.png",
   },
   {
     name: "SGT UNIVERSITY",
-    img: "https://via.placeholder.com/150x150?text=SGT",
+    img: "https://lawvs.com/media/admin/clients/1718090938_4b4019307556987c0169.png",
   },
   {
     name: "KURUKSHETRA UNIVERSITY",
-    img: "https://via.placeholder.com/150x150?text=KU",
+    img: "https://lawvs.com/media/admin/clients/1718090953_e754979854b28c246a6a.png",
   },
 ];
 

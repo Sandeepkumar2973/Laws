@@ -11,12 +11,12 @@ import {
   Spinner,
   Center,
   FormControl,
-  FormLabel
+  FormLabel,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import Home from "../Sidebar";
-import * as mod from "../../url";
+import Home from "../../Sidebar";
+import * as mod from "../../../url";
 
 const UpdateJob = () => {
   const { id } = useParams();
@@ -41,8 +41,7 @@ const UpdateJob = () => {
     category: "",
     deadline: "",
     postedDate: "",
-    status: ""
-
+    status: "",
   });
 
   const [loading, setLoading] = useState(true);
@@ -64,7 +63,7 @@ const UpdateJob = () => {
           ...job,
           skillsRequired: job.skillsRequired?.join(", ") || "",
           postedDate: job.postedDate?.split("T")[0] || "",
-          deadline: job.deadline?.split("T")[0] || ""
+          deadline: job.deadline?.split("T")[0] || "",
         });
       } catch (err) {
         toast({
@@ -141,17 +140,59 @@ const UpdateJob = () => {
         <Heading mb={6}>Update Job</Heading>
         <form onSubmit={handleUpdate}>
           <Stack spacing={4}>
-            <Input placeholder="Job Title" name="title" value={formData.title} onChange={handleChange} isRequired />
-            <Select placeholder="Job status" name="status" value={formData.status} onChange={handleChange} isRequired >
+            <Input
+              placeholder="Job Title"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              isRequired
+            />
+            <Select
+              placeholder="Job status"
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              isRequired
+            >
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </Select>
-            <Input placeholder="Company" name="company" value={formData.company} onChange={handleChange} isRequired />
-            <Input placeholder="Location" name="location" value={formData.location} onChange={handleChange} isRequired />
-            <Input placeholder="Openings" name="openings" type="number" value={formData.openings} onChange={handleChange} isRequired />
-            <Input placeholder="Salary Range" name="salaryRange" value={formData.salaryRange} onChange={handleChange} />
+            <Input
+              placeholder="Company"
+              name="company"
+              value={formData.company}
+              onChange={handleChange}
+              isRequired
+            />
+            <Input
+              placeholder="Location"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              isRequired
+            />
+            <Input
+              placeholder="Openings"
+              name="openings"
+              type="number"
+              value={formData.openings}
+              onChange={handleChange}
+              isRequired
+            />
+            <Input
+              placeholder="Salary Range"
+              name="salaryRange"
+              value={formData.salaryRange}
+              onChange={handleChange}
+            />
 
-            <Select name="jobType" value={formData.jobType} onChange={handleChange} placeholder="Select Job Type" isRequired>
+            <Select
+              name="jobType"
+              value={formData.jobType}
+              onChange={handleChange}
+              placeholder="Select Job Type"
+              isRequired
+            >
               <option value="Full-time">Full-time</option>
               <option value="Part-time">Part-time</option>
               <option value="Internship">Internship</option>
@@ -159,13 +200,25 @@ const UpdateJob = () => {
               <option value="Contract">Contract</option>
             </Select>
 
-            <Select name="workMode" value={formData.workMode} onChange={handleChange} placeholder="Select Work Mode" isRequired>
+            <Select
+              name="workMode"
+              value={formData.workMode}
+              onChange={handleChange}
+              placeholder="Select Work Mode"
+              isRequired
+            >
               <option value="Remote">Remote</option>
               <option value="Hybrid">Hybrid</option>
               <option value="Onsite">On-Site</option>
             </Select>
 
-            <Select name="experienceRequired" value={formData.experienceRequired} onChange={handleChange} placeholder="Select Experience" isRequired>
+            <Select
+              name="experienceRequired"
+              value={formData.experienceRequired}
+              onChange={handleChange}
+              placeholder="Select Experience"
+              isRequired
+            >
               <option value="Intern">Intern</option>
               <option value="Fresher">Fresher</option>
               <option value="1-2 years">1-2 years</option>
@@ -173,10 +226,28 @@ const UpdateJob = () => {
               <option value="5+ years">5+ years</option>
             </Select>
 
-            <Input placeholder="Skills (comma separated)" name="skillsRequired" value={formData.skillsRequired} onChange={handleChange} isRequired />
-            <Textarea placeholder="Job Description" name="description" value={formData.description} onChange={handleChange} isRequired />
+            <Input
+              placeholder="Skills (comma separated)"
+              name="skillsRequired"
+              value={formData.skillsRequired}
+              onChange={handleChange}
+              isRequired
+            />
+            <Textarea
+              placeholder="Job Description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              isRequired
+            />
 
-            <Select name="industry" value={formData.industry} onChange={handleChange} placeholder="Select Industry" isRequired>
+            <Select
+              name="industry"
+              value={formData.industry}
+              onChange={handleChange}
+              placeholder="Select Industry"
+              isRequired
+            >
               <option value="IT">IT</option>
               <option value="Finance">Finance</option>
               <option value="Healthcare">Healthcare</option>
@@ -187,9 +258,16 @@ const UpdateJob = () => {
 
             <FormControl>
               <FormLabel>Application Deadline</FormLabel>
-              <Input type="date" name="deadline" value={formData.deadline} onChange={handleChange} />
+              <Input
+                type="date"
+                name="deadline"
+                value={formData.deadline}
+                onChange={handleChange}
+              />
             </FormControl>
-            <Button colorScheme="teal" type="submit">Update Job</Button>
+            <Button colorScheme="teal" type="submit">
+              Update Job
+            </Button>
           </Stack>
         </form>
       </Box>

@@ -18,12 +18,12 @@ import {
   Select,
 } from "@chakra-ui/react";
 import axios from "axios";
-import * as mod from "../../url";
+import * as mod from "../../../url";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../Sidebar";
-import Navbar from "../Navbar/Navbar";
+import Sidebar from "../../Sidebar";
+import Navbar from "../../Navbar/Navbar";
 
 const ManageCourse = () => {
   const [jobList, setJobList] = useState([]);

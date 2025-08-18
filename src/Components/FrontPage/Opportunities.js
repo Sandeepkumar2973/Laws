@@ -17,19 +17,18 @@ const opportunities = [
   {
     title: "Job Posting: Law Researcher at Delhi Judicial Academy",
     date: "27-Feb-25",
-    img: "https://via.placeholder.com/400x200?text=Opportunity+1",
+    img: "https://lawvs.com/media/admin/opportunity/1721288200_843649e3398082c17635.png",
   },
   {
     title:
       "Job Opportunity for the position of Chief General Manager (Legal)...",
     date: "27-Jan-25",
-    img: "https://via.placeholder.com/400x200?text=Opportunity+2",
+    img: "https://lawvs.com/media/admin/opportunity/1721369854_b24a8cd5ef777601ea3e.png",
   },
   {
-    title:
-      "Legal Research Job Opportunity at Team LeaseRegTech Pvt.Ltd",
+    title: "Legal Research Job Opportunity at Team LeaseRegTech Pvt.Ltd",
     date: "27-Feb-25",
-    img: "https://via.placeholder.com/400x200?text=Opportunity+3",
+    img: "https://lawvs.com/media/admin/opportunity/1721288200_843649e3398082c17635.png",
   },
 ];
 
@@ -57,7 +56,13 @@ const Opportunities = () => {
             display="flex"
             flexDirection="column"
           >
-            <Image src={opp.img} alt={opp.title} w="100%" h="200px" objectFit="cover" />
+            <Image
+              src={opp.img}
+              alt={opp.title}
+              w="100%"
+              h="200px"
+              objectFit="cover"
+            />
 
             <Box p={4} flex="1">
               <Text fontWeight="bold" mb={2}>

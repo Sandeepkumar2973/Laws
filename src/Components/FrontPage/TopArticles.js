@@ -17,31 +17,31 @@ const articles = [
       "Space Law and India’s Private Sector Boom: Time for a New Regulatory Code?",
     description:
       "India's private space sector is expanding rapidly with startups entering rocket and satellite development.",
-    img: "https://via.placeholder.com/600x400?text=Main+Article",
+    img: "https://lawvs.com/media/admin/blogs/1753444301_1cd1e7d3498f3f701354.png",
   },
   {
     title: "Data Localization Laws in India: National Security...",
-    img: "https://via.placeholder.com/150?text=Article+1",
+    img: "https://lawvs.com/media/admin/blogs/1753444301_1cd1e7d3498f3f701354.png",
   },
   {
     title: "Navigating Copyright Challenges in the Age of Inte...",
-    img: "https://via.placeholder.com/150?text=Article+2",
+    img: "https://lawvs.com/media/admin/blogs/1753444301_1cd1e7d3498f3f701354.png",
   },
   {
     title: "Transparency Under Scrutiny in Maharashtra",
-    img: "https://via.placeholder.com/150?text=Article+3",
+    img: "https://lawvs.com/media/admin/blogs/1753444301_1cd1e7d3498f3f701354.png",
   },
   {
     title: "The Evolution of Bail Jurisprudence in India: From...",
-    img: "https://via.placeholder.com/150?text=Article+4",
+    img: "https://lawvs.com/media/admin/blogs/1753444301_1cd1e7d3498f3f701354.png",
   },
   {
     title: "Live Streaming of Court Proceedings: A Step Towar...",
-    img: "https://via.placeholder.com/150?text=Article+5",
+    img: "https://swarajyamag.com/infrastructure/in-live-streaming-proceedings-of-constitutional-bench-next-week-supreme-court-is-following-footsteps-of-six-high-courts",
   },
   {
     title: "Decoding the DNA Bill: Privacy vs. Crime Control i...",
-    img: "https://via.placeholder.com/150?text=Article+6",
+    img: "https://lawvs.com/media/admin/blogs/1750854082_3572f95f65fb64fb123d.png",
   },
 ];
 

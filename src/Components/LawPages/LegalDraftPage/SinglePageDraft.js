@@ -144,8 +144,8 @@ export default function SingleDraft() {
           <Box
             bg="white"
             style={{
-              fontFamily: "Arial, sans-serif",
-              fontSize: "14pt",
+              // fontFamily: "serif",
+              fontSize: "20pt",
               lineHeight: "1.8",
               whiteSpace: "pre-wrap",
               textAlign: "justify",
@@ -156,7 +156,7 @@ export default function SingleDraft() {
               readOnly={true}
               theme="bubble" // ✅ bubble theme has no border or toolbar
               style={{
-                minHeight: "500px",
+                minHeight: "600px",
                 background: "transparent",
                 border: "none",
                 padding: 0,

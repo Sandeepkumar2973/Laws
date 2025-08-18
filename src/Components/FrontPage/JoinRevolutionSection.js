@@ -10,21 +10,24 @@ const JoinRevolutionSection = () => {
       university: "Ganeshi Lal Aggarwal University",
       description:
         "Suryansh Dixit is a dedicated law student at Ganeshi Lal Aggarwal University, Mathura. Where he laid a solid foundation for his legal career...",
-      imageUrl: "https://via.placeholder.com/100",
+      imageUrl:
+        "https://lawvs.com/media/admin/revolution/1721297341_64a99393ec0439f7f8fe.png",
     },
     {
       name: "Madhav Goswami",
       university: "GLA University",
       description:
         "Meet Madhav Goswami – a trailblazer in the legal arena, renowned for his numerous accolades and triumphs in moot court competitions...",
-      imageUrl: "https://via.placeholder.com/100",
+      imageUrl:
+        "https://lawvs.com/media/admin/revolution/1719558678_ab90749576a7355d63c1.png",
     },
     {
       name: "Mehul Bhatnagar",
       university: "Delhi University",
       description:
         "Dive deep into the world of Model United Nations with Mehul Bhatnagar, a distinguished debater and veteran of nearly 40 MUNs...",
-      imageUrl: "https://via.placeholder.com/100",
+      imageUrl:
+        "https://lawvs.com/media/admin/revolution/1718887631_d1036c91a9329808b2f5.png",
     },
   ];
 

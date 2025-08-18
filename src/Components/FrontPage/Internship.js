@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Box,
-  Image,
   Text,
   Badge,
   Avatar,
@@ -10,9 +9,7 @@ import {
   SimpleGrid,
   Center,
 } from "@chakra-ui/react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+
 const intern = [
   {
     name: "Aarav Mehta",
@@ -20,7 +17,7 @@ const intern = [
     news: 15,
     articles: 12,
     type: "Jobseeker",
-    img: "https://i.ibb.co/album/Aarav.jpg",
+    img: null,
   },
   {
     name: "Saanvi Sharma",
@@ -64,36 +61,6 @@ const intern = [
   },
 ];
 
-// Example slider settings
-const settings = {
-  dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 5,
-  slidesToScroll: 1,
-  autoplay: intern.length > 5, // only autoplay if more than 5
-  autoplaySpeed: 2000, // 2 seconds
-  responsive: [
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 4,
-      },
-    },
-    {
-      breakpoint: 768,
-      settings: {
-        slidesToShow: 2,
-      },
-    },
-    {
-      breakpoint: 480,
-      settings: {
-        slidesToShow: 1,
-      },
-    },
-  ],
-};
 const Internship = () => {
   return (
     <Box px={{ base: 4, md: 16 }} py={12}>
@@ -101,7 +68,7 @@ const Internship = () => {
         as="h2"
         size="lg"
         color="yellow.700"
-        mb={4}
+        mb={6}
         borderBottom="2px solid"
         borderColor="yellow.800"
         w="fit-content"
@@ -109,8 +76,7 @@ const Internship = () => {
         Latest Internship
       </Heading>
 
-      {/* <SimpleGrid  > */}
-      <Slider {...settings}>
+      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={6}>
         {intern.map((job, index) => (
           <Box
             key={index}
@@ -120,8 +86,6 @@ const Internship = () => {
             shadow="md"
             p={6}
             textAlign="center"
-            // mx={2} // add margin between slides
-            margin={2}
           >
             <Center mb={3}>
               <Avatar
@@ -173,8 +137,7 @@ const Internship = () => {
             </VStack>
           </Box>
         ))}
-      </Slider>
-      {/* </SimpleGrid> */}
+      </SimpleGrid>
     </Box>
   );
 };

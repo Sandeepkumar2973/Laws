@@ -17,14 +17,14 @@ import {
   Container,
   Badge,
   Flex,
-  IconButton
+  IconButton,
 } from "@chakra-ui/react";
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
 import axios from "axios";
-import Sidebar from "../Sidebar";
-import Navbar from "../Navbar/Navbar";
+import Sidebar from "../../Sidebar";
+import Navbar from "../../Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
-import * as mod from "../../url";
+import * as mod from "../../../url";
 
 const SIDEBAR_WIDTH = "250px";
 
@@ -83,7 +83,7 @@ const UserApplications = () => {
     let filtered = [...applications];
 
     if (statusFilter !== "All") {
-      filtered = filtered.filter(app => app.status === statusFilter);
+      filtered = filtered.filter((app) => app.status === statusFilter);
     }
 
     filtered.sort((a, b) => {
@@ -143,7 +143,13 @@ const UserApplications = () => {
       <Sidebar />
       <Box mt="100px" ml={{ base: 0, md: SIDEBAR_WIDTH }} p={6}>
         <Container maxW="container.xl" p={4}>
-          <Flex justify="space-between" align="center" mb={4} wrap="wrap" gap={3}>
+          <Flex
+            justify="space-between"
+            align="center"
+            mb={4}
+            wrap="wrap"
+            gap={3}
+          >
             <Heading>User Applications</Heading>
             <Flex gap={2} align="center">
               <Select
@@ -204,8 +210,8 @@ const UserApplications = () => {
                           app.status === "Rejected"
                             ? "red"
                             : app.status === "Shortlisted"
-                              ? "green"
-                              : "yellow"
+                            ? "green"
+                            : "yellow"
                         }
                         variant="subtle"
                         px={3}

@@ -21,15 +21,15 @@ export default function ProtectedRoute({ children, allowedRoles }) {
     );
   }
 
-  if (!currentUser) {
-    return <Navigate to="/login" replace />;
-  }
-  console.log(currentUser, "currentUser");
+  // if (!currentUser) {
+  //   return <Navigate to="/login" replace />;
+  // }
+  // console.log(currentUser, "currentUser");
   if (
     allowedRoles &&
     !allowedRoles.includes(currentUser?.user?.role || currentUser?.data?.role)
   ) {
-    return <Navigate to="/unauthorized" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;

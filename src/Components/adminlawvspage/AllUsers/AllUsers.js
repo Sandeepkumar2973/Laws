@@ -12,10 +12,10 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-import * as mod from "../../url";
+import * as mod from "../../../url";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import Home from "../Sidebar";
+import Home from "../../Sidebar";
 
 const AllUsers = () => {
   const [users, setUsers] = useState([]);

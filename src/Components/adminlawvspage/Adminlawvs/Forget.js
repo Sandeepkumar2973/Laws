@@ -24,7 +24,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 // import bookImage from "../Assets/book.jpg";
 // import "./Auth.css";
-import * as mod from "./../../../url";
+import * as mod from "../../../url";
 
 const AdminAuthForget = () => {
   const [email, setEmail] = useState("");
@@ -117,7 +117,7 @@ const AdminAuthForget = () => {
             padding="10px"
             borderRadius="30px"
           >
-             ADMIN PORTAl
+            ADMIN PORTAl
           </Container>
           <Text fontSize="x-large" fontWeight="700">
             Admin Forget Password

@@ -22,6 +22,7 @@ import logo from "../Assets/logo/logo.png";
 import axios from "axios";
 import { FiMessageCircle } from "react-icons/fi";
 import * as mod from "../../url";
+import LogoutButton from "../../routes/LogoutButton";
 
 const SIDEBAR_WIDTH = "250px";
 
@@ -82,7 +83,7 @@ const Navbar = () => {
       width="100%"
     >
       <Flex align="center" gap={3}>
-        <Link to="/">
+        <Link to="/admin-dashboard">
           <img
             src={logo}
             alt="logo"
@@ -106,13 +107,13 @@ const Navbar = () => {
           onClick={toggleColorMode}
           aria-label="Toggle Theme"
         />
-        <Box position="relative">
+        {/* <Box position="relative">
           <Link to="/message">
             <IconButton
-              icon={<FiMessageCircle boxSize={6} />} // Increase icon size here (default is 4)
+              icon={<FiMessageCircle boxSize={6} />} 
               variant="ghost"
               aria-label="Messages"
-              size="lg" // Optional: change button padding/size
+              size="lg" 
             />
             {messageCount > 0 && (
               <Badge
@@ -128,9 +129,9 @@ const Navbar = () => {
               </Badge>
             )}
           </Link>
-        </Box>
+        </Box> */}
 
-        <Box position="relative">
+        {/* <Box position="relative">
           <Link to="/admin-notifications">
             <IconButton
               icon={<FiBell />}
@@ -151,29 +152,24 @@ const Navbar = () => {
               </Badge>
             )}
           </Link>
-        </Box>
+        </Box> */}
 
         <Menu>
           <MenuButton>
             <Avatar
               size="sm"
               name="Admin"
-              src="https://randomuser.me/api/portraits/men/32.jpg"
+              // src="https://randomuser.me/api/portraits/men/32.jpg"
             />
           </MenuButton>
           <MenuList>
             <MenuItem icon={<FiUser />} as={Link} to="/admin-profile">
               My Profile
             </MenuItem>
-            {isLoggedIn ? (
-              <MenuItem icon={<FiLogOut />} onClick={logoutHandler}>
-                Logout
-              </MenuItem>
-            ) : (
-              <MenuItem as={Link} to="/login">
-                Login
-              </MenuItem>
-            )}
+              <MenuItem >
+              <LogoutButton/>
+              </MenuItem>          
+              
           </MenuList>
         </Menu>
       </Flex>

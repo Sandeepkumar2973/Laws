@@ -115,14 +115,20 @@ const Sidebar = () => {
           {adminData?.fullName}
         </Text>
 
-        <SidebarItem icon={FaChartBar} label="Dashboard" to="/" badge="" badgeColor="green" />
+        <SidebarItem
+          icon={FaChartBar}
+          label="Dashboard"
+          to="/admin-dashboard"
+          badge=""
+          badgeColor="green"
+        />
         {/* <Text fontSize="xs" color="gray.400" mt={6} mb={2}>
           MENU
         </Text> */}
-        <SidebarItem icon={FaTasks} label="Manage Job" to="/manage-job" />
-        <SidebarItem icon={FaFileAlt} label="All Application" to="/all-application" />
+        {/* <SidebarItem icon={FaTasks} label="Manage Job" to="/manage-job" /> */}
+        {/* <SidebarItem icon={FaFileAlt} label="All Application" to="/all-application" /> */}
         <SidebarItem icon={FaPlus} label="Create Job" to="/create-job" />
-        <SidebarItem icon={FiMessageCircle} label="Message" to="/message" />
+        {/* <SidebarItem icon={FiMessageCircle} label="Message" to="/message" /> */}
         {/* <SidebarItem icon={FaPlus} label="Create Live Class" to="/live-class" /> */}
         {/* <SidebarItem icon={FaEnvelope} label="Contact Data" to="/contact" /> */}
 
@@ -153,19 +159,29 @@ const Sidebar = () => {
           <DrawerBody>
             <VStack align="stretch" spacing={4}>
               <Link to="/admin-profile" onClick={onClose}>
-                <Button width="100%" colorScheme="blue">Dashboard</Button>
+                <Button width="100%" colorScheme="blue">
+                  Dashboard
+                </Button>
               </Link>
               <Link to="/manage-job" onClick={onClose}>
-                <Button width="100%" colorScheme="blue">Manage Job</Button>
+                <Button width="100%" colorScheme="blue">
+                  Manage Job
+                </Button>
               </Link>
               <Link to="/all-application" onClick={onClose}>
-                <Button width="100%" colorScheme="blue">All Applications</Button>
+                <Button width="100%" colorScheme="blue">
+                  All Applications
+                </Button>
               </Link>
               <Link to="/create-job" onClick={onClose}>
-                <Button width="100%" colorScheme="blue">Create Job</Button>
+                <Button width="100%" colorScheme="blue">
+                  Create Job
+                </Button>
               </Link>
               <Link to="/message" onClick={onClose}>
-                <Button width="100%" colorScheme="blue">Message</Button>
+                <Button width="100%" colorScheme="blue">
+                  Message
+                </Button>
               </Link>
               <Link to="/live-class" onClick={onClose}>
                 {/* <Button width="100%" colorScheme="blue">Create Live Class</Button> */}

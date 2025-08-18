@@ -1,0 +1,7 @@
+.slick-slide {
+  display: flex !important;
+  align-items: stretch !important; /* make all children same height */
+}
+.slick-slide > div {
+  height: auto !important;
+}

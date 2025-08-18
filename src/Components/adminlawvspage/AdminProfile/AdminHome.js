@@ -20,9 +20,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import axios from "axios";
-import Navbar from "../Navbar/Navbar";
-import Sidebar from "../Sidebar";
-import * as mod from "../../url";
+import Navbar from "../../Navbar/Navbar";
+import Sidebar from "../../Sidebar";
+import * as mod from "../../../url";
 
 const SIDEBAR_WIDTH = "250px";
 
@@ -33,7 +33,7 @@ const AdminHome = () => {
   const userInfo = JSON.parse(localStorage.getItem("lawvsadmininfo"));
   const token = userInfo?.token;
   const adminId = userInfo;
-  console.log(adminId, "adminId");
+  // console.log(adminId, "adminId");
   // Replace this with the actual admin ID (e.g. from auth context)
 
   useEffect(() => {
