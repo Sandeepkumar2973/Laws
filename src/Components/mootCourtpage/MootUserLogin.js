@@ -55,6 +55,8 @@ const MootUserlogin = () => {
         });
 
         localStorage.setItem("MootUserInfo", JSON.stringify(data));
+        localStorage.removeItem("lawvsadmininfo");
+        localStorage.removeItem("lawvsuserinfo");
         navigate("/moot-user-dashboard");
         window.location.reload();
         setEmail("");

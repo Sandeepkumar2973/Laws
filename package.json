@@ -1,5 +1,5 @@
 {
-  "name": "LAWVS",
+  "name": "admin",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -18,6 +18,8 @@
     "axios": "^1.7.3",
     "bootstrap": "^5.3.3",
     "framer-motion": "^11.18.2",
+    "html-react-parser": "^5.2.6",
+    "leaflet": "^1.9.4",
     "quill-table-ui": "^1.0.7",
     "react": "^18.3.1",
     "react-confirm-alert": "^3.0.6",
@@ -25,6 +27,7 @@
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.61.0",
     "react-icons": "^5.2.1",
+    "react-leaflet": "^4.2.1",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.26.0",
     "react-scripts": "^5.0.1",

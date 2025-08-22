@@ -31,15 +31,16 @@ const Navbar = () => {
   const [notificationCount, setNotificationCount] = useState(0);
   const [messageCount, setmessageCount] = useState(0);
   const { colorMode, toggleColorMode } = useColorMode();
-  const bgColor = useColorModeValue("gray", "gray.800");
+  const bgColor = useColorModeValue("#709feadd", "gray.800");
   const textColor = useColorModeValue("gray.800", "white");
 
-  const adminInfo = JSON.parse(sessionStorage.getItem("AdminjobInfo"));
-  const adminId = adminInfo?.data?.admin?.id;
-  const token = adminInfo?.data?.token;
+  const AdminjobInfo = localStorage.getItem("lawvsadmininfo");
+  const parsedUserInfo = JSON.parse(AdminjobInfo);
+  const adminId = parsedUserInfo?.data?.id;
+  const token = parsedUserInfo?.token;
 
   useEffect(() => {
-    setIsLoggedIn(sessionStorage.getItem("AdminjobInfo") !== null);
+    setIsLoggedIn(localStorage.getItem("lawvsadmininfo") !== null);
     fetchNotificationCount();
   }, []);
 
@@ -59,55 +60,49 @@ const Navbar = () => {
     }
   };
 
-  const logoutHandler = () => {
-    sessionStorage.removeItem("AdminjobInfo");
-    sessionStorage.removeItem("token");
-    setIsLoggedIn(false);
-    window.location.reload();
-  };
-
   return (
-    <Flex
-      align="center"
-      justify="space-between"
-      px={4}
-      py={2}
-      bg={bgColor}
-      color={textColor}
-      shadow="sm"
-      position="fixed"
-      top="0"
-      left="0"
-      right="0"
-      zIndex="1000"
-      width="100%"
-    >
-      <Flex align="center" gap={3}>
-        <Link to="/admin-dashboard">
-          <img
-            src={logo}
-            alt="logo"
-            style={{ width: "150px", margin: 0, padding: 0 }}
-          />
-        </Link>
-        {/* <Text fontWeight="bold" fontSize="xl">LOGO</Text> */}
-      </Flex>
+    <Box>
+      <Flex
+        align="center"
+        justify="space-between"
+        px={4}
+        py={2}
+        bg={bgColor}
+        color={textColor}
+        shadow="sm"
+        position="fixed"
+        top="0"
+        left="0"
+        right="0"
+        zIndex="1000"
+        width="100%"
+      >
+        <Flex align="center" gap={3}>
+          <Link to="/admin-dashboard">
+            <img
+              src={logo}
+              alt="logo"
+              style={{ width: "150px", margin: 0, padding: 0 }}
+            />
+          </Link>
+          {/* <Text fontWeight="bold" fontSize="xl">LOGO</Text> */}
+        </Flex>
 
-      {/* <InputGroup maxW="400px" display={{ base: "none", md: "flex" }}>
+        {/* <InputGroup maxW="400px" display={{ base: "none", md: "flex" }}>
         <InputLeftElement pointerEvents="none">
           <FiSearch color="gray.400" />
         </InputLeftElement>
         <Input placeholder="Search..." />
       </InputGroup> */}
 
-      <Flex align="center" gap={4}>
-        <IconButton
-          icon={<FiMoon />}
-          variant="ghost"
-          onClick={toggleColorMode}
-          aria-label="Toggle Theme"
-        />
-        {/* <Box position="relative">
+        <Flex align="center" gap={4}>
+          <IconButton
+            icon={<FiMoon />}
+            variant="ghost"
+            onClick={toggleColorMode}
+            aria-label="Toggle Theme"
+          />
+          {/* <Box position="relative">
           <Link to="/message">
             <IconButton
               icon={<FiMessageCircle boxSize={6} />} 
@@ -131,7 +126,7 @@ const Navbar = () => {
           </Link>
         </Box> */}
 
-        {/* <Box position="relative">
+          {/* <Box position="relative">
           <Link to="/admin-notifications">
             <IconButton
               icon={<FiBell />}
@@ -154,26 +149,26 @@ const Navbar = () => {
           </Link>
         </Box> */}
 
-        <Menu>
-          <MenuButton>
-            <Avatar
-              size="sm"
-              name="Admin"
-              // src="https://randomuser.me/api/portraits/men/32.jpg"
-            />
-          </MenuButton>
-          <MenuList>
-            <MenuItem icon={<FiUser />} as={Link} to="/admin-profile">
-              My Profile
-            </MenuItem>
-              <MenuItem >
-              <LogoutButton/>
-              </MenuItem>          
-              
-          </MenuList>
-        </Menu>
+          <Menu>
+            <MenuButton>
+              <Avatar
+                size="sm"
+                name="Admin"
+                // src="https://randomuser.me/api/portraits/men/32.jpg"
+              />
+            </MenuButton>
+            <MenuList>
+              <MenuItem icon={<FiUser />} as={Link} to="/admin-profile">
+                My Profile
+              </MenuItem>
+              <MenuItem>
+                <LogoutButton />
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Flex>
       </Flex>
-    </Flex>
+    </Box>
   );
 };
 

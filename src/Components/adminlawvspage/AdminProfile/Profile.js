@@ -12,6 +12,7 @@ import {
   Td,
   Center,
   Spinner,
+  Flex,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -26,13 +27,14 @@ const Profile = () => {
   const [adminData, setAdminData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const AdminjobInfo = sessionStorage.getItem("AdminjobInfo");
+  const AdminjobInfo = localStorage.getItem("lawvsadmininfo");
   const parsedUserInfo = JSON.parse(AdminjobInfo);
-  const adminId = parsedUserInfo?.data?.admin?.id;
+  const adminId = parsedUserInfo?.data?.id;
+  const token = parsedUserInfo?.token;
 
   useEffect(() => {
     const fetchAdmin = async () => {
-      const token = parsedUserInfo?.data?.token;
+      // const token = parsedUserInfo?.data?.token;
       try {
         const res = await axios.get(
           `${mod.api_url}/api/v1/admin/get-admin-byid/${adminId}`,
@@ -88,71 +90,59 @@ const Profile = () => {
         p={4}
         maxW="container.md"
       >
-        <Heading as="h2" size="lg" mb={4}>
-          Admin Profile
-        </Heading>
-        <Divider />
+        <Center w="100%">
+          <Box
+          // bgGradient="linear(to-r, gray.500, blue.100)"
+          // borderRadius="2xl"
+          // boxShadow="xl"
+          // p={6}
+          // // w={{ base: "90%", md: "70%", lg: "50%" }}
+          // color="white"
+          >
+            <Flex direction="column" align="center" mb={6}>
+              <Avatar
+                size="2xl"
+                name={fullName}
+                src="https://bit.ly/broken-link"
+                mb={4}
+                border="4px solid white"
+              />
+              <Heading size="lg">{fullName || "Admin Profile"}</Heading>
+              <Text fontSize="md" opacity={0.8}>
+                {role || "Admin"}
+              </Text>
+            </Flex>
 
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th></Th>
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr>
-              <Td bg="green.500" color="white">
-                Profile
-              </Td>
-              <Td bg="blue.500" color="white">
-                <Center>
-                  <Avatar src="https://bit.ly/broken-link" />
-                </Center>
-              </Td>
-            </Tr>
-            <Tr>
-              <Td bg="blue.500" color="white">
-                Company Name
-              </Td>
-              <Td bg="green.500" color="white">
-                {companyName}
-              </Td>
-            </Tr>
-            <Tr>
-              <Td bg="blue.500" color="white">
-                Email
-              </Td>
-              <Td bg="green.500" color="white">
-                {email}
-              </Td>
-            </Tr>
-            <Tr>
-              <Td bg="blue.500" color="white">
-                Admin Name
-              </Td>
-              <Td bg="green.500" color="white">
-                {fullName}
-              </Td>
-            </Tr>
-            <Tr>
-              <Td bg="blue.500" color="white">
-                Mobile
-              </Td>
-              <Td bg="green.500" color="white">
-                {"N/A"}
-              </Td>
-            </Tr>
-            <Tr>
-              <Td bg="blue.500" color="white">
-                Role
-              </Td>
-              <Td bg="green.500" color="white">
-                {role || "admin"}
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
+            <Divider borderColor="whiteAlpha.600" mb={4} />
+
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th color="whiteAlpha.800">Field</Th>
+                  <Th color="whiteAlpha.800">Details</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr _hover={{ bg: "whiteAlpha.200" }}>
+                  <Td>Company Name</Td>
+                  <Td fontWeight="bold">{companyName}</Td>
+                </Tr>
+                <Tr _hover={{ bg: "whiteAlpha.200" }}>
+                  <Td>Email</Td>
+                  <Td fontWeight="bold">{email}</Td>
+                </Tr>
+                <Tr _hover={{ bg: "whiteAlpha.200" }}>
+                  <Td>Mobile</Td>
+                  <Td fontWeight="bold">{"N/A"}</Td>
+                </Tr>
+                <Tr _hover={{ bg: "whiteAlpha.200" }}>
+                  <Td>Role</Td>
+                  <Td fontWeight="bold">{role || "Admin"}</Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </Box>
+        </Center>
       </Box>
     </>
   );

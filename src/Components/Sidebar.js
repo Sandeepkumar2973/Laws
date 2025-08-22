@@ -99,8 +99,8 @@ const Sidebar = () => {
       {/* Sidebar - Desktop */}
       <Box
         width={SIDEBAR_WIDTH}
-        bg="#1f2a40"
-        color="white"
+        bg="#fafafaff"
+        color="black"
         display={{ base: "none", md: "block" }}
         position="fixed"
         top="0"
@@ -125,9 +125,10 @@ const Sidebar = () => {
         {/* <Text fontSize="xs" color="gray.400" mt={6} mb={2}>
           MENU
         </Text> */}
-        {/* <SidebarItem icon={FaTasks} label="Manage Job" to="/manage-job" /> */}
         {/* <SidebarItem icon={FaFileAlt} label="All Application" to="/all-application" /> */}
         <SidebarItem icon={FaPlus} label="Create Job" to="/create-job" />
+        <SidebarItem icon={FaTasks} label="Manage Job" to="/manage-job" />
+
         {/* <SidebarItem icon={FiMessageCircle} label="Message" to="/message" /> */}
         {/* <SidebarItem icon={FaPlus} label="Create Live Class" to="/live-class" /> */}
         {/* <SidebarItem icon={FaEnvelope} label="Contact Data" to="/contact" /> */}

@@ -11,18 +11,18 @@ export const AuthProvider = ({ children }) => {
     const moot = JSON.parse(localStorage.getItem("MootUserInfo"));
     const admin = JSON.parse(localStorage.getItem("lawvsadmininfo"));
     const user = JSON.parse(localStorage.getItem("lawvsuserinfo"));
-    // console.log(admin, "admin");
+    // console.log(user, "user");
     if (admin?.token) {
       setCurrentUser(admin);
     } else if (moot?.token) {
       setCurrentUser(moot);
-    } else if (user?.token) {
+    } else if (user?.data?.token) {
       setCurrentUser(user);
     } else {
       setCurrentUser(null);
     }
 
-    setLoading(false); // ✅ VERY IMPORTANT
+    setLoading(false);
   }, []);
 
   return (

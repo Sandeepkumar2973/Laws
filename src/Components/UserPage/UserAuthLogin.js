@@ -14,14 +14,21 @@ import {
   Box,
   useToast,
   useBreakpointValue,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
-import { CheckCircleIcon, LockIcon } from "@chakra-ui/icons";
+import {
+  CheckCircleIcon,
+  LockIcon,
+  ViewIcon,
+  ViewOffIcon,
+} from "@chakra-ui/icons";
 import AuthLayout from "./AuthLayout";
-import "./button.css";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import axios from "axios";
 import * as mod from "../../url";
+import { Spinnernew } from "../spiner";
 export default function UserAuthLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,6 +38,13 @@ export default function UserAuthLogin() {
   const navigate = useNavigate();
 
   // const isDesktop = useBreakpointValue{ base: false, md: true });
+  if (loading) {
+    return (
+      // <Center minH="100vh">
+      <Spinnernew />
+      // </Center>
+    );
+  }
 
   const handleClick = () => setShow(!show);
 
@@ -45,7 +59,7 @@ export default function UserAuthLogin() {
           password,
         }
       );
-      console.log(data, "data");
+      // console.log(data, "data");
       if (data.data) {
         toast({
           title: "Login successful!",
@@ -55,8 +69,11 @@ export default function UserAuthLogin() {
         });
 
         localStorage.setItem("lawvsuserinfo", JSON.stringify(data));
+        localStorage.removeItem("MootUserInfo");
+        localStorage.removeItem("lawvsadmininfo");
+
         navigate("/user-auth-dashboard");
-        // window.location.reload();
+        window.location.reload();
         setEmail("");
         setPassword("");
       } else {
@@ -86,12 +103,24 @@ export default function UserAuthLogin() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <Input
-            placeholder="Password"
-            type={show ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <InputGroup>
+            <Input
+              placeholder="Password"
+              type={show ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <InputRightElement width="3rem">
+              <Button
+                h="1.5rem"
+                size="sm"
+                onClick={handleClick}
+                variant="ghost"
+              >
+                {show ? <ViewOffIcon /> : <ViewIcon />}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
           <Flex justify="space-between" align="center">
             <ChakraLink
               as={RouterLink}

@@ -32,16 +32,16 @@ const ManageCourse = () => {
   const [sortOrder, setSortOrder] = useState("Newest");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [countapplication, setCountapplication] = useState(0)
+  const [countapplication, setCountapplication] = useState(0);
   const [allApplications, setAllApplications] = useState([]);
 
   const jobsPerPage = 6;
 
   const toast = useToast();
-  const AdminjobInfo = sessionStorage.getItem("AdminjobInfo");
+  const AdminjobInfo = localStorage.getItem("lawvsadmininfo");
   const parsedUserInfo = JSON.parse(AdminjobInfo);
-  const adminId = parsedUserInfo?.data?.admin?.id;
-  const token = parsedUserInfo?.data?.token;
+  const adminId = parsedUserInfo?.data?.id;
+  const token = parsedUserInfo?.token;
   const navigate = useNavigate();
   const SIDEBAR_WIDTH = "250px";
 
@@ -80,9 +80,7 @@ const ManageCourse = () => {
       jobs.sort((a, b) => {
         const dateA = new Date(a.timestamp);
         const dateB = new Date(b.timestamp);
-        return sortOrder === "Newest"
-          ? dateB - dateA
-          : dateA - dateB;
+        return sortOrder === "Newest" ? dateB - dateA : dateA - dateB;
       });
 
       setJobList(jobs);
@@ -121,7 +119,7 @@ const ManageCourse = () => {
                 },
               };
               await axios.delete(
-                `${mod.api_url}/api/v1/job/delete-jobList-byId/${_id}`,
+                `${mod.api_url}/api/v1/job/delete-job-byId/${_id}`,
                 config
               );
               toast({
@@ -174,16 +172,29 @@ const ManageCourse = () => {
     }
   }, [adminId]);
 
-
-
   return (
     <>
       <Navbar />
       <Sidebar />
       <Box mt="100px" ml={{ base: 0, md: SIDEBAR_WIDTH }} p={6}>
+        <Heading
+          size="md"
+          backgroundColor="yellow.300"
+          p={3}
+          borderRadius="50px"
+        >
+          Manage All Jobs
+        </Heading>
+
         <Container maxW="container.xl" p={4}>
-          <Flex justify="space-between" align="center" mb={4} wrap="wrap" gap={4}>
-            <Heading size="md">Manage All Jobs</Heading>
+          <Flex
+            justify="space-between"
+            align="center"
+            mb={4}
+            wrap="wrap"
+            gap={4}
+          >
+            {/* Left side filters */}
             <Flex gap={2} align="center" wrap="wrap">
               <input
                 type="text"
@@ -225,16 +236,21 @@ const ManageCourse = () => {
                 Create Job
               </Button>
             </Flex>
+
+            {/* Right side total */}
+            <h6 color="blue" textAlign="right">
+              Total - {jobList.length}
+            </h6>
           </Flex>
 
           <Divider mb={6} />
 
           <Box overflowX="auto">
             <Table variant="striped" colorScheme="gray">
-              <Thead>
+              <Thead backgroundColor="blue.100">
                 <Tr>
+                  <Th>No</Th>
                   <Th>Title</Th>
-                  {/* <Th>Company</Th> */}
                   <Th> Applicants</Th>
                   <Th>Date</Th>
                   <Th>Job Type</Th>
@@ -250,26 +266,45 @@ const ManageCourse = () => {
                     </Td>
                   </Tr>
                 ) : (
-                  jobList.map((job) => (
+                  jobList.map((job, i) => (
                     <Tr key={job._id}>
+                      <Td>{i + 1}</Td>
                       <Td>{job.title}</Td>
                       {/* <Td>{job.company}</Td> */}
                       {/* <Td>{countapplication?.count} /Applicants</Td> */}
-                      <Td>{job._id && allApplications.filter(app => app.jobId?._id === job._id).length} /Applicants</Td>
+                      <Td>
+                        {job._id &&
+                          allApplications.filter(
+                            (app) => app.jobId?._id === job._id
+                          ).length}{" "}
+                        /Applicants
+                      </Td>
 
                       <Td>{new Date(job.timestamp).toLocaleDateString()}</Td>
                       <Td>{job.jobType}</Td>
                       <Td>
-                        <Badge colorScheme={job.status === "Active" ? "green" : "red"}>
+                        <Badge
+                          colorScheme={
+                            job.status === "Active" ? "green" : "red"
+                          }
+                        >
                           {job.status}
                         </Badge>
                       </Td>
                       <Td>
                         <Flex gap={2}>
-                          <Button size="sm" colorScheme="teal" onClick={() => handleUpdate(job._id)}>
+                          <Button
+                            size="sm"
+                            colorScheme="teal"
+                            onClick={() => handleUpdate(job._id)}
+                          >
                             Update
                           </Button>
-                          <Button size="sm" colorScheme="red" onClick={() => handleDelete(job._id)}>
+                          <Button
+                            size="sm"
+                            colorScheme="red"
+                            onClick={() => handleDelete(job._id)}
+                          >
                             Delete
                           </Button>
                         </Flex>
@@ -293,7 +328,9 @@ const ManageCourse = () => {
                 Page {currentPage} of {totalPages}
               </Text>
               <Button
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
                 isDisabled={currentPage === totalPages}
               >
                 Next

@@ -20,10 +20,10 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
-import logo from "../../Assets/logo/logo.png";
-import * as mod from "../../../url";
+import logo from "../Assets/logo/logo.png";
+import * as mod from "../../url";
 import axios from "axios";
-const AdminAuthForget = () => {
+export default function UserResetPass() {
   const navigate = useNavigate();
   const {
     register,
@@ -41,9 +41,8 @@ const AdminAuthForget = () => {
   const email = watch("email");
 
   const sendOtp = async () => {
-    if (otpSent) return; // prevent double click
-
-    setOtpSent(true); // update state immediately
+    if (otpSent) return;
+    setOtpSent(true);
     if (!email || !/^[\w.-]+@[\w.-]+\.\w{2,}$/.test(email)) {
       toast({
         title: "Enter a valid email address",
@@ -53,15 +52,14 @@ const AdminAuthForget = () => {
       });
       return;
     }
-
     try {
       const { data } = await axios.post(
-        `${mod.api_url}/api/v1/admin/admin-sent-otp`,
+        `${mod.api_url}/api/v1/user/forgot-Send-Otp`,
         {
           email,
         }
       );
-
+      // console.log(data, "data");
       if (data.success) {
         toast({
           title: "OTP Sent Successfully",
@@ -88,7 +86,7 @@ const AdminAuthForget = () => {
   const verifyOtp = async () => {
     try {
       const { data } = await axios.post(
-        `${mod.api_url}/api/v1/admin/verify-otp`,
+        `${mod.api_url}/api/v1/user/verify-otp`,
         {
           email,
           otp,
@@ -131,7 +129,7 @@ const AdminAuthForget = () => {
 
     try {
       const res = await axios.post(
-        `${mod.api_url}/api/v1/admin/reset-admin-pass`,
+        `${mod.api_url}/api/v1/user/reset-password`,
         {
           email: data.email,
           otp,
@@ -150,7 +148,7 @@ const AdminAuthForget = () => {
       } else {
         throw new Error(res.data.message);
       }
-      navigate("/admin-auth-login");
+      navigate("/user-auth-login");
     } catch (err) {
       toast({
         title: "Failed to Reset Password",
@@ -252,7 +250,7 @@ const AdminAuthForget = () => {
         <Flex justify="center" mt={4}>
           <Text fontSize="sm" color="gray.500">
             Remembered your password?{" "}
-            <ChakraLink as={RouterLink} to="/admin-auth-login" color="blue.500">
+            <ChakraLink as={RouterLink} to="/user-auth-login" color="blue.500">
               Login
             </ChakraLink>
           </Text>
@@ -260,5 +258,4 @@ const AdminAuthForget = () => {
       </Box>
     </Flex>
   );
-};
-export default AdminAuthForget;
+}

@@ -70,7 +70,8 @@ export default function AdminAuthLogin() {
 
         // Save login info
         localStorage.setItem("lawvsadmininfo", JSON.stringify(data));
-
+        localStorage.removeItem("MootUserInfo");
+        localStorage.removeItem("lawvsuserinfo");
         // Navigate to dashboard
         console.log("Navigating to /admin-dashboard"); // debug
         navigate("/admin-dashboard");

@@ -18,7 +18,7 @@ import { CheckCircleIcon } from "@chakra-ui/icons";
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import AuthLayout from "../../UserPage/AuthLayout";
-import "./Auth.css";
+// import "./Auth.css";
 import axios from "axios";
 import * as mod from "../../../url";
 import { useNavigate } from "react-router-dom";

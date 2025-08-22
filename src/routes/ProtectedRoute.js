@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { Spinner, Center } from "@chakra-ui/react";
 import { AuthContext } from "../Components/contextApi/AuthContext";
+import { Spinnernew } from "../Components/spiner";
 
 export default function ProtectedRoute({ children, allowedRoles }) {
   const { currentUser, loading } = useContext(AuthContext);
@@ -10,13 +11,7 @@ export default function ProtectedRoute({ children, allowedRoles }) {
   if (loading) {
     return (
       <Center minH="100vh">
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="blue.500"
-          size="xl"
-        />
+        <Spinnernew />
       </Center>
     );
   }
@@ -27,7 +22,11 @@ export default function ProtectedRoute({ children, allowedRoles }) {
   // console.log(currentUser, "currentUser");
   if (
     allowedRoles &&
-    !allowedRoles.includes(currentUser?.user?.role || currentUser?.data?.role)
+    !allowedRoles.includes(
+      currentUser?.user?.role ||
+        currentUser?.data?.role ||
+        currentUser?.data?.userData?.role
+    )
   ) {
     return <Navigate to="/" replace />;
   }

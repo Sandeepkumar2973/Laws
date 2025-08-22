@@ -32,13 +32,12 @@ import UserAuthLogin from "./Components/UserPage/UserAuthLogin";
 import AdminAuthLogin from "./Components/adminlawvspage/Adminlawvs/AdminLogin.js";
 import AdminAuthForget from "./Components/adminlawvspage/Adminlawvs/Forget.js";
 import AdminAuthRegister from "./Components/adminlawvspage/Adminlawvs/AdminRegister.js";
-import { UserAuthForgetPass } from "./Components/UserPage/UserAuthFogetPass";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import MultiSpeakerForm from "./Components/mootCourtpage/MultiSpeakerForm";
 import ForgotPassword from "./Components/mootCourtpage/ForgotPassword";
 import SingleStory from "./Components/LawPages/TopStoryPage/SingleStory.js";
 import SingleDraft from "./Components/LawPages/LegalDraftPage/SinglePageDraft.js";
-import { UserDashBoard } from "./Components/UserPage/UserDashBoard.js";
+import UserDashBoard from "./Components/UserPage/UserDashBoard.js";
 import AdminHome from "./Components/adminlawvspage/AdminProfile/AdminHome.js";
 import { AskQueForjudges } from "./Components/mootCourtpage/mootCourtPage/AskQueForjudges.js";
 import InformationOfJudges from "./Components/mootCourtpage/mootCourtPage/InformationOfJudges.js";
@@ -51,6 +50,7 @@ import { OrganizingCommittee } from "./Components/mootCourtpage/mootCourtPage/OR
 import RulesAndRegulation from "./Components/mootCourtpage/mootCourtPage/instructionpage/RulesAndRegulation.js";
 import { BrochurePage } from "./Components/mootCourtpage/mootCourtPage/Brochure.js";
 import VideosPage from "./Components/LawPages/Videos&News/VideosNews.js";
+import UserResetPass from "./Components/UserPage/UserResetPass.js";
 
 function App() {
   return (
@@ -112,8 +112,15 @@ function App() {
             {/* JobSeeker user routes          */}
             <Route path="/user-auth-signup" element={<UserAuthSignup />} />
             <Route path="/user-auth-login" element={<UserAuthLogin />} />
-            <Route path="/user-auth-forget" element={<UserAuthForgetPass />} />
-            <Route path="/user-auth-dashboard" element={<UserDashBoard />} />
+            <Route path="/user-auth-forget" element={<UserResetPass />} />
+            <Route
+              path="/user-auth-dashboard"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <UserDashBoard />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Admin  routes */}
             <Route path="/admin-auth-login" element={<AdminAuthLogin />} />

@@ -15,16 +15,19 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import Home from "../../Sidebar";
+import Sidebar from "../../Sidebar";
 import * as mod from "../../../url";
+import Navbar from "../../Navbar/Navbar";
+const SIDEBAR_WIDTH = "250px";
 
 const UpdateJob = () => {
   const { id } = useParams();
   const toast = useToast();
 
-  const AdminjobInfo = sessionStorage.getItem("AdminjobInfo");
+  const AdminjobInfo = localStorage.getItem("lawvsadmininfo");
   const parsedUserInfo = JSON.parse(AdminjobInfo);
-  const token = parsedUserInfo?.data?.token;
+  const adminId = parsedUserInfo?.data?.id;
+  const token = parsedUserInfo?.token;
 
   const [formData, setFormData] = useState({
     title: "",
@@ -135,8 +138,9 @@ const UpdateJob = () => {
 
   return (
     <>
-      <Home />
-      <Box maxW="container.md" mx="auto" p={6}>
+      <Navbar />
+      <Sidebar />
+      <Box mt="100px" ml={{ base: 0, md: SIDEBAR_WIDTH }} p={6}>
         <Heading mb={6}>Update Job</Heading>
         <form onSubmit={handleUpdate}>
           <Stack spacing={4}>
