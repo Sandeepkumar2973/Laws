@@ -51,6 +51,8 @@ import RulesAndRegulation from "./Components/mootCourtpage/mootCourtPage/instruc
 import { BrochurePage } from "./Components/mootCourtpage/mootCourtPage/Brochure.js";
 import VideosPage from "./Components/LawPages/Videos&News/VideosNews.js";
 import UserResetPass from "./Components/UserPage/UserResetPass.js";
+import AlljobsPage from "./Components/FrontPage/homepage/jobPage/AllJobsPage.js";
+import { SingleJobPage } from "./Components/FrontPage/homepage/jobPage/SingleJobPage.js";
 
 function App() {
   return (
@@ -75,6 +77,8 @@ function App() {
                 element={<AdminNotifications />}
               />
             </>
+            <Route path="/get-all-jobs" element={<AlljobsPage />} />
+            <Route path="/get-single-job/details/:id" element={<SingleJobPage />} />
             {/* // header routes Pages */}
             <Route path="/legal-draft" element={<LegalDraft />} />
             <Route path="/drafts/:slug" element={<SingleDraft />} />

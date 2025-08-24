@@ -127,9 +127,9 @@ const DashboardPage = () => {
                 {mootUser?.institution || "Moot User"}
               </Text>
 
-              <Text fontSize="sm" mb={1}>
+              <Text fontSize="m" mb={1} color={"blue"}>
                 <Text as="span" fontWeight="semibold">
-                  MootCourt ID:
+                  TEAM CODE:
                 </Text>{" "}
                 {mootUser?.MootCourtId}
               </Text>

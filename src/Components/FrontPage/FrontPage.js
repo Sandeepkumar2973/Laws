@@ -1,4 +1,3 @@
-
 import Footer from "../Navbar/Footer";
 import Header from "../Navbar/Header";
 import AuthorSlider from "./AuthorSlider";
@@ -16,15 +15,14 @@ import TopArticles from "./TopArticles";
 import TopCompanies from "./TopCompanies";
 import TopStories from "./TopStories";
 import LegalBanner from "./LegalBanner";
-
+import JobPage from "./homepage/jobPage/Jobpage";
 
 const FrontPage = () => {
- 
-  
   return (
     <>
       <Header />
-      <LegalBanner/>
+      <LegalBanner />
+      <JobPage />
       <AuthorSlider />
       <LatestJob />
       <Internship />
@@ -35,11 +33,10 @@ const FrontPage = () => {
       <TopCompanies />
       <CareerHighlight />
       {/* <StudentCard /> */}
-      <JoinRevolutionSection/>
-      <TestimonialPage/>
-      <LibraryWebinarPage/>
-      <Footer/>
-      
+      <JoinRevolutionSection />
+      <TestimonialPage />
+      <LibraryWebinarPage />
+      <Footer />
     </>
   );
 };

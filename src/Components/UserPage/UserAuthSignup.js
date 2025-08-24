@@ -18,7 +18,7 @@ import AuthLayout from "./AuthLayout";
 import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import * as mod from "../../url";
 export default function UserAuthSignup() {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -86,7 +86,7 @@ export default function UserAuthSignup() {
     // ✅ Call API
     try {
       await axios.post(
-        "http://localhost:8000/api/v1/user/create-user",
+        `${mod.api_url}/api/v1/user/create-user`,
         {
           fullName: formData.fullName,
           email: formData.email,
@@ -109,8 +109,7 @@ export default function UserAuthSignup() {
     } catch (error) {
       toast({
         title: "Registration Failed",
-        description:
-          error.response?.data?.message || "Something went wrong.",
+        description: error.response?.data?.message || "Something went wrong.",
         status: "error",
         duration: 3000,
         isClosable: true,

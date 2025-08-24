@@ -52,7 +52,8 @@ const Footer = () => {
               alt="Logo"
               height="70px"
               width="200px"
-              color="white"
+              backgroundColor="white!important"
+              p="5px"
             />
           </ChakraLink>
           <Text>SATISFYING ALL LEGAL NEEDS</Text>
@@ -112,7 +113,8 @@ const Footer = () => {
             <MdLocationOn size="20" />
             <Text align={"left"}>
               Office No.101, <br />
-              Himland House, Commercial Complex,<br/> Karampura,
+              Himland House, Commercial Complex,
+              <br /> Karampura,
               <br />
               Delhi-110015, India
             </Text>

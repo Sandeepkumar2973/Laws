@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+.custom-quills {
+  margin-bottom: 0 !important;
+  /* background-color: rgb(236, 236, 244) !important; */
+  height: 100% !important;
+  width: 100% !important;
+}
