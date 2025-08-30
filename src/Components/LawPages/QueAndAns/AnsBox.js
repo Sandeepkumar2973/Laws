@@ -2,10 +2,7 @@ import { useState } from "react";
 import { Box, Text, VStack } from "@chakra-ui/react";
 
 export default function AnswerBox({ answers }) {
-  const limit = 150;
-
-  //   console.log(answers, "jdjdj");
-  // Ensure answers is always an array
+  const limit = 150
   const safeAnswers = Array.isArray(answers)
     ? answers
     : typeof answers === "string"

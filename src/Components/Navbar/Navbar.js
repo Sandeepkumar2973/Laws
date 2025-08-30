@@ -27,11 +27,10 @@ import LogoutButton from "../../routes/LogoutButton";
 const SIDEBAR_WIDTH = "250px";
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
   const [messageCount, setmessageCount] = useState(0);
   const { colorMode, toggleColorMode } = useColorMode();
-  const bgColor = useColorModeValue("#709feadd", "gray.800");
+  const bgColor = useColorModeValue("gray.200", "gray.300");
   const textColor = useColorModeValue("gray.800", "white");
 
   const AdminjobInfo = localStorage.getItem("lawvsadmininfo");
@@ -40,23 +39,24 @@ const Navbar = () => {
   const token = parsedUserInfo?.token;
 
   useEffect(() => {
-    setIsLoggedIn(localStorage.getItem("lawvsadmininfo") !== null);
-    fetchNotificationCount();
-  }, []);
+    if (adminId && token) {
+      fetchNotificationCount();
+    }
+  }, [adminId, token]);
 
   const fetchNotificationCount = async () => {
     try {
       const res = await axios.get(
         `${mod.api_url}/api/v1/notification/admin/${adminId}`,
         {
-          headers: { Authorization: token },
+          headers: { Authorization: `${token}` },
         }
       );
       const allNotifications = res.data?.data || [];
       const unread = allNotifications.filter((n) => !n.isRead).length;
       setNotificationCount(unread);
     } catch (err) {
-      console.error("Failed to fetch notifications");
+      console.error("Failed to fetch notifications", err);
     }
   };
 
@@ -126,28 +126,30 @@ const Navbar = () => {
           </Link>
         </Box> */}
 
-          {/* <Box position="relative">
-          <Link to="/admin-notifications">
-            <IconButton
-              icon={<FiBell />}
-              variant="ghost"
-              aria-label="Notifications"
-            />
-            {notificationCount > 0 && (
-              <Badge
-                colorScheme="red"
-                borderRadius="full"
-                position="absolute"
-                top="0"
-                right="0"
-                fontSize="0.6rem"
-                px={1}
-              >
-                {notificationCount}
-              </Badge>
-            )}
-          </Link>
-        </Box> */}
+          <Box position="relative">
+            <Link to="/admin-notifications">
+              <IconButton
+                icon={<FiBell />}
+                variant="ghost"
+                aria-label="Notifications"
+                size="lg"
+              />
+              {notificationCount > 0 && (
+                <Badge
+                  borderRadius="full"
+                  position="absolute"
+                  top="0"
+                  right="0"
+                  fontSize="0.9rem"
+                  px={1}
+                  color="white"
+                  bgColor="red"
+                >
+                  {notificationCount}
+                </Badge>
+              )}
+            </Link>
+          </Box>
 
           <Menu>
             <MenuButton>

@@ -11,6 +11,7 @@ import {
   Input,
   Select,
   Img,
+  useToast,
 } from "@chakra-ui/react";
 import * as mod from "../../../../url";
 import axios from "axios";
@@ -24,13 +25,17 @@ const AlljobsPage = () => {
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [search, setSearch] = useState("");
+  const [appliedJobs, setAppliedJobs] = useState([]);
+  const toast = useToast();
   const [filters, setFilters] = useState({
     jobType: "",
     salary: "",
     location: "",
     title: "",
   });
-
+  const data = JSON.parse(localStorage.getItem("lawvsuserinfo"));
+  const token = data?.data?.token;
+  const userId = data?.data?.userData?._id;
   // fetch all jobs
   const fetchJobs = async () => {
     try {
@@ -45,11 +50,29 @@ const AlljobsPage = () => {
       console.error("Error fetching jobs:", error.message);
     }
   };
-
+  const fetchAppliedJobs = async () => {
+    if (!userId) return;
+    try {
+      const { data } = await axios.get(
+        `${mod.api_url}/api/v1/user/user/applied-jobs/${userId}`,
+        {
+          headers: {
+            Authorization: ` ${token}`,
+          },
+        }
+      );
+      // console.log(data, "data");
+      if (data.success) {
+        setAppliedJobs(data.appliedJobs);
+      }
+    } catch (error) {
+      console.error("Error fetching applied jobs:", error);
+    }
+  };
   useEffect(() => {
     fetchJobs();
+    fetchAppliedJobs();
   }, []);
-
   // search + filter logic
   useEffect(() => {
     let temp = jobs;
@@ -82,6 +105,46 @@ const AlljobsPage = () => {
     setFilteredJobs(temp);
   }, [search, filters, jobs]);
 
+  const applyJobByUser = async (jobId, adminId) => {
+    if (!userId || !token) {
+      toast({
+        title: "Please login",
+        description: "You need to login before applying for a job.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `${mod.api_url}/api/v1/user/job-apply/${jobId}/${userId}`,
+        { adminId },
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      toast({
+        title: "Job applied successfully",
+        description: response.data.message,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      setAppliedJobs((prev) => [...prev, jobId]);
+    } catch (error) {
+      toast({
+        title: "Application failed",
+        description: error.response?.data?.message || error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
   return (
     <>
       <Header />
@@ -238,7 +301,7 @@ const AlljobsPage = () => {
                         size="18px"
                         style={{ marginRight: "4px" }}
                       />
-                      {job?.location}
+                      {job?.city}
                     </Flex>
                     <Text>
                       <b>CTC:</b> {job?.salaryRange}
@@ -255,14 +318,28 @@ const AlljobsPage = () => {
                     >
                       View Details
                     </Button>
-                    <Button
-                      flex="1"
-                      size="sm"
-                      colorScheme="green"
-                      variant="solid"
-                    >
-                      Apply Now
-                    </Button>
+
+                    {appliedJobs.includes(job._id) ? (
+                      <Button
+                        flex="1"
+                        size="sm"
+                        colorScheme="gray"
+                        variant="solid"
+                        disabled
+                      >
+                        Applied
+                      </Button>
+                    ) : (
+                      <Button
+                        flex="1"
+                        size="sm"
+                        colorScheme="green"
+                        variant="solid"
+                        onClick={() => applyJobByUser(job._id, job.adminId)}
+                      >
+                        Apply Now
+                      </Button>
+                    )}
                   </Flex>
                 </Box>
               ))}

@@ -6,6 +6,7 @@ import {
   Flex,
   Grid,
   GridItem,
+  Heading,
   Image,
   Text,
   VStack,
@@ -15,13 +16,17 @@ import axios from "axios";
 import * as mod from "../../../url";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import Home from "../../Sidebar";
+import Navbar from "../../Navbar/Navbar";
+import Sidebar from "../../Sidebar";
 
 const AllUsers = () => {
   const [users, setUsers] = useState([]);
   const toast = useToast();
-  const storedData = JSON.parse(sessionStorage.getItem("AdminInfo"));
-  const token = storedData.token;
+  const AdminjobInfo = localStorage.getItem("lawvsadmininfo");
+  const parsedUserInfo = JSON.parse(AdminjobInfo);
+  const adminId = parsedUserInfo?.data?.id;
+  const token = parsedUserInfo?.token;
+  const SIDEBAR_WIDTH = "250px";
 
   const fetchUsers = async () => {
     // console.log("Retrieved token:", token);
@@ -33,7 +38,7 @@ const AllUsers = () => {
       };
 
       const { data } = await axios.get(
-        `${mod.api_url}/api/auth/user/get_all_users`,
+        `${mod.api_url}/api/v1/user/get_all_users`,
         config
       );
       setUsers(data?.users);
@@ -168,11 +173,17 @@ const AllUsers = () => {
 
   return (
     <>
-      <Home />
-      <Container maxW="container.md" p={4}>
-        <Text fontSize="2xl" mb={4}>
-          All Learners
-        </Text>
+      <Navbar />
+      <Sidebar />
+      <Box mt="100px" ml={{ base: 0, md: SIDEBAR_WIDTH }} p={6}>
+        <Heading
+          size="md"
+          backgroundColor="yellow.300"
+          p={3}
+          borderRadius="50px"
+        >
+          All Users
+        </Heading>
         <Grid
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
           gap={6}
@@ -233,7 +244,7 @@ const AllUsers = () => {
             </GridItem>
           ))}
         </Grid>
-      </Container>
+      </Box>
     </>
   );
 };

@@ -26,6 +26,7 @@ import { formats, modules } from "../../../utils/Quill";
 import Navbar from "../../Navbar/Navbar";
 import Sidebar from "../../Sidebar";
 import parse from "html-react-parser";
+import LocationSelector from "../../../utils/LocationSelector";
 
 const SIDEBAR_WIDTH = "250px";
 const steps = [
@@ -59,8 +60,11 @@ const CreateJob = () => {
     deadline: "",
     education: "",
     interviewMethod: "",
+    country: "",
+    state: "",
+    city: "",
   });
-
+  // console.log(formData, "formData");
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -72,7 +76,9 @@ const CreateJob = () => {
       case 0:
         return (
           formData.title &&
-          formData.location &&
+          formData.country &&
+          formData.state &&
+          formData.city &&
           formData.openings &&
           formData.salaryRange &&
           formData.workMode &&
@@ -146,6 +152,9 @@ const CreateJob = () => {
         deadline: "",
         education: "",
         interviewMethod: "",
+        country: "",
+        state: "",
+        city: "",
       });
       setStep(0);
     } catch (err) {
@@ -262,7 +271,23 @@ const CreateJob = () => {
               </Select>
 
               <FormLabel>Location</FormLabel>
-              <Input
+              <LocationSelector
+                onChange={(loc) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    country: loc.country,
+                    state: loc.state,
+                    city: loc.city,
+                  }));
+                }}
+              />
+
+              {/* <Box mt={6}>
+                <Text>Country: {location.country}</Text>
+                <Text>State: {location.state}</Text>
+                <Text>City: {location.city}</Text>
+              </Box> */}
+              {/* <Input
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
@@ -274,7 +299,7 @@ const CreateJob = () => {
                 {citySuggestions.map((city) => (
                   <option key={city} value={city} />
                 ))}
-              </datalist>
+              </datalist> */}
 
               <Input
                 placeholder="Openings"
@@ -494,105 +519,3 @@ const CreateJob = () => {
 };
 
 export default CreateJob;
-
-const citySuggestions = [
-  "Delhi",
-  "Mumbai",
-  "Kolkata",
-  "Chennai",
-  "Bengaluru",
-  "Hyderabad",
-  "Ahmedabad",
-  "Pune",
-  "Surat",
-  "Jaipur",
-  "Lucknow",
-  "Kanpur",
-  "Nagpur",
-  "Indore",
-  "Bhopal",
-  "Patna",
-  "Vadodara",
-  "Ludhiana",
-  "Agra",
-  "Nashik",
-  "Faridabad",
-  "Meerut",
-  "Rajkot",
-  "Kalyan-Dombivli",
-  "Vasai-Virar",
-  "Varanasi",
-  "Srinagar",
-  "Aurangabad",
-  "Dhanbad",
-  "Amritsar",
-  "Navi Mumbai",
-  "Prayagraj",
-  "Ranchi",
-  "Howrah",
-  "Jabalpur",
-  "Gwalior",
-  "Vijayawada",
-  "Jodhpur",
-  "Madurai",
-  "Raipur",
-  "Kota",
-  "Guwahati",
-  "Chandigarh",
-  "Solapur",
-  "Hubli-Dharwad",
-  "Mysuru",
-  "Tiruchirappalli",
-  "Bareilly",
-  "Aligarh",
-  "Tiruppur",
-  "Moradabad",
-  "Jalandhar",
-  "Bhubaneswar",
-  "Salem",
-  "Mira-Bhayandar",
-  "Thiruvananthapuram",
-  "Bhiwandi",
-  "Saharanpur",
-  "Guntur",
-  "Gorakhpur",
-  "Bikaner",
-  "Amravati",
-  "Noida",
-  "Jamshedpur",
-  "Bhilai",
-  "Cuttack",
-  "Firozabad",
-  "Kochi",
-  "Nellore",
-  "Bhavnagar",
-  "Dehradun",
-  "Durgapur",
-  "Asansol",
-  "Rourkela",
-  "Nanded",
-  "Kolhapur",
-  "Ajmer",
-  "Akola",
-  "Gulbarga",
-  "Jamnagar",
-  "Ujjain",
-  "Loni",
-  "Siliguri",
-  "Jhansi",
-  "Ulhasnagar",
-  "Pondicherry",
-  "Bilaspur",
-  "Thane",
-  "Panipat",
-  "Karimnagar",
-  "Ichalkaranji",
-  "Mangalore",
-  "Erode",
-  "Tirunelveli",
-  "Malegaon",
-  "Gaya",
-  "Udaipur",
-  "Maheshtala",
-  "Dewas",
-];

@@ -16,6 +16,7 @@ const LegalBanner = () => {
       <Flex justifyContent="flex-end" pr={{ base: 4, md: 12 }}>
         <Box maxW="lg" color="white">
           <Heading
+            as="h1"
             fontSize={{ base: "3xl", md: "5xl" }}
             fontWeight="bold"
             mb={6}

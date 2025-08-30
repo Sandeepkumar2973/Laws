@@ -26,7 +26,7 @@ import { Spinnernew } from "../../../spiner";
 import ReactQuill from "react-quill";
 import { useParams } from "react-router-dom";
 import logo from "./../../../Assets/logo/logo.png"; // Adjust the path as necessary
-
+import { IoLocation } from "react-icons/io5";
 // social share buttons
 import {
   FacebookShareButton,
@@ -38,7 +38,7 @@ import {
   LinkedinIcon,
   WhatsappIcon,
 } from "react-share";
-import { CiLocationOn } from "react-icons/ci";
+// import { CiLocationOn } from "react-icons/ci";
 
 export const SingleJobPage = () => {
   const [job, setJob] = useState(null);
@@ -46,6 +46,10 @@ export const SingleJobPage = () => {
   const [jobs, setJobs] = useState([]);
   const toast = useToast();
   const { id } = useParams();
+  const [appliedJobs, setAppliedJobs] = useState([]);
+  const data = JSON.parse(localStorage.getItem("lawvsuserinfo"));
+  const token = data?.data?.token;
+  const userId = data?.data?.userData?._id;
   // console.log(id, "jobid");
   const getJobById = async () => {
     try {
@@ -71,7 +75,7 @@ export const SingleJobPage = () => {
   // job URL for sharing
   const shareUrl = window.location.href;
 
-  // fetch similr job
+  // fetch similar jobs
   const fetchSimilarJobs = async () => {
     try {
       const { data } = await axios.get(
@@ -91,12 +95,72 @@ export const SingleJobPage = () => {
     }
   };
 
+  const fetchAppliedJobs = async () => {
+    if (!userId) return;
+    try {
+      const { data } = await axios.get(
+        `${mod.api_url}/api/v1/user/user/applied-jobs/${userId}`,
+        {
+          headers: {
+            Authorization: ` ${token}`,
+          },
+        }
+      );
+      // console.log(data, "data");
+      if (data.success) {
+        setAppliedJobs(data.appliedJobs);
+      }
+    } catch (error) {
+      console.error("Error fetching applied jobs:", error);
+    }
+  };
   useEffect(() => {
     getJobById();
     fetchSimilarJobs();
+    fetchAppliedJobs();
     window.scrollTo({ top: 0, behavior: "smooth" }); // 👈 scroll to top
-  }, [id]); // 👈 dependency में id डालो
+  }, [id]);
 
+  const applyJobByUser = async (jobId, adminId) => {
+    if (!userId || !token) {
+      toast({
+        title: "Please login",
+        description: "You need to login before applying for a job.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `${mod.api_url}/api/v1/user/job-apply/${jobId}/${userId}`,
+        { adminId },
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      toast({
+        title: "Job applied successfully",
+        description: response.data.message,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      setAppliedJobs((prev) => [...prev, jobId]);
+    } catch (error) {
+      toast({
+        title: "Application failed",
+        description: error.response?.data?.message || error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
   if (loading) {
     return (
       <Flex justify="center" align="center" minH="80vh">
@@ -166,8 +230,14 @@ export const SingleJobPage = () => {
             Deadline: {new Date(job?.deadline).toLocaleDateString()}
           </Text>
           <Text fontSize="lg">
-            <CiLocationOn style={{ display: "inline", marginRight: "6px" }} />
-            {job?.location}
+            <IoLocation
+              style={{ display: "inline", marginRight: "6px", color: "blue" }}
+            />
+            {job?.state} ,
+          </Text>
+          <Text fontSize="lg">
+            {/* <CiLocationOn style={{ display: "inline", marginRight: "6px" }} /> */}
+            {job?.city}
           </Text>
         </HStack>
 
@@ -192,8 +262,21 @@ export const SingleJobPage = () => {
 
         {/* Action Buttons */}
         <Flex justify="flex-end" mt={4} gap={4}>
-          <Button colorScheme="yellow" px={6}>
-            Apply Now
+          <Button px={1}>
+            {appliedJobs.includes(job._id) ? (
+              <Button flex="1" px={6}>
+                Applied
+              </Button>
+            ) : (
+              <Button
+                flex="1"
+                colorScheme="yellow"
+                px={6}
+                onClick={() => applyJobByUser(job._id, job.adminId)}
+              >
+                Apply Now
+              </Button>
+            )}
           </Button>
           <Button
             as={Link}
@@ -351,7 +434,7 @@ export const SingleJobPage = () => {
                   {job?.experienceRequired}
                 </Text>
                 <Flex>
-                  <CiLocationOn color="blue" size="20px" /> location:{" "}
+                  <IoLocation color="blue" size="20px" /> location:{" "}
                   {job?.location}
                 </Flex>
                 <Text>
@@ -375,9 +458,28 @@ export const SingleJobPage = () => {
                 >
                   View Details
                 </Button>
-                <Button flex="1" size="sm" colorScheme="green" variant="solid">
-                  Apply Now
-                </Button>
+
+                {appliedJobs.includes(job._id) ? (
+                  <Button
+                    flex="1"
+                    size="sm"
+                    colorScheme="gray"
+                    variant="solid"
+                    disabled
+                  >
+                    Applied
+                  </Button>
+                ) : (
+                  <Button
+                    flex="1"
+                    size="sm"
+                    colorScheme="green"
+                    variant="solid"
+                    onClick={() => applyJobByUser(job._id, job.adminId)}
+                  >
+                    Apply Now
+                  </Button>
+                )}
               </Flex>
             </Box>
           ))}

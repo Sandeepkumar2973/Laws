@@ -40,10 +40,10 @@ const UserApplications = () => {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const adminInfo = sessionStorage.getItem("AdminjobInfo");
-  const parsedInfo = JSON.parse(adminInfo);
-  const adminId = parsedInfo?.data?.admin?.id;
-  const token = parsedInfo?.data?.token;
+  const AdminjobInfo = localStorage.getItem("lawvsadmininfo");
+  const parsedUserInfo = JSON.parse(AdminjobInfo);
+  const adminId = parsedUserInfo?.data?.id;
+  const token = parsedUserInfo?.token;
 
   const fetchApplications = async () => {
     setLoading(true);
@@ -83,7 +83,12 @@ const UserApplications = () => {
     let filtered = [...applications];
 
     if (statusFilter !== "All") {
-      filtered = filtered.filter((app) => app.status === statusFilter);
+      filtered = filtered.filter((app) => {
+        const latestStatus =
+          app.statusTimeline?.[app.statusTimeline.length - 1]?.status ||
+          "Applied";
+        return latestStatus === statusFilter;
+      });
     }
 
     filtered.sort((a, b) => {
@@ -93,7 +98,7 @@ const UserApplications = () => {
     });
 
     setFilteredApps(filtered);
-    setCurrentPage(1); // reset to page 1 after filter/sort
+    setCurrentPage(1);
   }, [statusFilter, sortOrder, applications]);
 
   const handleStatusChange = async (applicationId, newStatus) => {
@@ -159,6 +164,7 @@ const UserApplications = () => {
               >
                 <option value="All">All</option>
                 <option value="Viewed">Viewed</option>
+                <option value="Pending">Pending</option>
                 <option value="Shortlisted">Shortlisted</option>
                 <option value="Rejected">Rejected</option>
               </Select>
@@ -192,66 +198,80 @@ const UserApplications = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {currentApps.map((app) => (
-                  <Tr key={app._id}>
-                    <Td
-                      onClick={() => handleViewDetails(app.userId?._id)}
-                      color="blue.500"
-                      cursor="pointer"
-                      _hover={{ textDecoration: "underline" }}
-                    >
-                      {app.userId?.fullName || "N/A"}
-                    </Td>
-                    <Td>{app.userId?.email || "N/A"}</Td>
-                    <Td>{app?.jobId?.title || "N/A"}</Td>
-                    <Td>
-                      <Badge
-                        colorScheme={
-                          app.status === "Rejected"
-                            ? "red"
-                            : app.status === "Shortlisted"
-                            ? "green"
-                            : "yellow"
-                        }
-                        variant="subtle"
-                        px={3}
-                        py={1}
-                        borderRadius="md"
+                {currentApps.map((app) => {
+                  const latestStatus =
+                    app.statusTimeline?.[app.statusTimeline.length - 1]
+                      ?.status || "Applied";
+
+                  return (
+                    <Tr key={app._id}>
+                      <Td
+                        onClick={() => handleViewDetails(app.userId?._id)}
+                        color="blue.500"
+                        cursor="pointer"
+                        _hover={{ textDecoration: "underline" }}
+                        fontWeight={600}
+                        // fontSize={15}
                       >
-                        {app.status}
-                      </Badge>
-                    </Td>
-                    <Td>
-                      <Select
-                        size="sm"
-                        value={app.status}
-                        onChange={(e) =>
-                          handleStatusChange(app._id, e.target.value)
-                        }
-                      >
-                        <option value="Viewed">Viewed</option>
-                        <option value="Shortlisted">Shortlisted</option>
-                        <option value="Rejected">Rejected</option>
-                      </Select>
-                    </Td>
-                    <Td>{new Date(app.appliedAt).toLocaleDateString()}</Td>
-                    <Td>
-                      {app.userId?.resumeUrl ? (
-                        <Button
-                          colorScheme="blue"
+                        {app.userId?.fullName.toUpperCase() || "N/A"}
+                      </Td>
+                      <Td>{app.userId?.email || "N/A"}</Td>
+                      <Td>{app.jobId?.title || "N/A"}</Td>
+                      <Td>
+                        <Badge
+                          colorScheme={
+                            latestStatus === "Rejected"
+                              ? "red"
+                              : latestStatus === "Shortlisted"
+                              ? "green"
+                              : latestStatus === "Viewed"
+                              ? "yellow"
+                              : latestStatus === "Applied"
+                              ? "blue"
+                              : "yellow"
+                          }
+                          variant="subtle"
+                          px={3}
+                          py={1}
+                          borderRadius="md"
+                        >
+                          {latestStatus}
+                        </Badge>
+                      </Td>
+                      <Td>
+                        <Select
                           size="sm"
-                          onClick={() =>
-                            window.open(app.userId.resumeUrl, "_blank")
+                          value={latestStatus}
+                          onChange={(e) =>
+                            handleStatusChange(app._id, e.target.value)
                           }
                         >
-                          Download
-                        </Button>
-                      ) : (
-                        "No Resume"
-                      )}
-                    </Td>
-                  </Tr>
-                ))}
+                          <option value="Viewed">Status</option>
+                          <option value="Viewed">Viewed</option>
+                          <option value="Pending">Pending</option>
+                          <option value="Shortlisted">Shortlisted</option>
+                          <option value="Rejected">Rejected</option>
+                        </Select>
+                      </Td>
+                      <Td>{new Date(app.appliedAt).toLocaleDateString()}</Td>
+                      <Td>
+                        {app.userId?.resumeUrl ? (
+                          <Button
+                            colorScheme="blue"
+                            size="sm"
+                            onClick={() =>
+                              window.open(app.userId.resumeUrl, "_blank")
+                            }
+                          >
+                            Download
+                          </Button>
+                        ) : (
+                          "No Resume"
+                        )}
+                      </Td>
+                    </Tr>
+                  );
+                })}
               </Tbody>
             </Table>
           )}

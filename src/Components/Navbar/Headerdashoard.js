@@ -106,11 +106,7 @@ const DashHeader = () => {
             <Button as={RouterLink} to="/user-auth-dashboard" onClick={onClose}>
               My Profile
             </Button>
-            <Button
-              as={RouterLink}
-              to="/user-dashboard/orders"
-              onClick={onClose}
-            >
+            <Button as={RouterLink} to="/user-applied-jobs" onClick={onClose}>
               My Application
             </Button>
             <Button as={RouterLink} to="/user-dashboard/help" onClick={onClose}>

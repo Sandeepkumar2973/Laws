@@ -33,7 +33,6 @@ import AdminAuthLogin from "./Components/adminlawvspage/Adminlawvs/AdminLogin.js
 import AdminAuthForget from "./Components/adminlawvspage/Adminlawvs/Forget.js";
 import AdminAuthRegister from "./Components/adminlawvspage/Adminlawvs/AdminRegister.js";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import MultiSpeakerForm from "./Components/mootCourtpage/MultiSpeakerForm";
 import ForgotPassword from "./Components/mootCourtpage/ForgotPassword";
 import SingleStory from "./Components/LawPages/TopStoryPage/SingleStory.js";
 import SingleDraft from "./Components/LawPages/LegalDraftPage/SinglePageDraft.js";
@@ -53,6 +52,7 @@ import VideosPage from "./Components/LawPages/Videos&News/VideosNews.js";
 import UserResetPass from "./Components/UserPage/UserResetPass.js";
 import AlljobsPage from "./Components/FrontPage/homepage/jobPage/AllJobsPage.js";
 import { SingleJobPage } from "./Components/FrontPage/homepage/jobPage/SingleJobPage.js";
+import AppliedJobPage from "./Components/UserPage/UserDtailsPage/AppliedJobPage.js";
 
 function App() {
   return (
@@ -62,7 +62,6 @@ function App() {
           <Routes>
             <>
               <Route path="/" element={<FrontPage />} />
-
               <Route path="/update-job/:id" element={<UpdateJob />} />
               <Route path="/all-application" element={<UserApplications />} />
               <Route path="/all-users" element={<AllUsers />} />
@@ -78,7 +77,10 @@ function App() {
               />
             </>
             <Route path="/get-all-jobs" element={<AlljobsPage />} />
-            <Route path="/get-single-job/details/:id" element={<SingleJobPage />} />
+            <Route
+              path="/get-single-job/details/:id"
+              element={<SingleJobPage />}
+            />
             {/* // header routes Pages */}
             <Route path="/legal-draft" element={<LegalDraft />} />
             <Route path="/drafts/:slug" element={<SingleDraft />} />
@@ -122,6 +124,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["user"]}>
                   <UserDashBoard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user-applied-jobs"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <AppliedJobPage />
                 </ProtectedRoute>
               }
             />

@@ -9,6 +9,10 @@ import {
   SimpleGrid,
   Center,
 } from "@chakra-ui/react";
+import axios from "axios";
+import { useState } from "react";
+import { useEffect } from "react";
+import * as mode from "../../url";
 
 const intern = [
   {
@@ -62,6 +66,25 @@ const intern = [
 ];
 
 const Internship = () => {
+  const [internship, setInternship] = useState([]);
+
+  const fetchLatestInternship = async () => {
+    try {
+      const response = await axios.get(
+        `${mode.api_url}/api/v1/job/get-latest-internship-jobs`
+      );
+      const data = response.data;
+      if (data.success) {
+        setInternship(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching latest internship jobs:", error);
+    }
+  };
+  useEffect(() => {
+    fetchLatestInternship();
+  }, []);
+  // console.log(internship, "internship");
   return (
     <Box px={{ base: 4, md: 16 }} py={12}>
       <Heading

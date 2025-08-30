@@ -32,7 +32,9 @@ const UpdateJob = () => {
   const [formData, setFormData] = useState({
     title: "",
     company: "",
-    location: "",
+    country: "",
+    state: "",
+    city: "",
     openings: "",
     salaryRange: "",
     jobType: "",
@@ -168,13 +170,7 @@ const UpdateJob = () => {
               onChange={handleChange}
               isRequired
             />
-            <Input
-              placeholder="Location"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              isRequired
-            />
+
             <Input
               placeholder="Openings"
               name="openings"
@@ -252,11 +248,7 @@ const UpdateJob = () => {
               placeholder="Select Industry"
               isRequired
             >
-              <option value="IT">IT</option>
-              <option value="Finance">Finance</option>
-              <option value="Healthcare">Healthcare</option>
-              <option value="Education">Education</option>
-              <option value="Marketing">Marketing</option>
+              <option value="Law">Law</option>
               <option value="Other">Other</option>
             </Select>
 

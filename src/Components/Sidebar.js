@@ -45,13 +45,13 @@ const Sidebar = () => {
   const [adminData, setAdminData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const AdminjobInfo = sessionStorage.getItem("AdminjobInfo");
+  const AdminjobInfo = localStorage.getItem("lawvsadmininfo");
   const parsedUserInfo = JSON.parse(AdminjobInfo);
+  const adminId = parsedUserInfo?.data?.id;
+  const token = parsedUserInfo?.token;
 
-  const adminId = parsedUserInfo?.data?.admin?.id;
   useEffect(() => {
     const fetchAdmin = async () => {
-      const token = parsedUserInfo?.data?.token;
       try {
         const res = await axios.get(
           `${mod.api_url}/api/v1/admin/get-admin-byid/${adminId}`,
@@ -81,7 +81,6 @@ const Sidebar = () => {
   // console.log(adminData.fullName, 'adminData')
   return (
     <>
-      {/* Hamburger Icon - Mobile */}
       <IconButton
         aria-label="Open menu"
         icon={<HamburgerIcon />}
@@ -93,13 +92,13 @@ const Sidebar = () => {
         zIndex="1500"
         bg="white"
         border="1px solid lightgray"
-        _hover={{ bg: "gray.100" }}
+        _hover={{ bg: "gray" }}
       />
 
       {/* Sidebar - Desktop */}
       <Box
         width={SIDEBAR_WIDTH}
-        bg="#fafafaff"
+        bg="#05061e32"
         color="black"
         display={{ base: "none", md: "block" }}
         position="fixed"
@@ -112,9 +111,12 @@ const Sidebar = () => {
         zIndex="999"
       >
         <Text fontSize="2xl" fontWeight="bold" mb={6} mt="70px">
-          {adminData?.fullName}
+          {adminData?.companyName || "Admin Panel"}
         </Text>
 
+        <Text fontSize="xs" color="gray.400" mt={6} mb={2}>
+          MENU
+        </Text>
         <SidebarItem
           icon={FaChartBar}
           label="Dashboard"
@@ -122,13 +124,15 @@ const Sidebar = () => {
           badge=""
           badgeColor="green"
         />
-        {/* <Text fontSize="xs" color="gray.400" mt={6} mb={2}>
-          MENU
-        </Text> */}
-        {/* <SidebarItem icon={FaFileAlt} label="All Application" to="/all-application" /> */}
+
+        <SidebarItem
+          icon={FaFileAlt}
+          label="All Application"
+          to="/all-application"
+        />
         <SidebarItem icon={FaPlus} label="Create Job" to="/create-job" />
         <SidebarItem icon={FaTasks} label="Manage Job" to="/manage-job" />
-
+        {/* <SidebarItem icon={FaFileAlt} label="All Users" to="/all-users" /> */}
         {/* <SidebarItem icon={FiMessageCircle} label="Message" to="/message" /> */}
         {/* <SidebarItem icon={FaPlus} label="Create Live Class" to="/live-class" /> */}
         {/* <SidebarItem icon={FaEnvelope} label="Contact Data" to="/contact" /> */}
@@ -159,7 +163,7 @@ const Sidebar = () => {
           <DrawerHeader>Menu</DrawerHeader>
           <DrawerBody>
             <VStack align="stretch" spacing={4}>
-              <Link to="/admin-profile" onClick={onClose}>
+              <Link to="/admin-dashboard" onClick={onClose}>
                 <Button width="100%" colorScheme="blue">
                   Dashboard
                 </Button>
@@ -179,17 +183,17 @@ const Sidebar = () => {
                   Create Job
                 </Button>
               </Link>
-              <Link to="/message" onClick={onClose}>
+              {/* <Link to="/message" onClick={onClose}>
                 <Button width="100%" colorScheme="blue">
                   Message
                 </Button>
-              </Link>
-              <Link to="/live-class" onClick={onClose}>
-                {/* <Button width="100%" colorScheme="blue">Create Live Class</Button> */}
+              </Link> */}
+              {/* <Link to="/live-class" onClick={onClose}>
+                <Button width="100%" colorScheme="blue">Create Live Class</Button>
               </Link>
               <Link to="/contact" onClick={onClose}>
-                {/* <Button width="100%" colorScheme="blue">Contact Data</Button> */}
-              </Link>
+                <Button width="100%" colorScheme="blue">Contact Data</Button>
+              </Link> */}
             </VStack>
           </DrawerBody>
         </DrawerContent>

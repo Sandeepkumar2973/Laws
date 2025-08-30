@@ -50,6 +50,7 @@ export const LegalDraft = () => {
             </BreadcrumbItem>
           </Breadcrumb>
         </Box>
+        <DraftsGrid />
 
         {/* Content Section */}
         <Container maxW="7xl" py={1}>
@@ -82,35 +83,42 @@ export const LegalDraft = () => {
               legal concepts in straightforward language.
             </Text>
           </Stack>
+          <Text
+            textAlign="left"
+            fontSize="lg"
+            color="gray.600"
+            // padding={8}
+          >
+            WExecuting a well-crafted legal document demands adherence to
+            conventions and guidelines. These include employing precise
+            language, avoiding ambiguity, using appropriate legal terminology,
+            and organizing the document logically for ease of comprehension.
+            Tailoring language and style based on the intended audience—whether
+            legal professionals, judges, or laypersons—is crucial. <br />
+            <br /> The primary objective of legal drafting is to transparently
+            convey legal rights, obligations, and terms to facilitate
+            understanding by both legal experts and individuals involved in the
+            matter.
+            <br />
+            <br /> Key considerations in legal drafting encompass clarity and
+            precision, consistency in terminology, utilization of plain language
+            where possible, understanding the document's purpose, familiarity
+            with the relevant legal framework, logical organization, proper
+            formatting, specificity, incorporation of boilerplate clauses when
+            necessary, customization to specific circumstances, and a thorough
+            revision and review process to ensure accuracy and adherence to
+            ethical standards.
+            <br />
+            <br /> While legal drafting is typically entrusted to legal
+            professionals such as lawyers or paralegals due to its complexity,
+            individuals can acquire foundational skills through courses,
+            workshops, or consulting legal drafting guides. Mastering legal
+            drafting is a dynamic process, emphasizing continuous learning and
+            attention to evolving legal principles and standards.
+          </Text>
         </Container>
       </Box>
-      <DraftsGrid />
-      <Text textAlign="left" fontSize="lg" color="gray.600" mt={8} padding={8}>
-        WExecuting a well-crafted legal document demands adherence to
-        conventions and guidelines. These include employing precise language,
-        avoiding ambiguity, using appropriate legal terminology, and organizing
-        the document logically for ease of comprehension. Tailoring language and
-        style based on the intended audience—whether legal professionals,
-        judges, or laypersons—is crucial. <br />
-        <br /> The primary objective of legal drafting is to transparently
-        convey legal rights, obligations, and terms to facilitate understanding
-        by both legal experts and individuals involved in the matter.
-        <br />
-        <br /> Key considerations in legal drafting encompass clarity and
-        precision, consistency in terminology, utilization of plain language
-        where possible, understanding the document's purpose, familiarity with
-        the relevant legal framework, logical organization, proper formatting,
-        specificity, incorporation of boilerplate clauses when necessary,
-        customization to specific circumstances, and a thorough revision and
-        review process to ensure accuracy and adherence to ethical standards.
-        <br />
-        <br /> While legal drafting is typically entrusted to legal
-        professionals such as lawyers or paralegals due to its complexity,
-        individuals can acquire foundational skills through courses, workshops,
-        or consulting legal drafting guides. Mastering legal drafting is a
-        dynamic process, emphasizing continuous learning and attention to
-        evolving legal principles and standards.
-      </Text>
+
       <Footer />
     </>
   );

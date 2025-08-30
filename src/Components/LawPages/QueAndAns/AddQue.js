@@ -33,8 +33,8 @@ const AddQuestionPage = () => {
   const toast = useToast();
   const [text, setText] = useState("");
   const textareaRef = useRef(null);
-  const userId = userInfo.data.userData._id;
-  const userType = userInfo.data.userData.role;
+  const userId = userInfo?.data?.userData._id;
+  const userType = userInfo?.data?.userData.role;
 
   // add quetions
   const handleSubmit = async () => {

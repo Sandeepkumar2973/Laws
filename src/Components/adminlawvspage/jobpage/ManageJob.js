@@ -35,7 +35,7 @@ const ManageCourse = () => {
   const [countapplication, setCountapplication] = useState(0);
   const [allApplications, setAllApplications] = useState([]);
 
-  const jobsPerPage = 6;
+  const jobsPerPage = 10;
 
   const toast = useToast();
   const AdminjobInfo = localStorage.getItem("lawvsadmininfo");
@@ -70,7 +70,8 @@ const ManageCourse = () => {
         jobs = jobs.filter(
           (job) =>
             job.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            job.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            job.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            job.state?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             job.jobType?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             job.salaryRange?.toLowerCase().includes(searchTerm.toLowerCase())
         );
@@ -268,7 +269,7 @@ const ManageCourse = () => {
                 ) : (
                   jobList.map((job, i) => (
                     <Tr key={job._id}>
-                      <Td>{i + 1}</Td>
+                      <Td fontWeight={600}>{i + 1}.</Td>
                       <Td>{job.title}</Td>
                       {/* <Td>{job.company}</Td> */}
                       {/* <Td>{countapplication?.count} /Applicants</Td> */}

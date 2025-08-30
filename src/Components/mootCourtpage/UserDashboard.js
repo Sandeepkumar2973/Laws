@@ -33,6 +33,7 @@ import LogoutButton from "../../routes/LogoutButton";
 import Header from "../Navbar/Header";
 import Footer from "../Navbar/Footer";
 import * as mod from "../../url";
+import MemorialManager from "./MemorialManager";
 
 const DashboardPage = () => {
   const [mootUser, setMootUser] = useState(null);
@@ -178,6 +179,21 @@ const DashboardPage = () => {
             p={4}
             backgroundColor={"gray.50"}
           >
+            {/* <Button
+              fontSize="2xl"
+              fontWeight="bold"
+              mb={4}
+              backgroundColor={"green.500"}
+              p={2}
+              borderRadius="md"
+            >
+              Submit Your Memorials
+            </Button> */}
+
+            <MemorialManager userId={userId} />
+            {mootUser?.memorial
+              ? "You have submitted a memorial."
+              : "You have not submitted a memorial."}
             <Text
               fontSize="2xl"
               fontWeight="bold"

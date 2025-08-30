@@ -8,9 +8,12 @@ import {
   Icon,
   Spinner,
   useColorModeValue,
+  VStack,
 } from "@chakra-ui/react";
 import { FaBriefcase, FaBell, FaUsers } from "react-icons/fa";
 import { MdAssignment } from "react-icons/md";
+import { PieChart, Pie, Cell, Legend } from "recharts";
+
 import {
   BarChart,
   Bar,
@@ -30,12 +33,11 @@ const AdminHome = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const boxBg = useColorModeValue("white", "gray.800");
-  const userInfo = JSON.parse(localStorage.getItem("lawvsadmininfo"));
-  const token = userInfo?.token;
-  const adminId = userInfo;
-  // console.log(adminId, "adminId");
-  // Replace this with the actual admin ID (e.g. from auth context)
-
+  const AdminjobInfo = localStorage.getItem("lawvsadmininfo");
+  const parsedUserInfo = JSON.parse(AdminjobInfo);
+  const adminId = parsedUserInfo?.data?.id;
+  const token = parsedUserInfo?.token;
+  const COLORS = ["#3182CE", "#38A169", "#DD6B20", "#E53E3E"];
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
@@ -100,13 +102,19 @@ const AdminHome = () => {
       bg: "linear(to-r, blue.300, blue.600)",
     },
   ];
-
   return (
     <>
       <Navbar />
       <Sidebar />
       <Box mt="100px" ml={{ base: 0, md: SIDEBAR_WIDTH }} p={6}>
-        <Heading fontSize="2xl" mb={1}>
+        <Heading
+          fontSize="2xl"
+          mb={1}
+          size="md"
+          backgroundColor="yellow.300"
+          p={3}
+          borderRadius="50px"
+        >
           ADMIN DASHBOARD
         </Heading>
         <Text color="gray.500" mb={8}>
@@ -144,10 +152,9 @@ const AdminHome = () => {
                 </Box>
               ))}
             </SimpleGrid>
-
             {/* Applications Chart */}
             {dashboardData?.applicationsByDate?.length > 0 ? (
-              <Box bg={boxBg} borderRadius="lg" p={6} shadow="md">
+              <Box borderRadius="lg" p={6} shadow="md">
                 <Heading fontSize="lg" mb={4}>
                   Applications Over Time
                 </Heading>
@@ -163,6 +170,67 @@ const AdminHome = () => {
             ) : (
               <Text>No application data available.</Text>
             )}
+            <Box bg={boxBg} borderRadius="lg" p={6} shadow="md" mt={8}>
+              <Heading fontSize="lg" mb={4}>
+                Team Distribution
+              </Heading>
+              <Flex
+                direction={{ base: "column", md: "row" }}
+                align="center"
+                justify="space-between"
+              >
+                {/* Pie Chart Left */}
+                <Box flex="1" minW="260px">
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={stats}
+                        dataKey="value"
+                        nameKey="label"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={100}
+                        label={false} // Hide label on slice
+                      >
+                        {stats.map((entry, index) => (
+                          <Cell
+                            key={index}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Legend />
+                      <Tooltip
+                        formatter={(value, name) => [`${value}%`, name]}
+                        cursor={{ fill: "rgba(128, 10, 183, 0.92)" }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </Box>
+                {/* Details Right */}
+                <VStack
+                  flex="1"
+                  align="start"
+                  spacing={3}
+                  mt={{ base: 6, md: 0 }}
+                  ml={{ base: 0, md: 8 }}
+                >
+                  {stats.map((item, idx) => (
+                    <Flex key={idx} align="center">
+                      <Box
+                        w={3}
+                        h={3}
+                        bg={COLORS[idx % COLORS.length]}
+                        borderRadius="full"
+                        mr={2}
+                      />
+                      <Text fontWeight="medium">{item.label}:</Text>
+                      <Text ml={2}>{item.value}%</Text>
+                    </Flex>
+                  ))}
+                </VStack>
+              </Flex>
+            </Box>
           </>
         )}
       </Box>

@@ -18,8 +18,6 @@ import { SearchBox } from "./SearchBox";
 import { BiSolidLike } from "react-icons/bi";
 import { IoIosShareAlt } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import AnswerBox from "./AnsBox";
-import CommentBox from "./CommentBox";
 import AddQuestionPage from "./AddQue";
 import axios from "axios";
 import * as mod from "../../../url";
@@ -36,16 +34,50 @@ export const QAndA = () => {
   const [answers, setAnswers] = useState({}); // store answers by question id
   const [showCommentBox, setShowCommentBox] = useState(false);
   const [comment, setComment] = useState("");
-
-  const handleSubmitComment = () => {
-    console.log("Comment Submitted:", comment);
-    setComment("");
-    setShowCommentBox(false);
-  };
   const toast = useToast();
   const navigate = useNavigate();
-  const userId = userInfo.data.userData._id;
-  const userType = userInfo.data.userData.role;
+  const userId = userInfo?.data?.userData._id;
+  const userType = userInfo?.data?.userData.role;
+  console.log(filteredQuestions, "filteredQuestions");
+
+  const handleSubmitComment = async (Qid, AnsId) => {
+    if (!userId) {
+      toast({
+        title: "Please login",
+        description: "You need to login before applying for a job.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    try {
+      await axios.post(
+        `${mod.api_url}/api/v1/question/questions/${Qid}/answers/${AnsId}/comments`,
+        {
+          text: comment,
+          userId,
+          userType,
+        }
+      );
+      toast({
+        title: "Comment submitted successfully",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      setComment("");
+      setShowCommentBox(false);
+    } catch (error) {
+      toast({
+        title: "Failed to submit comment",
+        description: error.response?.data?.message || error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -61,7 +93,7 @@ export const QAndA = () => {
           `${mod.api_url}/api/v1/question/get_all_questions`
         );
 
-        console.log(questionData, "questionData");
+        // console.log(questionData, "questionData");
         const mappedData = questionData.map((item) => ({
           id: item._id,
           question: item.que,
@@ -76,7 +108,6 @@ export const QAndA = () => {
 
         setQuestions(mappedData);
         setFilteredQuestions(mappedData);
-        console.log(filteredQuestions, "filteredQuestions");
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -95,6 +126,16 @@ export const QAndA = () => {
 
   // Submit your answer
   const handleSubmit = async (id) => {
+    if (!userId) {
+      toast({
+        title: "Please login",
+        description: "You need to login before applying for a job.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
     try {
       setLoading(true);
       await axios.post(`${mod.api_url}/api/v1/question/add/${id}/answers`, {
@@ -305,7 +346,9 @@ export const QAndA = () => {
                                   <Button
                                     colorScheme="blue"
                                     size="sm"
-                                    onClick={handleSubmitComment}
+                                    onClick={() =>
+                                      handleSubmitComment(q.id, answer._id)
+                                    }
                                     alignSelf={{
                                       base: "stretch",
                                       sm: "flex-start",
