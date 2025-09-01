@@ -45,7 +45,7 @@ import { MootMap } from "./Components/mootCourtpage/mootCourtPage/instructionpag
 import { MootProposition } from "./Components/mootCourtpage/mootCourtPage/instructionpage/MootProposition.js";
 import { RegisterationForm } from "./Components/mootCourtpage/mootCourtPage/instructionpage/RegisterationForm.js";
 import StepsToRegister from "./Components/mootCourtpage/mootCourtPage/instructionpage/StepsToRegister.js";
-import { OrganizingCommittee } from "./Components/mootCourtpage/mootCourtPage/ORGANIZINGCOMMITTEE.js";
+import { OrganizingCommittee } from "./Components/mootCourtpage/mootCourtPage/OrganizingCommittee.js";
 import RulesAndRegulation from "./Components/mootCourtpage/mootCourtPage/instructionpage/RulesAndRegulation.js";
 import { BrochurePage } from "./Components/mootCourtpage/mootCourtPage/Brochure.js";
 import VideosPage from "./Components/LawPages/Videos&News/VideosNews.js";

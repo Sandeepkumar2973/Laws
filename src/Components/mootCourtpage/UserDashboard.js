@@ -179,21 +179,19 @@ const DashboardPage = () => {
             p={4}
             backgroundColor={"gray.50"}
           >
-            {/* <Button
-              fontSize="2xl"
-              fontWeight="bold"
-              mb={4}
-              backgroundColor={"green.500"}
-              p={2}
-              borderRadius="md"
-            >
-              Submit Your Memorials
-            </Button> */}
+            {mootUser?.memorial ? (
+              <Button
+                as="a"
+                href={mootUser?.memorial}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View your memorial
+              </Button>
+            ) : (
+              <MemorialManager userId={userId} />
+            )}
 
-            <MemorialManager userId={userId} />
-            {mootUser?.memorial
-              ? "You have submitted a memorial."
-              : "You have not submitted a memorial."}
             <Text
               fontSize="2xl"
               fontWeight="bold"
