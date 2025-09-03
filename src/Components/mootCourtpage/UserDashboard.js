@@ -170,7 +170,7 @@ const DashboardPage = () => {
         </Box>
 
         {/* Right Content */}
-        <Box w={{ base: "100%", md: "70%" }} p={6}>
+        <Box w={{ base: "100%", md: "70%" }} p={1}>
           {/* Team Members List */}
           <Box
             mb={6}
@@ -214,7 +214,14 @@ const DashboardPage = () => {
                   boxShadow="md"
                   bg="white"
                 >
-                  <Text fontSize="lg" fontWeight="bold" mb={4} color="blue.600">
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    mb={4}
+                    color="blue.600"
+                    backgroundColor="gray.200"
+                    padding="5px"
+                  >
                     {member?.role?.toUpperCase()}
                   </Text>
 

@@ -15,7 +15,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { SearchBox } from "./SearchBox";
-import { BiSolidLike } from "react-icons/bi";
+import { AiOutlineLike } from "react-icons/ai";
 import { IoIosShareAlt } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import AddQuestionPage from "./AddQue";
@@ -23,8 +23,8 @@ import axios from "axios";
 import * as mod from "../../../url";
 import Header from "../../Navbar/Header";
 import { MdInsertComment } from "react-icons/md";
+import { GiFrayedArrow } from "react-icons/gi";
 const userInfo = JSON.parse(localStorage.getItem("lawvsuserinfo"));
-
 export const QAndA = () => {
   const [categories, setCategories] = useState([]);
   const [questions, setQuestions] = useState([]);
@@ -32,45 +32,81 @@ export const QAndA = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [answers, setAnswers] = useState({}); // store answers by question id
-  const [showCommentBox, setShowCommentBox] = useState(false);
-  const [comment, setComment] = useState("");
+  const [activeCommentBoxId, setActiveCommentBoxId] = useState(null);
+  const [commentTexts, setCommentTexts] = useState({});
   const toast = useToast();
   const navigate = useNavigate();
   const userId = userInfo?.data?.userData._id;
   const userType = userInfo?.data?.userData.role;
-  console.log(filteredQuestions, "filteredQuestions");
+  // console.log(filteredQuestions, "filteredQuestions");
 
-  const handleSubmitComment = async (Qid, AnsId) => {
+  const handleLikeAnswer = async (Qid, AnsId) => {
     if (!userId) {
       toast({
         title: "Please login",
-        description: "You need to login before applying for a job.",
+        description: "You need to login to like an answer.",
         status: "warning",
         duration: 3000,
         isClosable: true,
       });
       return;
     }
+
     try {
-      await axios.post(
-        `${mod.api_url}/api/v1/question/questions/${Qid}/answers/${AnsId}/comments`,
-        {
-          text: comment,
-          userId,
-          userType,
-        }
+      const { data } = await axios.post(
+        `${mod.api_url}/api/v1/question/questions/${Qid}/answers/${AnsId}/like`,
+        { userId, userType }
       );
+
       toast({
-        title: "Comment submitted successfully",
+        title: data.message || "Action completed",
         status: "success",
         duration: 3000,
         isClosable: true,
       });
-      setComment("");
-      setShowCommentBox(false);
+
+      setQuestions((prev) =>
+        prev.map((q) =>
+          q.id === Qid
+            ? {
+                ...q,
+                answers: q.answers.map((ans) =>
+                  ans.id === AnsId
+                    ? {
+                        ...ans,
+                        likes: ans.likes.includes(userId)
+                          ? ans.likes.filter((id) => id !== userId) // unlike
+                          : [...ans.likes, userId], // like
+                      }
+                    : ans
+                ),
+              }
+            : q
+        )
+      );
+
+      setFilteredQuestions((prev) =>
+        prev.map((q) =>
+          q.id === Qid
+            ? {
+                ...q,
+                answers: q.answers.map((ans) =>
+                  ans.id === AnsId
+                    ? {
+                        ...ans,
+                        likes: ans.likes.includes(userId)
+                          ? ans.likes.filter((id) => id !== userId)
+                          : [...ans.likes, userId],
+                      }
+                    : ans
+                ),
+              }
+            : q
+        )
+      );
     } catch (error) {
       toast({
-        title: "Failed to submit comment",
+        title: "Failed to like answer",
         description: error.response?.data?.message || error.message,
         status: "error",
         duration: 3000,
@@ -78,50 +114,93 @@ export const QAndA = () => {
       });
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        // Fetch categories
-        const { data: categoryData } = await axios.get(
-          `${mod.api_url}/api/v1/category/get_all_category`
+  // const hasLiked = answers.likes?.some((like) => like.id === userId);
+
+  const handleSubmitComment = async (Qid, AnsId, text) => {
+    if (!text) return;
+    try {
+      await axios.post(
+        `${mod.api_url}/api/v1/question/questions/${Qid}/answers/${AnsId}/comments`,
+        { text, userId, userType }
+      );
+      toast({ title: "Comment submitted successfully", status: "success" });
+      setCommentTexts((prev) => ({ ...prev, [AnsId]: "" })); // clear only that one
+      fetchData();
+    } catch (error) {
+      toast({ title: "Failed to submit comment", status: "error" });
+    }
+  };
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      // Fetch categories
+      const { data: categoryData } = await axios.get(
+        `${mod.api_url}/api/v1/category/get_all_category`
+      );
+      setCategories(categoryData);
+
+      // Fetch questions
+      const { data: questionData } = await axios.get(
+        `${mod.api_url}/api/v1/question/get_all_questions`
+      );
+
+      const mappedData = questionData.map((item) => ({
+        id: item._id,
+        question: item.que,
+        slug: item.slug,
+        postedBy: item.postedBy?.id?.fullName || "Unknown",
+        answers: (item.answers || []).map((ans) => ({
+          id: ans._id,
+          text: ans.text,
+          postedBy:
+            ans.postedBy?.fullName || ans.postedBy?.id?.fullName || "Unknown", // ✅ string only
+          createdAt: ans.createdAt,
+          comments: (ans.comments || []).map((c) => ({
+            id: c._id,
+            text: c.text,
+            postedBy:
+              c.postedBy?.fullName || c.postedBy?.id?.fullName || "Unknown",
+            createdAt: c.createdAt,
+          })),
+          likes: ans.likes || [],
+        })),
+        answerCount: item.answers?.length || 0,
+        category:
+          categoryData.find((cat) => cat._id === item.category)?.name ||
+          "Unknown",
+      }));
+
+      setQuestions(mappedData);
+      if (selectedCategory && selectedCategory !== "All") {
+        setFilteredQuestions(
+          mappedData.filter(
+            (q) => q.category?.toLowerCase() === selectedCategory.toLowerCase()
+          )
         );
-        setCategories(categoryData);
-
-        // Fetch questions
-        const { data: questionData } = await axios.get(
-          `${mod.api_url}/api/v1/question/get_all_questions`
-        );
-
-        // console.log(questionData, "questionData");
-        const mappedData = questionData.map((item) => ({
-          id: item._id,
-          question: item.que,
-          slug: item.slug,
-          postedBy: item.postedBy?.id?.fullName || "Unknown",
-          answers: item.answers || [], // <-- add this
-          answerCount: item.answers?.length || 0,
-          category:
-            categoryData.find((cat) => cat._id === item.category)?.name ||
-            "Unknown",
-        }));
-
-        setQuestions(mappedData);
+      } else {
         setFilteredQuestions(mappedData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
       }
-      setLoading(false);
-    };
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
 
   // Filter by category
   const handleCategoryClick = (cat) => {
     setSelectedCategory(cat);
-    setFilteredQuestions(
-      questions.filter((q) => q.category.toLowerCase() === cat.toLowerCase())
-    );
+    if (cat === "All") {
+      setFilteredQuestions(questions);
+    } else {
+      setFilteredQuestions(
+        questions.filter((q) => q.category?.toLowerCase() === cat.toLowerCase())
+      );
+    }
   };
 
   // Submit your answer
@@ -150,7 +229,7 @@ export const QAndA = () => {
         duration: 3000,
         isClosable: true,
       });
-
+      fetchData();
       setAnswers((prev) => ({ ...prev, [id]: "" }));
     } catch (error) {
       toast({
@@ -162,6 +241,23 @@ export const QAndA = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Share handler
+  const handleShare = (que, answ) => {
+    const shareUrl = `${window.location.origin}/questions/${que}`;
+    if (navigator.share) {
+      navigator
+        .share({
+          title: "Check out this answer",
+          text: answ,
+          url: shareUrl,
+        })
+        .catch((err) => console.log("Share cancelled:", err));
+    } else {
+      navigator.clipboard.writeText(shareUrl);
+      alert("Answer link copied to clipboard ✅");
     }
   };
 
@@ -177,16 +273,24 @@ export const QAndA = () => {
     <>
       <Header />
       <Container maxW="7xl" py={10}>
-        <Flex gap={6} textAlign="center" justifyContent={"center"}>
-          <Heading mb={6}>Questions & Answers</Heading>
-          <Heading size="md" mb={4} color="goldenrod">
+        <Flex gap={6} align="center" justify="space-between" mb={6}>
+          <Heading>Questions & Answers</Heading>
+
+          <Box color="goldenrod">
             <AddQuestionPage />
-          </Heading>
+          </Box>
         </Flex>
+
         <Flex gap={6}>
           {/* LEFT COLUMN - Categories */}
-          <Box>
-            <Heading size="md" mb={4} color="goldenrod"></Heading>
+          <Box
+            textAlign="justify"
+            display={{ base: "none", md: "block" }} // 👈 mobile me hide, md+ pe show
+            w={{ md: "20%" }}
+          >
+            <Heading size="md" mb={4} color="goldenrod">
+              Top Questions Categories
+            </Heading>
             <List spacing={3}>
               {categories &&
                 categories.map((cat, idx) => (
@@ -196,11 +300,11 @@ export const QAndA = () => {
                     borderRadius="md"
                     cursor="pointer"
                     bg={selectedCategory === cat.name ? "goldenrod" : "gray.50"}
-                    color={selectedCategory === cat.name ? "white" : "black"}
+                    color={selectedCategory === cat?.name ? "white" : "blue"}
                     _hover={{ bg: "goldenrod", color: "white" }}
-                    onClick={() => handleCategoryClick(cat.slug)}
+                    onClick={() => handleCategoryClick(cat.name)}
                   >
-                    {cat.name}
+                    {cat?.name}
                   </ListItem>
                 ))}
             </List>
@@ -209,7 +313,7 @@ export const QAndA = () => {
           {/* RIGHT COLUMN - Q&A */}
           <Box
             flex="1"
-            w={{ base: "30%", md: "25%" }}
+            w={{ base: "100%", md: "80%" }} //  mobile pe full width, md+ pe 70%
             p={4}
             borderWidth="1px"
             borderRadius="md"
@@ -239,12 +343,15 @@ export const QAndA = () => {
                       align="left"
                       color="#762d00"
                       noOfLines={2}
-                      onClick={() => navigate(`/question/${q.id}`)}
+                      onClick={() => navigate(`/q-and-a/${q.slug}`)}
+                      cursor="pointer"
+                      display={"flex"}
                     >
-                      {q.question}
+                      <GiFrayedArrow /> &nbsp;Q. &nbsp;
+                      {q?.question}
                     </Text>
-                    <Text fontSize="sm" color="gray.600" mb={2} align="left">
-                      Posted by {q.postedBy}
+                    <Text fontSize="sm" color="black" mb={2} align="left">
+                      <b>Posted by</b> {q?.postedBy}
                     </Text>
                     <Heading
                       as="h4"
@@ -255,124 +362,167 @@ export const QAndA = () => {
                     >
                       Answer
                     </Heading>
+
                     {/* answers start here........ */}
                     {Array.isArray(q?.answers) && q?.answers?.length > 0 ? (
-                      q?.answers.map((answer, i) => (
-                        <>
-                          <Text
-                            key={i}
-                            fontSize="sm"
-                            color="gray.700"
-                            mb={1}
-                            pl={2}
-                            borderLeft="4px solid #762d00"
-                            bg={i % 2 === 0 ? "gray.50" : "white"}
-                            borderRadius="md"
-                            p={2}
-                            textAlign="justify"
-                          >
-                            {answer?.text}
-                          </Text>
-                          <Divider my={2} />
-                          <Flex
-                            flexWrap="wrap"
-                            columnGap={5}
-                            rowGap={3}
-                            alignItems="center"
-                          >
+                      q?.answers.map((answer, i) => {
+                        // 👇 Check if logged-in user already liked
+                        const hasLiked = answer.likes?.some(
+                          (likeId) => likeId?.toString() === userId?.toString()
+                        );
+                        const isCommentBoxOpen =
+                          activeCommentBoxId === answer.id;
+                        return (
+                          <React.Fragment key={answer.id || i}>
                             <Text
                               fontSize="sm"
-                              color="gray.500"
-                              display="flex"
-                              alignItems="center"
-                              gap={1}
+                              color="gray.700"
+                              mb={1}
+                              pl={2}
+                              borderLeft="4px solid #762d00"
+                              bg={i % 2 === 0 ? "gray.50" : "white"}
+                              borderRadius="md"
+                              p={5}
+                              textAlign="justify"
                             >
-                              likes <BiSolidLike />
-                            </Text>
-
-                            <Text
-                              fontSize="sm"
-                              color="gray.500"
-                              display="flex"
-                              alignItems="center"
-                              gap={1}
-                            >
-                              share <IoIosShareAlt />
-                            </Text>
-
-                            <Box
-                              flex={{ base: "1 1 100%", md: "0 1 60%" }}
-                              maxW={{ md: "600px" }}
-                              mx={{ base: 0, md: "auto" }}
-                              px={4}
-                              py={2}
-                            >
+                              {answer?.text}
                               <Text
-                                fontSize={{ base: "sm", md: "md" }}
-                                color="gray.500"
+                                fontSize="sm"
+                                color="black"
+                                m={2}
+                                align="right"
+                              >
+                                Answered by{" "}
+                                <b color="#dd5806ff">{answer?.postedBy}</b>
+                              </Text>
+                            </Text>
+
+                            {/* <Divider my={2} /> */}
+
+                            <Flex
+                              w="100%"
+                              // justifyContent="flex-end" //sabko right align
+                              align="center"
+                              flexWrap="wrap"
+                              gap={3}
+                            >
+                              {/* 👍 Like Button */}
+                              <Text
+                                as="span"
+                                fontSize="sm"
+                                color={hasLiked ? "white" : "gray.600"}
+                                bg={hasLiked ? "blue.500" : "gray.300"}
+                                px={3}
+                                py={1}
+                                borderRadius="md"
                                 display="flex"
                                 alignItems="center"
                                 gap={1}
                                 cursor="pointer"
                                 onClick={() =>
-                                  setShowCommentBox(!showCommentBox)
+                                  handleLikeAnswer(q.id, answer.id)
                                 }
-                                userSelect="none"
                               >
-                                comments <MdInsertComment />
+                                {answer?.likes?.length || 0} <AiOutlineLike />
                               </Text>
 
-                              {showCommentBox && (
-                                <Flex
-                                  mt={2}
-                                  gap={2}
-                                  flexDirection={{ base: "column", sm: "row" }}
-                                  alignItems={{ base: "stretch", sm: "center" }}
-                                >
-                                  <Textarea
-                                    placeholder="Write your comment..."
-                                    value={comment}
-                                    onChange={(e) => setComment(e.target.value)}
-                                    size="sm"
-                                    resize="vertical"
-                                    borderColor="gray.300"
-                                    width={{
-                                      base: "100%",
-                                      sm: "auto",
-                                      md: "100%",
-                                    }}
-                                    flex={1}
-                                  />
-                                  <Button
-                                    colorScheme="blue"
-                                    size="sm"
-                                    onClick={() =>
-                                      handleSubmitComment(q.id, answer._id)
-                                    }
-                                    alignSelf={{
-                                      base: "stretch",
-                                      sm: "flex-start",
-                                    }}
-                                    minW={{ base: "100%", sm: "auto" }}
-                                  >
-                                    Submit
-                                  </Button>
-                                </Flex>
-                              )}
-                            </Box>
+                              {/* 🔗 Share */}
+                              <Text
+                                as="span"
+                                fontSize="sm"
+                                color="gray.600"
+                                bg="gray.300"
+                                px={3}
+                                py={1}
+                                borderRadius="md"
+                                display="flex"
+                                alignItems="center"
+                                gap={1}
+                                cursor="pointer"
+                                onClick={() =>
+                                  handleShare(q?.slug, answer?.text)
+                                }
+                              >
+                                Share <IoIosShareAlt />
+                              </Text>
 
-                            <Text
-                              fontSize="sm"
-                              color="gray.500"
-                              textAlign="right"
-                              flex={{ base: "1 1 100%", md: "0 1 auto" }}
-                              ml={{ base: 0, md: "auto" }}
-                            >
-                              Please login to submit an answer.
-                            </Text>
-                          </Flex>
-                        </>
-                      ))
+                              {/* 💬 Comments */}
+                              <Box
+                                flex="1 1 auto"
+                                maxW={{ base: "100%", md: "600px" }}
+                              >
+                                <Text
+                                  fontSize={{ base: "sm", md: "md" }}
+                                  as="span"
+                                  color="blue.600"
+                                  px={2}
+                                  py={1}
+                                  borderRadius="md"
+                                  display="flex"
+                                  alignItems="center"
+                                  gap={1}
+                                  cursor="pointer"
+                                  onClick={() =>
+                                    setActiveCommentBoxId(
+                                      isCommentBoxOpen ? null : answer.id
+                                    )
+                                  }
+                                  userSelect="none"
+                                >
+                                  {answer?.comments?.length || 0} comments{" "}
+                                  <MdInsertComment />
+                                </Text>
+
+                                {isCommentBoxOpen && (
+                                  <Flex
+                                    mt={2}
+                                    gap={2}
+                                    flexDirection={{
+                                      base: "column",
+                                      sm: "row",
+                                    }}
+                                    alignItems={{
+                                      base: "stretch",
+                                      sm: "center",
+                                    }}
+                                  >
+                                    <Textarea
+                                      placeholder="Write your comment..."
+                                      value={commentTexts[answer?.id] || ""}
+                                      onChange={(e) =>
+                                        setCommentTexts((prev) => ({
+                                          ...prev,
+                                          [answer?.id]: e.target.value,
+                                        }))
+                                      }
+                                    />
+                                    <Button
+                                      colorScheme="blue"
+                                      size="sm"
+                                      onClick={() =>
+                                        handleSubmitComment(
+                                          q.id,
+                                          answer.id,
+                                          commentTexts[answer.id]
+                                        )
+                                      }
+                                    >
+                                      Submit
+                                    </Button>
+                                  </Flex>
+                                )}
+                              </Box>
+
+                              {/* Login check */}
+                              {!userId && (
+                                <Text fontSize="sm" color="gray.500" ml="auto">
+                                  Please login to submit an answer.
+                                </Text>
+                              )}
+                            </Flex>
+                          </React.Fragment>
+                        );
+                      })
                     ) : (
                       <Text
                         fontSize="sm"
@@ -383,12 +533,14 @@ export const QAndA = () => {
                         No answers yet.
                       </Text>
                     )}
+
                     {/* Answer input */}
                     <Box
                       margin="0px"
                       display="flex"
                       flexDirection="column"
                       alignItems="flex-start"
+                      marginTop="10px"
                     >
                       <Textarea
                         placeholder="Submit your answer"

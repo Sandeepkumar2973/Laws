@@ -84,7 +84,25 @@ const AddQuestionPage = () => {
       setLoading(false);
     }
   };
-
+  // get categories relagted questions for suggestion....
+  const getRelatedQuestions = async (catId) => {
+    try {
+      const { data } = await axios.get(
+        `${mod.api_url}/api/v1/question/questions?category=${catId}`
+      );
+      setText(data);
+      console.log("related questions", data);
+    } catch (error) {
+      toast({
+        title: "Getting failed",
+        description:
+          "Something went wrong while getting the related questions.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
   useEffect(() => {
     getAllCategory();
   }, []);
@@ -106,10 +124,9 @@ const AddQuestionPage = () => {
 
   return (
     <Box p={5}>
-      <Button colorScheme="teal" onClick={onOpen}>
+      <Button backgroundColor="goldenrod" onClick={onOpen}>
         Add Question
       </Button>
-
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
         <ModalContent>
@@ -130,7 +147,6 @@ const AddQuestionPage = () => {
                 ))}
               </Select>
             </FormControl>
-
             <FormControl>
               <FormLabel>Question</FormLabel>
               <Textarea
@@ -140,10 +156,8 @@ const AddQuestionPage = () => {
                 onChange={handleChange}
               />
             </FormControl>
-
             <Divider my={2} />
           </ModalBody>
-
           <ModalFooter>
             <Button
               colorScheme="teal"

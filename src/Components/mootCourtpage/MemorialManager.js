@@ -13,7 +13,7 @@ const MemorialManager = ({ userId }) => {
 
   // Countdown logic
   useEffect(() => {
-    const deadline = new Date("2025-09-05T23:59:59").getTime();
+    const deadline = new Date("2025-09-20T23:59:59").getTime();
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const diff = deadline - now;
@@ -96,7 +96,7 @@ const MemorialManager = ({ userId }) => {
   };
 
   return (
-    <Box textAlign="center" mt={5}>
+    <Box textAlign="center" mt={1}>
       {/* Hidden File Input */}
       <input
         type="file"
@@ -111,15 +111,25 @@ const MemorialManager = ({ userId }) => {
         fontSize="2xl"
         mb={3}
         fontWeight="bold"
-        bgGradient="linear(to-r, teal.400, blue.500, purple.500)"
+        // bgGradient="linear(to-r, teal.400, blue.500, purple.500)"
         bgClip="text"
       >
         {expired ? "Memorial Submission Closed " : `Time Left: ${timeLeft}`}
       </Text>
       <Text>
-        ! Note: You can submit your memorials here: And I inform you that You
-        can upload your memorial in pdf format and one time only. If You upload
-        then you will not be able to change.
+        <b
+          style={{
+            backgroundColor: "blue",
+            color: "white",
+            padding: "2px 6px",
+            borderRadius: "4px",
+          }}
+        >
+          Note:
+        </b>{" "}
+        You can submit your memorial here. Please note that you may upload your
+        memorial in PDF format only, and submissions are allowed just once. Once
+        uploaded, you will not be able to make any changes.
       </Text>
       <Button
         fontSize="xl"
@@ -130,6 +140,7 @@ const MemorialManager = ({ userId }) => {
         borderRadius="md"
         isDisabled={expired}
         onClick={handleClick}
+        m={2}
       >
         Submit Your Memorial
       </Button>

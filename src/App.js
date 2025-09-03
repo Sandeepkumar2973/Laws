@@ -53,6 +53,8 @@ import UserResetPass from "./Components/UserPage/UserResetPass.js";
 import AlljobsPage from "./Components/FrontPage/homepage/jobPage/AllJobsPage.js";
 import { SingleJobPage } from "./Components/FrontPage/homepage/jobPage/SingleJobPage.js";
 import AppliedJobPage from "./Components/UserPage/UserDtailsPage/AppliedJobPage.js";
+import HelpAndSupport from "./Components/UserPage/HelpAndSupport.js";
+import SingleQnAPage from "./Components/LawPages/QueAndAns/SingleQueAns.js";
 
 function App() {
   return (
@@ -91,6 +93,7 @@ function App() {
 
             <Route path="/exam-preparation" element={<ExamPreparation />} />
             <Route path="/q-and-a" element={<QAndA />} />
+            <Route path="/q-and-a/:slug" element={<SingleQnAPage />} />
             <Route path="/opportunity" element={<Opportunity />} />
             {/* ............... moot court pages............. */}
             <Route
@@ -119,6 +122,7 @@ function App() {
             <Route path="/user-auth-signup" element={<UserAuthSignup />} />
             <Route path="/user-auth-login" element={<UserAuthLogin />} />
             <Route path="/user-auth-forget" element={<UserResetPass />} />
+            <Route path="/user-help&suport" element={<HelpAndSupport />} />
             <Route
               path="/user-auth-dashboard"
               element={
