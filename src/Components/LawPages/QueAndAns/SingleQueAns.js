@@ -19,7 +19,7 @@ import * as mod from "../../../url.js";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Header from "../../Navbar/Header.js";
 import Footer from "../../Navbar/Footer.js";
-
+import { GiImbricatedArrows } from "react-icons/gi";
 export default function SingleQnAPage() {
   const [mainQuestion, setMainQuestion] = useState(null);
   const [answers, setAnswers] = useState([]);
@@ -34,7 +34,9 @@ export default function SingleQnAPage() {
   const userId = userInfo?.data?.userData._id;
   const userType = userInfo?.data?.userData.role;
   const navigate = useNavigate();
-  // Fetch single QnA
+  // console.log("answers", answers);
+  // console.log("mainQuestion", mainQuestion);\
+
   const fetchDatasingleQue = async () => {
     try {
       const { data } = await axios.get(
@@ -49,12 +51,10 @@ export default function SingleQnAPage() {
       setLoading(false);
     }
   };
-  // console.log("answers", answers);
-  // console.log("mainQuestion", mainQuestion);
+
   useEffect(() => {
     fetchDatasingleQue();
   }, [slug]);
-  // Handle Comment Submit
   // Handle Comment Submit
   const handleSubmitComment = async (Qid, AnsId) => {
     if (!userId) {
@@ -128,6 +128,11 @@ export default function SingleQnAPage() {
     }
   }, [mainQuestion?.category, mainQuestion?._id]);
 
+  // if current user is inclued in answers likes array then he already liked
+  const alreadyLiked = answers?.some((ans) =>
+    ans.likes?.some((l) => l.id === userId)
+  );
+  // console.log("alreadyLiked", alreadyLiked);
   if (loading) {
     return (
       <Flex justify="center" align="center" minH="100vh">
@@ -169,16 +174,25 @@ export default function SingleQnAPage() {
 
               return (
                 <Box key={ans._id} p={4} borderWidth="1px" rounded="lg">
-                  <Text fontWeight="bold" mb={2} textAlign="left">
-                    Answered by <b>{ans?.postedBy?.id?.fullName}</b>
+                  <Text
+                    fontWeight="bold"
+                    mb={2}
+                    textAlign="left"
+                    flex={1}
+                    display={"flex"}
+                  >
+                    <GiImbricatedArrows /> &nbsp;
+                    {/* Answered by{" "} */} By.
+                    <b>{ans?.postedBy?.id?.fullName}</b>
                   </Text>
+
                   <Text mb={3} textAlign="justify" p={3}>
+                    {/* <GiImbricatedArrows /> */}
                     {ans?.text}
                   </Text>
 
-                  {/* Actions */}
+                  {/* Like */}
                   <Flex gap={4} align="center" justifyContent="flex-end">
-                    {/* Like */}
                     <Text
                       as="span"
                       fontSize="sm"
@@ -309,7 +323,7 @@ export default function SingleQnAPage() {
           display={{ base: "none", md: "block" }} //  mobile me hide, md+ pe show
           w={{ md: "20%" }}
         >
-          <Heading size="md" mb={3}>
+          <Heading size="md" mb={3} color={"rgba(241, 130, 3, 0.78)"}>
             Related questions
           </Heading>
           <VStack align="start" spacing={3}>
@@ -322,9 +336,9 @@ export default function SingleQnAPage() {
                   onClick={() => navigate(`/q-and-a/${q.slug}`)}
                 >
                   {q.que}
-                </Text>
-                <Text fontSize="sm" color="gray.500">
-                  Posted by: {q.postedBy?.id?.fullName}
+                  <Text fontSize="sm" color="gray.300" textAlign={"right"}>
+                    Posted by: {q.postedBy?.id?.fullName}
+                  </Text>
                 </Text>
               </Box>
             ))}

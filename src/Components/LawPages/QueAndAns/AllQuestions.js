@@ -261,6 +261,8 @@ export const QAndA = () => {
     }
   };
 
+  // if current user is inclued in answers likes array then he already liked
+
   if (loading) {
     return (
       <Flex justify="center" align="center" minH="50vh">
@@ -366,10 +368,15 @@ export const QAndA = () => {
                     {/* answers start here........ */}
                     {Array.isArray(q?.answers) && q?.answers?.length > 0 ? (
                       q?.answers.map((answer, i) => {
-                        // 👇 Check if logged-in user already liked
-                        const hasLiked = answer.likes?.some(
-                          (likeId) => likeId?.toString() === userId?.toString()
-                        );
+                        const likeUserIds =
+                          answer?.likes?.map((likeId) =>
+                            likeId?.id
+                              ? likeId.id.toString()
+                              : likeId.toString()
+                          ) || [];
+
+                        const hasLikedUser = likeUserIds.includes(userId);
+
                         const isCommentBoxOpen =
                           activeCommentBoxId === answer.id;
                         return (
@@ -405,13 +412,15 @@ export const QAndA = () => {
                               align="center"
                               flexWrap="wrap"
                               gap={3}
+                              m={3}
+                              p={1}
                             >
-                              {/* 👍 Like Button */}
+                              {/*  Like Button */}
                               <Text
                                 as="span"
                                 fontSize="sm"
-                                color={hasLiked ? "white" : "gray.600"}
-                                bg={hasLiked ? "blue.500" : "gray.300"}
+                                color={hasLikedUser ? "white" : "gray.600"}
+                                bg={hasLikedUser ? "blue.500" : "gray.300"}
                                 px={3}
                                 py={1}
                                 borderRadius="md"
@@ -426,7 +435,7 @@ export const QAndA = () => {
                                 {answer?.likes?.length || 0} <AiOutlineLike />
                               </Text>
 
-                              {/* 🔗 Share */}
+                              {/*  Share */}
                               <Text
                                 as="span"
                                 fontSize="sm"
@@ -446,7 +455,7 @@ export const QAndA = () => {
                                 Share <IoIosShareAlt />
                               </Text>
 
-                              {/* 💬 Comments */}
+                              {/*  Comments */}
                               <Box
                                 flex="1 1 auto"
                                 maxW={{ base: "100%", md: "600px" }}

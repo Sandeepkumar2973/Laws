@@ -17,10 +17,12 @@ import {
   Divider,
   Select,
   Input,
+  Text,
 } from "@chakra-ui/react";
 import axios from "axios";
 import * as mod from "../../../url";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 const userInfo = JSON.parse(localStorage.getItem("lawvsuserinfo"));
 // const token = userInfo?.token;
 
@@ -31,12 +33,25 @@ const AddQuestionPage = () => {
   const [allCategory, setAllCategory] = useState([]);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
-  const [text, setText] = useState("");
   const textareaRef = useRef(null);
   const userId = userInfo?.data?.userData._id;
   const userType = userInfo?.data?.userData.role;
+  const [similarQuestions, setSimilarQuestions] = useState([]);
+  const debounceRef = useRef(null);
+  const navigate = useNavigate();
+  const fetchSimilarQuestions = async (text) => {
+    if (!text) return;
+    try {
+      const { data } = await axios.post(
+        `${mod.api_url}/api/v1/question/similarQue`,
+        { question: text }
+      );
+      setSimilarQuestions(data.questions);
+    } catch (error) {
+      console.error("Error fetching similar questions:", error);
+    }
+  };
 
-  // add quetions
   const handleSubmit = async () => {
     try {
       await axios.post(`${mod.api_url}/api/v1/question/create_questions`, {
@@ -85,24 +100,7 @@ const AddQuestionPage = () => {
     }
   };
   // get categories relagted questions for suggestion....
-  const getRelatedQuestions = async (catId) => {
-    try {
-      const { data } = await axios.get(
-        `${mod.api_url}/api/v1/question/questions?category=${catId}`
-      );
-      setText(data);
-      console.log("related questions", data);
-    } catch (error) {
-      toast({
-        title: "Getting failed",
-        description:
-          "Something went wrong while getting the related questions.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  };
+
   useEffect(() => {
     getAllCategory();
   }, []);
@@ -114,6 +112,12 @@ const AddQuestionPage = () => {
       val += "?";
     }
     setQuestion(val);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    // Run API after 500ms of inactivity
+    debounceRef.current = setTimeout(() => {
+      fetchSimilarQuestions(val);
+    }, 2000);
     requestAnimationFrame(() => {
       if (textareaRef.current && val.endsWith("?")) {
         const pos = val.length - 1;
@@ -121,7 +125,6 @@ const AddQuestionPage = () => {
       }
     });
   };
-
   return (
     <Box p={5}>
       <Button backgroundColor="goldenrod" onClick={onOpen}>
@@ -141,12 +144,13 @@ const AddQuestionPage = () => {
                 onChange={(e) => setCategory(e.target.value)}
               >
                 {allCategory?.map((item, index) => (
-                  <option key={index} value={item._id || item}>
-                    {item.name || item}
+                  <option key={index} value={item._id}>
+                    {item.name}
                   </option>
                 ))}
               </Select>
             </FormControl>
+
             <FormControl>
               <FormLabel>Question</FormLabel>
               <Textarea
@@ -157,6 +161,27 @@ const AddQuestionPage = () => {
               />
             </FormControl>
             <Divider my={2} />
+
+            {similarQuestions.map((q) => (
+              <Box
+                key={q._id}
+                borderWidth="1px"
+                borderRadius="md"
+                paddingLeft={1}
+              >
+                <Text
+                  color="blue.500"
+                  cursor="pointer"
+                  _hover={{ textDecoration: "underline" }}
+                  onClick={() => navigate(`/q-and-a/${q.slug}`)}
+                >
+                  {q.que}
+                  <Text fontSize="sm" color="gray.500" align={"right"} ml={2}>
+                    Ans: {q.answersCount || 0}
+                  </Text>
+                </Text>
+              </Box>
+            ))}
           </ModalBody>
           <ModalFooter>
             <Button

@@ -1,46 +1,47 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Button, useToast, Spinner, Text, Box } from "@chakra-ui/react";
+import { Button, useToast, Spinner, Text, Box, Flex } from "@chakra-ui/react";
 import axios from "axios";
-import dayjs from "dayjs";
 import * as mode from "../../url";
+
 const MemorialManager = ({ userId }) => {
   const toast = useToast();
   const fileInputRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [memorial, setMemorial] = useState(null);
-  const [timeLeft, setTimeLeft] = useState("");
+  const [timeLeft, setTimeLeft] = useState({
+    days: "0",
+    hours: "0",
+    minutes: "0",
+    seconds: "0",
+  });
   const [expired, setExpired] = useState(false);
 
   // Countdown logic
   useEffect(() => {
-    const deadline = new Date("2025-09-20T23:59:59").getTime();
+    const deadline = new Date("2025-09-22T23:59:59").getTime();
+
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const diff = deadline - now;
 
       if (diff <= 0) {
         setExpired(true);
-        setTimeLeft("Expired");
         clearInterval(interval);
       } else {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+        setTimeLeft({
+          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((diff % (1000 * 60)) / 1000),
+        });
       }
     }, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // File input trigger
   const handleClick = () => fileInputRef.current.click();
 
-  // File upload
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -72,7 +73,6 @@ const MemorialManager = ({ userId }) => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      // ✅ Store memorial + expiry (frontend only, +5 days)
       setMemorial(res.data.data.memorial);
 
       toast({
@@ -95,9 +95,28 @@ const MemorialManager = ({ userId }) => {
     }
   };
 
+  const TimeBox = ({ value, label, gradient }) => (
+    <Box
+      p={4}
+      m={1}
+      minW="70px"
+      borderRadius="md"
+      bgGradient={gradient}
+      color="white"
+      fontWeight="bold"
+      fontSize="2xl"
+      textAlign="center"
+      boxShadow="lg"
+      transition="transform 0.3s"
+      _hover={{ transform: "scale(1.1)" }}
+    >
+      <Text>{value}</Text>
+      <Text fontSize="sm">{label}</Text>
+    </Box>
+  );
+
   return (
-    <Box textAlign="center" mt={1}>
-      {/* Hidden File Input */}
+    <Box textAlign="center" mt={5}>
       <input
         type="file"
         ref={fileInputRef}
@@ -105,17 +124,46 @@ const MemorialManager = ({ userId }) => {
         accept=".pdf,.doc,.docx"
         onChange={handleFileChange}
       />
-
-      {/* Upload Button or Countdown */}
       <Text
-        fontSize="2xl"
-        mb={3}
-        fontWeight="bold"
-        // bgGradient="linear(to-r, teal.400, blue.500, purple.500)"
-        bgClip="text"
+        backgroundColor="yellow.400"
+        p={3}
+        borderRadius="md"
+        mb={5}
+        fontSize="xl"
       >
-        {expired ? "Memorial Submission Closed " : `Time Left: ${timeLeft}`}
+        Time Countdown
       </Text>
+      <Flex justify="center" mb={5} wrap="wrap">
+        {expired ? (
+          <Text fontSize="2xl" fontWeight="bold" color="red.500">
+            Memorial Submission Closed
+          </Text>
+        ) : (
+          <>
+            <TimeBox
+              value={timeLeft.days}
+              label="Days"
+              gradient="linear(to-r, teal.400, blue.500)"
+            />
+            <TimeBox
+              value={timeLeft.hours}
+              label="Hours"
+              gradient="linear(to-r, pink.400, purple.500)"
+            />
+            <TimeBox
+              value={timeLeft.minutes}
+              label="Minutes"
+              gradient="linear(to-r, orange.400, red.500)"
+            />
+            <TimeBox
+              value={timeLeft.seconds}
+              label="Seconds"
+              gradient="linear(to-r, yellow.400, orange.500)"
+            />
+          </>
+        )}
+      </Flex>
+
       <Text>
         <b
           style={{
@@ -131,6 +179,7 @@ const MemorialManager = ({ userId }) => {
         memorial in PDF format only, and submissions are allowed just once. Once
         uploaded, you will not be able to make any changes.
       </Text>
+
       <Button
         fontSize="xl"
         fontWeight="bold"
@@ -141,8 +190,15 @@ const MemorialManager = ({ userId }) => {
         isDisabled={expired}
         onClick={handleClick}
         m={2}
+        _hover={{ backgroundColor: expired ? "gray.400" : "green.600" }}
       >
-        Submit Your Memorial
+        {loading ? (
+          <Spinner />
+        ) : memorial ? (
+          "Memorial Uploaded"
+        ) : (
+          "Submit Your Memorial"
+        )}
       </Button>
     </Box>
   );

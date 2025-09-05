@@ -185,6 +185,13 @@ const DashboardPage = () => {
                 href={mootUser?.memorial}
                 target="_blank"
                 rel="noopener noreferrer"
+                colorScheme="teal"
+                mb={4}
+                _hover={{
+                  textDecoration: "none",
+                  opacity: 0.9,
+                  color: "white",
+                }}
               >
                 View your memorial
               </Button>
