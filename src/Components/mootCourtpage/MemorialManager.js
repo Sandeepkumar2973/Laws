@@ -133,6 +133,21 @@ const MemorialManager = ({ userId }) => {
       >
         Time Countdown
       </Text>
+      <Text>
+        <b
+          style={{
+            backgroundColor: "blue",
+            color: "white",
+            padding: "2px 6px",
+            borderRadius: "4px",
+          }}
+        >
+          Note:
+        </b>{" "}
+        You can submit your memorial here. Please note that you may upload your
+        memorial in PDF format only, and submissions are allowed just once. Once
+        uploaded, you will not be able to make any changes.
+      </Text>
       <Flex justify="center" mb={5} wrap="wrap">
         {expired ? (
           <Text fontSize="2xl" fontWeight="bold" color="red.500">
@@ -163,22 +178,6 @@ const MemorialManager = ({ userId }) => {
           </>
         )}
       </Flex>
-
-      <Text>
-        <b
-          style={{
-            backgroundColor: "blue",
-            color: "white",
-            padding: "2px 6px",
-            borderRadius: "4px",
-          }}
-        >
-          Note:
-        </b>{" "}
-        You can submit your memorial here. Please note that you may upload your
-        memorial in PDF format only, and submissions are allowed just once. Once
-        uploaded, you will not be able to make any changes.
-      </Text>
 
       <Button
         fontSize="xl"

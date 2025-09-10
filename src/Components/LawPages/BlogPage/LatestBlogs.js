@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "./../../Navbar/Header";
-import Footer from "./../../Navbar/Footer";
+import Header from "../../Navbar/Header";
+import Footer from "../../Navbar/Footer";
 import {
   Box,
   Breadcrumb,
@@ -11,19 +11,19 @@ import {
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
-import AllStories from "./AllStories";
-import SingleStory from "./SingleStory";
-export const TopStories = () => {
+import AllStories from "./AllBlogs";
+
+export const LatestBlogs = () => {
   return (
     <>
       <Header />
       <Box
         bgGradient="linear(to-r, gray.50, gray.100)"
-        py={{ base: 12, md: 20 }}
+        py={{ base: 5, md: 10 }}
         textAlign="center"
       >
         <Heading as="h1" size="2xl" mb={2}>
-         Top Stories
+          Top Stories
         </Heading>
         <Text fontSize="2xl" color="orange.600" fontWeight="bold">
           Top Stories Content Goes Here
@@ -48,7 +48,6 @@ export const TopStories = () => {
         </Breadcrumb>
       </Box>
       <AllStories />
-      <SingleStory/>
       <Footer />
     </>
   );

@@ -76,10 +76,22 @@ const JobsMenu = () => {
           Search Jobs
         </MenuButton>
         <MenuList>
-          <MenuItem>Jobs By Practice Area</MenuItem>
-          <MenuItem>Jobs By Location</MenuItem>
-          <MenuItem>Jobs By Qualification</MenuItem>
-          <MenuItem>Browse All Jobs</MenuItem>
+          <MenuItem>
+            <ChakraLink as={RouterLink} to={"/get-practice-area"}>
+              Jobs By Practice Area
+            </ChakraLink>
+          </MenuItem>
+          <MenuItem>
+            {" "}
+            <ChakraLink as={RouterLink} to={"/get-law_degrees"}>
+              Jobs By Qualification
+            </ChakraLink>
+          </MenuItem>
+          <MenuItem>
+            <ChakraLink as={RouterLink} to={"/get-all-jobs"}>
+              Browse All Jobs
+            </ChakraLink>
+          </MenuItem>
         </MenuList>
       </Menu>
     </Box>
@@ -267,7 +279,7 @@ const TopHeader = React.forwardRef((props, ref) => (
           padding={2}
           px={6}
         >
-          Job/Internship Seeker
+          Login/Register
         </ChakraLink>
         <ChakraLink
           as={RouterLink}
@@ -357,7 +369,7 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
             as="nav"
           >
             <MootCourtMenu />
-            {/* <JobsMenu /> */}
+            <JobsMenu />
             <ChakraLink
               as={RouterLink}
               to="/legal-draft"
@@ -372,47 +384,63 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
               textDecoration="none"
               _hover={{ textDecoration: "none" }}
             >
-              Videos&News
+              Videos
             </ChakraLink>
             <ChakraLink
               as={RouterLink}
-              to="/top-stories"
+              to="/all-articles"
               textDecoration="none"
               _hover={{ textDecoration: "none" }}
             >
-              {/* Top Stories */}
+              Articles
             </ChakraLink>
             <ChakraLink
+              as={RouterLink}
+              to="/all-blogs"
+              textDecoration="none"
+              _hover={{ textDecoration: "none" }}
+            >
+              Blogs
+            </ChakraLink>
+            <ChakraLink
+              as={RouterLink}
+              to="/all-news"
+              textDecoration="none"
+              _hover={{ textDecoration: "none" }}
+            >
+              News
+            </ChakraLink>
+            {/* <ChakraLink
               as={RouterLink}
               to="/library"
               textDecoration="none"
               _hover={{ textDecoration: "none" }}
             >
-              {/* Library */}
-            </ChakraLink>
-            <ChakraLink
+              Library
+            </ChakraLink> */}
+            {/* <ChakraLink
               as={RouterLink}
               to="/opportunity"
               textDecoration="none"
               _hover={{ textDecoration: "none" }}
             >
-              {/* Opportunity */}
-            </ChakraLink>
-            <ChakraLink
+              Opportunity
+            </ChakraLink> */}
+            {/* <ChakraLink
               as={RouterLink}
               to="/exam-preparation"
               textDecoration="none"
               _hover={{ textDecoration: "none" }}
             >
-              {/* Exams Preparation */}
-            </ChakraLink>
+              Exams Preparation
+            </ChakraLink> */}
             <ChakraLink
               as={RouterLink}
               to="/q-and-a"
               textDecoration="none"
               _hover={{ textDecoration: "none" }}
             >
-              {/* Q & A */}
+              Q & A
             </ChakraLink>
             <ChakraLink
               as={RouterLink}
@@ -446,6 +474,33 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
           <ChakraLink as={RouterLink} to="/videos-news" marginLeft={3}>
             Videos&News
           </ChakraLink>
+          <ChakraLink
+            as={RouterLink}
+            to="/all-articles"
+            textDecoration="none"
+            _hover={{ textDecoration: "none" }}
+            marginLeft={3}
+          >
+            Articles
+          </ChakraLink>
+          <ChakraLink
+            as={RouterLink}
+            to="/all-blogs"
+            textDecoration="none"
+            _hover={{ textDecoration: "none" }}
+            marginLeft={3}
+          >
+            Blogs
+          </ChakraLink>
+          <ChakraLink
+            as={RouterLink}
+            to="/all-news"
+            textDecoration="none"
+            _hover={{ textDecoration: "none" }}
+            marginLeft={3}
+          >
+            News
+          </ChakraLink>
           {/* <ChakraLink as={RouterLink} to="/top-stories" marginLeft={3}>
             Top Stories
           </ChakraLink> */}
@@ -459,9 +514,9 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
           {/* <ChakraLink as={RouterLink} to="/exam-preparation" marginLeft={3}>
             Exams Preparation
           </ChakraLink> */}
-          {/* <ChakraLink as={RouterLink} to="/q-and-a" marginLeft={3}>
+          <ChakraLink as={RouterLink} to="/q-and-a" marginLeft={3}>
             Q & A
-          </ChakraLink> */}
+          </ChakraLink>
           {/* <ChakraLink as={RouterLink} to="/contact" marginLeft={3}>
             Contact Us
           </ChakraLink> */}

@@ -72,7 +72,7 @@ export default function UserAuthLogin() {
         localStorage.removeItem("MootUserInfo");
         localStorage.removeItem("lawvsadmininfo");
 
-        navigate("/user-auth-dashboard");
+        navigate("/");
         window.location.reload();
         setEmail("");
         setPassword("");
@@ -94,7 +94,7 @@ export default function UserAuthLogin() {
   const leftContent = (
     <>
       <Heading mb={6} fontSize="xl" color="orange.700">
-        <LockIcon mr={2} /> Job/Internship Seeker Login
+        <LockIcon mr={2} /> User Login
       </Heading>
       <form onSubmit={submitHandler}>
         <VStack spacing={4} align="stretch">

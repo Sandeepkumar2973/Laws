@@ -27,6 +27,7 @@ import Navbar from "../../Navbar/Navbar";
 import Sidebar from "../../Sidebar";
 import parse from "html-react-parser";
 import LocationSelector from "../../../utils/LocationSelector";
+import { Form } from "react-router-dom";
 
 const SIDEBAR_WIDTH = "250px";
 const steps = [
@@ -70,7 +71,7 @@ const CreateJob = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Step-wise validation
+  //  Step-wise validation
   const validateStep = () => {
     switch (step) {
       case 0:
@@ -123,7 +124,7 @@ const CreateJob = () => {
       postedDate: new Date(),
     };
 
-    console.log("📤 Sending Payload =>", payload);
+    // console.log("📤 Sending Payload =>", payload);
 
     try {
       await axios.post(`${mod.api_url}/api/v1/job/create-job`, payload, {
@@ -171,7 +172,8 @@ const CreateJob = () => {
   const fields = [
     { key: "title", label: "Job Title" },
     { key: "company", label: "Company" },
-    { key: "location", label: "Location" },
+    { key: "state", label: "state" },
+    { key: "city", label: "city" },
     { key: "openings", label: "Openings" },
     { key: "salaryRange", label: "Salary Range" },
     { key: "jobType", label: "Job Type" },
@@ -179,11 +181,12 @@ const CreateJob = () => {
     { key: "experienceRequired", label: "Experience Required" },
     { key: "skillsRequired", label: "Skills Required" },
     { key: "description", label: "Description", isHTML: true },
-    { key: "industry", label: "Industry" },
+    { key: "industry", label: "Practice Area" },
     { key: "deadline", label: "Application Deadline" },
     { key: "education", label: "Education" },
     { key: "interviewMethod", label: "Interview Method" },
   ];
+
   return (
     <>
       <Navbar />
@@ -237,209 +240,211 @@ const CreateJob = () => {
         <Stack spacing={4}>
           {step === 0 && (
             <>
-              <FormLabel>Job Title / Designation</FormLabel>
-              <Select
-                placeholder="Select Job Title / Designation"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                isRequired
-              >
-                <option value="legal-intern">Legal Intern</option>
-                <option value="judicial-intern">Judicial Intern</option>
-                <option value="ngo-intern">NGO/Policy Intern</option>
-                <option value="junior-advocate">Junior Advocate</option>
-                <option value="associate">Associate (Law Firm)</option>
-                <option value="litigation-associate">
-                  Litigation Associate
-                </option>
-                <option value="legal-researcher">Legal Researcher</option>
-                <option value="advocate">Advocate (Litigation)</option>
-                <option value="corporate-lawyer">
-                  Corporate Lawyer (In-house)
-                </option>
-                <option value="legal-advisor">Legal Advisor</option>
-                <option value="legal-officer">
-                  Legal Officer (PSU/Bank/Insurance)
-                </option>
-                <option value="public-prosecutor">Public Prosecutor</option>
-                <option value="arbitration-specialist">
-                  Arbitration & Dispute Resolution Specialist
-                </option>
-                <option value="law-lecturer">Law Lecturer / Academic</option>
-                <option value="policy-analyst">Policy Analyst</option>
-              </Select>
-
-              <FormLabel>Location</FormLabel>
-              <LocationSelector
-                onChange={(loc) => {
-                  setFormData((prev) => ({
-                    ...prev,
-                    country: loc.country,
-                    state: loc.state,
-                    city: loc.city,
-                  }));
-                }}
-              />
-
-              {/* <Box mt={6}>
-                <Text>Country: {location.country}</Text>
-                <Text>State: {location.state}</Text>
-                <Text>City: {location.city}</Text>
-              </Box> */}
-              {/* <Input
-                name="location"
-                value={formData.location}
-                onChange={handleChange}
-                list="locations"
-                placeholder="Enter location"
-                isRequired
-              />
-              <datalist id="locations">
-                {citySuggestions.map((city) => (
-                  <option key={city} value={city} />
-                ))}
-              </datalist> */}
-
-              <Input
-                placeholder="Openings"
-                name="openings"
-                type="number"
-                value={formData.openings}
-                onChange={handleChange}
-                isRequired
-              />
-
-              <Select
-                placeholder="Salary Range "
-                name="salaryRange"
-                value={formData.salaryRange}
-                onChange={handleChange}
-                isRequired
-              >
-                <option value="₹0 – ₹2 LPA">₹0 – ₹2 LPA</option>
-                <option value="₹2 – ₹5 LPA">₹2 – ₹5 LPA</option>
-                <option value="₹5 – ₹10 LPA">₹5 – ₹10 LPA</option>
-                <option value="₹10 – ₹20 LPA">₹10 – ₹20 LPA</option>
-                <option value="₹20 – ₹30 LPA">₹20 – ₹30 LPA</option>
-                <option value="₹30 LPA & above">₹30 LPA & above</option>
-              </Select>
-
-              <Select
-                name="workMode"
-                value={formData.workMode}
-                onChange={handleChange}
-                placeholder="Select work mode"
-                isRequired
-              >
-                <option value="Remote">Remote</option>
-                <option value="Hybrid">Hybrid</option>
-                <option value="Onsite">On-Site</option>
-              </Select>
-
-              <FormControl>
-                <FormLabel>Application Deadline</FormLabel>
-                <Input
-                  type="date"
-                  name="deadline"
-                  value={formData.deadline}
+              <FormControl isRequired>
+                <FormLabel>Job Title / Designation</FormLabel>
+                <Select
+                  placeholder="Select Job Title / Designation"
+                  name="title"
+                  value={formData.title}
                   onChange={handleChange}
-                  border="1px solid #ccc"
                   isRequired
+                >
+                  <option value="legal-intern">Legal Intern</option>
+                  <option value="judicial-intern">Judicial Intern</option>
+                  <option value="ngo-intern">NGO/Policy Intern</option>
+                  <option value="junior-advocate">Junior Advocate</option>
+                  <option value="associate">Associate (Law Firm)</option>
+                  <option value="litigation-associate">
+                    Litigation Associate
+                  </option>
+                  <option value="legal-researcher">Legal Researcher</option>
+                  <option value="advocate">Advocate (Litigation)</option>
+                  <option value="corporate-lawyer">
+                    Corporate Lawyer (In-house)
+                  </option>
+                  <option value="legal-advisor">Legal Advisor</option>
+                  <option value="legal-officer">
+                    Legal Officer (PSU/Bank/Insurance)
+                  </option>
+                  <option value="public-prosecutor">Public Prosecutor</option>
+                  <option value="arbitration-specialist">
+                    Arbitration & Dispute Resolution Specialist
+                  </option>
+                  <option value="law-lecturer">Law Lecturer / Academic</option>
+                  <option value="policy-analyst">Policy Analyst</option>
+                </Select>
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>Location</FormLabel>
+                <LocationSelector
+                  onChange={(loc) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      country: loc.country,
+                      state: loc.state,
+                      city: loc.city,
+                    }));
+                  }}
                 />
               </FormControl>
+              <Flex
+                gap={4}
+                direction={{ base: "column", md: "row" }} // mobile = column, desktop = row
+                w="100%"
+              >
+                <Input
+                  placeholder="Openings"
+                  name="openings"
+                  type="number"
+                  value={formData.openings}
+                  onChange={handleChange}
+                  isRequired
+                />
+
+                <Select
+                  placeholder="Salary Range "
+                  name="salaryRange"
+                  value={formData.salaryRange}
+                  onChange={handleChange}
+                  isRequired
+                >
+                  <option value="₹0 – ₹2 LPA">₹0 – ₹2 LPA</option>
+                  <option value="₹2 – ₹5 LPA">₹2 – ₹5 LPA</option>
+                  <option value="₹5 – ₹10 LPA">₹5 – ₹10 LPA</option>
+                  <option value="₹10 – ₹20 LPA">₹10 – ₹20 LPA</option>
+                  <option value="₹20 – ₹30 LPA">₹20 – ₹30 LPA</option>
+                  <option value="₹30 LPA & above">₹30 LPA & above</option>
+                </Select>
+              </Flex>
+              <Flex gap={4} direction={{ base: "column", md: "row" }} w="100%">
+                <FormControl isRequired>
+                  <FormLabel>Work Mode</FormLabel>
+                  <Select
+                    name="workMode"
+                    value={formData.workMode}
+                    onChange={handleChange}
+                    placeholder="Select work mode"
+                    isRequired
+                  >
+                    <option value="Remote">Remote</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Onsite">On-Site</option>
+                  </Select>
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel>Application Deadline</FormLabel>
+                  <Input
+                    type="date"
+                    name="deadline"
+                    value={formData.deadline}
+                    onChange={handleChange}
+                    border="1px solid #ccc"
+                    isRequired
+                  />
+                </FormControl>
+              </Flex>
             </>
           )}
 
           {step === 1 && (
             <>
-              <FormLabel>Company Name</FormLabel>
-              <Input
-                placeholder="Company"
-                name="company"
-                value={formData.company}
-                onChange={handleChange}
-                isRequired
-              />
-              <Select
-                placeholder="Select Interview method"
-                name="interviewMethod"
-                value={formData.interviewMethod}
-                onChange={handleChange}
-              >
-                <option value="Walking">Walking</option>
-                <option value="Virtual">Virtual</option>
-              </Select>
-              <Select
-                placeholder="Select Industry"
-                name="industry"
-                value={formData.industry}
-                onChange={handleChange}
-              >
-                <option value="Law">Law</option>
-                <option value="Other">Other</option>
-              </Select>
+              <FormControl isRequired>
+                <FormLabel variant="floating" id="username" isRequired>
+                  Company Name{" "}
+                </FormLabel>
+
+                <Input
+                  placeholder="Company"
+                  name="company"
+                  value={formData.company}
+                  onChange={handleChange}
+                  isRequired
+                />
+              </FormControl>
+
+              <Flex gap={4} direction={{ base: "column", md: "row" }} w="100%">
+                <FormControl isRequired>
+                  <FormLabel>interview Method </FormLabel>
+                  <Select
+                    placeholder="Select Interview method"
+                    name="interviewMethod"
+                    value={formData.interviewMethod}
+                    onChange={handleChange}
+                  >
+                    <option value="Walking">Walking</option>
+                    <option value="Virtual">Virtual</option>
+                  </Select>
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Practice Area</FormLabel>
+                  <Select
+                    placeholder="Select Practice Area"
+                    name="industry"
+                    value={formData.industry}
+                    onChange={handleChange}
+                  >
+                    {industries.map((ind) => (
+                      <option key={ind.value} value={ind.value}>
+                        {ind.label}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Flex>
             </>
           )}
 
           {step === 2 && (
             <>
-              <Select
-                name="jobType"
-                value={formData.jobType}
-                onChange={handleChange}
-                placeholder="Select Job Type"
-              >
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Internship">Internship</option>
-                <option value="Remote">Remote</option>
-                <option value="Contract">Contract</option>
-              </Select>
+              <Flex gap={4} direction={{ base: "column", md: "row" }} w="100%">
+                <FormControl isRequired>
+                  <FormLabel>Job Type</FormLabel>
+                  <Select
+                    name="jobType"
+                    value={formData.jobType}
+                    onChange={handleChange}
+                    placeholder="Select Job Type"
+                  >
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Remote">Remote</option>
+                    <option value="Contract">Contract</option>
+                  </Select>
+                </FormControl>
 
-              <Select
-                name="experienceRequired"
-                value={formData.experienceRequired}
-                onChange={handleChange}
-                placeholder="Select Experience Level"
-              >
-                <option value="Intern">Intern</option>
-                <option value="Fresher">Fresher</option>
-                <option value="1-2 years">1-2 years</option>
-                <option value="2-5 years">2-5 years</option>
-                <option value="5+ years">5+ years</option>
-              </Select>
-
-              <Select
-                name="education"
-                value={formData.education}
-                onChange={handleChange}
-                placeholder="Select Education"
-              >
-                <option value="LLB">LLB (Bachelor of Laws)</option>
-                <option value="BALLB">BA LLB (Integrated)</option>
-                <option value="BBA LLB">BBA LLB (Integrated)</option>
-                <option value="BCom LLB">B.Com LLB (Integrated)</option>
-                <option value="BSc LLB">B.Sc LLB (Integrated)</option>
-                <option value="BACLLB">BA CLLB</option>
-                <option value="LLM">LLM (Master of Laws)</option>
-                <option value="LLM Business Law">LLM in Business Law</option>
-                <option value="LLM Criminal Law">LLM in Criminal Law</option>
-                <option value="LLM Constitutional Law">
-                  LLM in Constitutional Law
-                </option>
-                <option value="LLM International Law">
-                  LLM in International Law
-                </option>
-                <option value="LLM Human Rights">
-                  LLM in Human Rights Law
-                </option>
-                <option value="LLM Corporate Law">LLM in Corporate Law</option>
-                <option value="LLM Intellectual Property Law">
-                  LLM in Intellectual Property Law
-                </option>
-              </Select>
-
+                <FormControl isRequired>
+                  <FormLabel>Experience Required</FormLabel>
+                  <Select
+                    name="experienceRequired"
+                    value={formData.experienceRequired}
+                    onChange={handleChange}
+                    placeholder="Select Experience Level"
+                  >
+                    <option value="Intern">Intern</option>
+                    <option value="Fresher">Fresher</option>
+                    <option value="1-2 years">1-2 years</option>
+                    <option value="2-5 years">2-5 years</option>
+                    <option value="5+ years">5+ years</option>
+                  </Select>
+                </FormControl>
+              </Flex>
+              <FormLabel>
+                Highest Education
+                <Select
+                  name="education"
+                  value={formData.education}
+                  onChange={handleChange}
+                  placeholder="Select Education"
+                >
+                  {lawDegrees.map((deg) => (
+                    <option key={deg.value} value={deg.value}>
+                      {deg.label}
+                    </option>
+                  ))}
+                </Select>
+              </FormLabel>
               <Input
                 placeholder="Skills (comma separated)"
                 name="skillsRequired"
@@ -447,21 +452,21 @@ const CreateJob = () => {
                 onChange={handleChange}
               />
 
-              <Text fontWeight="bold" mb={2}>
+              <FormLabel mb={5}>
                 Description
-              </Text>
-              <ReactQuill
-                className="custom-quill"
-                value={formData.description}
-                onChange={(value) =>
-                  setFormData((prev) => ({ ...prev, description: value }))
-                }
-                modules={modules}
-                formats={formats}
-                theme="snow"
-                placeholder="Write your job description here..."
-                style={{ height: "30vh", marginBottom: "20px" }}
-              />
+                <ReactQuill
+                  className="custom-quill"
+                  value={formData.description}
+                  onChange={(value) =>
+                    setFormData((prev) => ({ ...prev, description: value }))
+                  }
+                  modules={modules}
+                  formats={formats}
+                  theme="snow"
+                  placeholder="Write your job description here..."
+                  style={{ height: "30vh", marginBottom: "20px" }}
+                />
+              </FormLabel>
             </>
           )}
 
@@ -519,3 +524,110 @@ const CreateJob = () => {
 };
 
 export default CreateJob;
+const industries = [
+  { label: "Arbitration", value: "Arbitration" },
+  { label: "Aviation Law", value: "AviationLaw" },
+  { label: "Banking and Finance", value: "BankingAndFinance" },
+  { label: "Civil Litigation", value: "CivilLitigation" },
+  { label: "Corporate Law", value: "CorporateLaw" },
+  { label: "Commercial Law", value: "CommercialLaw" },
+  { label: "Consumer Protection Law", value: "ConsumerProtectionLaw" },
+  { label: "Competition Law", value: "CompetitionLaw" },
+  { label: "Cyber Law", value: "CyberLaw" },
+  { label: "Employment & Labour Law", value: "EmploymentAndLabourLaw" },
+  { label: "Environment Law", value: "EnvironmentLaw" },
+  { label: "Energy Law", value: "EnergyLaw" },
+  {
+    label: "Intellectual Property Rights",
+    value: "IntellectualPropertyRights",
+  },
+  {
+    label: "Immigration Law Human Rights Law",
+    value: "ImmigrationLawHumanRightsLaw",
+  },
+  { label: "Insolvency & Bankruptcy", value: "InsolvencyAndBankruptcy" },
+  { label: "Matrimonial Law", value: "MatrimonialLaw" },
+  { label: "Maritime Law", value: "MaritimeLaw" },
+  { label: "Mergers & Acquisitions", value: "MergersAndAcquisitions" },
+  { label: "Real Estate", value: "RealEstate" },
+  { label: "Taxation Law", value: "TaxationLaw" },
+  { label: "White Collar Crimes", value: "WhiteCollarCrimes" },
+  {
+    label: "Technology, Media and Telecommunications (TMT) Law",
+    value: "TMTLaw",
+  },
+  { label: "Criminal Law", value: "CriminalLaw" },
+  {
+    label: "Customs & Central Excise Law",
+    value: "CustomsAndCentralExciseLaw",
+  },
+  { label: "Medical Negligence Law", value: "MedicalNegligenceLaw" },
+  { label: "GST Law", value: "GSTLaw" },
+  { label: "Service Law", value: "ServiceLaw" },
+  { label: "Motor Accident Law", value: "MotorAccidentLaw" },
+  { label: "Negotiable Instrument Act", value: "NegotiableInstrumentAct" },
+  { label: "Trademark", value: "Trademark" },
+  { label: "Startup", value: "Startup" },
+  { label: "Wills/Trust", value: "WillsTrust" },
+  { label: "Insurance Law", value: "InsuranceLaw" },
+  { label: "International Law", value: "InternationalLaw" },
+];
+
+const lawDegrees = [
+  // --- Undergraduate Degrees ---
+  { label: "LLB (Bachelor of Laws)", value: "llb" },
+  { label: "BA LLB (Integrated)", value: "ba_llb" },
+  { label: "BBA LLB (Integrated)", value: "bba_llb" },
+  { label: "BCom LLB (Integrated)", value: "bcom_llb" },
+  { label: "BSc LLB (Integrated)", value: "bsc_llb" },
+  { label: "Juris Doctor (JD)", value: "jd" },
+
+  // --- Postgraduate Degrees ---
+  { label: "LLM (Master of Laws)", value: "llm" },
+  { label: "LLM in Constitutional Law", value: "llm_constitutional" },
+  { label: "LLM in Criminal Law", value: "llm_criminal" },
+  { label: "LLM in Corporate Law", value: "llm_corporate" },
+  { label: "LLM in International Law", value: "llm_international" },
+  { label: "LLM in Intellectual Property Rights", value: "llm_ipr" },
+  { label: "LLM in Human Rights Law", value: "llm_human_rights" },
+  { label: "LLM in Taxation Law", value: "llm_taxation" },
+  { label: "LLM in Environmental Law", value: "llm_environmental" },
+  { label: "LLM in Family Law", value: "llm_family" },
+  { label: "LLM in Arbitration & Mediation", value: "llm_arbitration" },
+  { label: "LLM in Cyber Law", value: "llm_cyber" },
+  { label: "LLM in Business Law", value: "llm_business" },
+  { label: "LLM in Labour & Employment Law", value: "llm_labour" },
+
+  // --- Doctoral Level ---
+  { label: "PhD in Law", value: "phd_law" },
+  { label: "Doctor of Juridical Science (SJD)", value: "sjd" },
+
+  // --- Diplomas ---
+  { label: "Diploma in Corporate Law", value: "diploma_corporate" },
+  { label: "Diploma in Cyber Law", value: "diploma_cyber" },
+  { label: "Diploma in Intellectual Property Law", value: "diploma_ip" },
+  { label: "Diploma in International Law", value: "diploma_international" },
+  { label: "Diploma in Criminal Law", value: "diploma_criminal" },
+  { label: "Diploma in Human Rights Law", value: "diploma_human_rights" },
+  { label: "Diploma in Environmental Law", value: "diploma_environmental" },
+  { label: "Diploma in Family Law", value: "diploma_family" },
+  { label: "Diploma in Labour Law", value: "diploma_labour" },
+  {
+    label: "Diploma in Arbitration & Mediation",
+    value: "diploma_arbitration",
+  },
+  { label: "Diploma in Taxation Law", value: "diploma_taxation" },
+
+  // --- Certifications ---
+  // { label: "Certificate in Cyber Law", value: "cert_cyber" },
+  // {
+  //   label: "Certificate in IPR (Intellectual Property Rights)",
+  //   value: "cert_ipr",
+  // },
+  // { label: "Certificate in International Trade Law", value: "cert_trade" },
+  // { label: "Certificate in Corporate Governance", value: "cert_governance" },
+  // { label: "Certificate in Human Rights Law", value: "cert_human_rights" },
+  // { label: "Certificate in Competition Law", value: "cert_competition" },
+  // { label: "Certificate in Sports Law", value: "cert_sports" },
+  // { label: "Certificate in Media & Entertainment Law", value: "cert_media" },
+];

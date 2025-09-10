@@ -120,7 +120,7 @@ export default function UserAuthSignup() {
   const leftContent = (
     <>
       <Heading mb={6} fontSize="xl" color="orange.700">
-        Job Seeker Registration
+        User Registration
       </Heading>
       <form onSubmit={handleSubmit}>
         <VStack spacing={4} align="stretch">
@@ -186,7 +186,7 @@ export default function UserAuthSignup() {
 
   const rightContent = (
     <>
-      <Heading mb={4} marginTop={"100px"}>
+      <Heading mb={4} marginTop={"10px"}>
         New to LAWVS:
       </Heading>
       <List spacing={3} align="left">
@@ -201,6 +201,22 @@ export default function UserAuthSignup() {
         <ListItem>
           <ListIcon as={CheckCircleIcon} color="orange.400" />
           Find a job and grow your career.
+        </ListItem>
+        <ListItem>
+          <ListIcon as={CheckCircleIcon} color="orange.400" />
+          Write and publish your own Blogs.
+        </ListItem>
+        <ListItem>
+          <ListIcon as={CheckCircleIcon} color="orange.400" />
+          Create Articles and share your knowledge with the community.
+        </ListItem>
+        <ListItem>
+          <ListIcon as={CheckCircleIcon} color="orange.400" />
+          Post News updates and make them public with your name.
+        </ListItem>
+        <ListItem>
+          <ListIcon as={CheckCircleIcon} color="orange.400" />
+          Full authority to Update, Edit, and Delete your content anytime.
         </ListItem>
       </List>
     </>

@@ -15,12 +15,10 @@ import UpdateJob from "./Components/adminlawvspage/jobpage/UpdateJob.js";
 import UserApplications from "./Components/adminlawvspage/Application/Application.js";
 import UserDetailPage from "./Components/adminlawvspage/AllUsers/UserDetailPage.js";
 import AdminNotifications from "./Components/Navbar/Notification";
-import Message from "./Components/adminlawvspage/Message/Message.js";
 import SignupForm from "./Components/mootCourtpage/SignupForm";
 import MootUserlogin from "./Components/mootCourtpage/MootUserLogin.js";
 import UserDashboard from "./Components/mootCourtpage/UserDashboard";
 import ProfileUpdate from "./Components/mootCourtpage/UserProfileUpdate";
-import { TopStories } from "./Components/LawPages/TopStoryPage/TopStories";
 import Library from "./Components/LawPages/Library/Library";
 import { ExamPreparation } from "./Components/LawPages/ExamPreparation/ExamPreparation";
 import { QAndA } from "./Components/LawPages/QueAndAns/AllQuestions.js";
@@ -34,7 +32,6 @@ import AdminAuthForget from "./Components/adminlawvspage/Adminlawvs/Forget.js";
 import AdminAuthRegister from "./Components/adminlawvspage/Adminlawvs/AdminRegister.js";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import ForgotPassword from "./Components/mootCourtpage/ForgotPassword";
-import SingleStory from "./Components/LawPages/TopStoryPage/SingleStory.js";
 import SingleDraft from "./Components/LawPages/LegalDraftPage/SinglePageDraft.js";
 import UserDashBoard from "./Components/UserPage/UserDashBoard.js";
 import AdminHome from "./Components/adminlawvspage/AdminProfile/AdminHome.js";
@@ -55,6 +52,19 @@ import { SingleJobPage } from "./Components/FrontPage/homepage/jobPage/SingleJob
 import AppliedJobPage from "./Components/UserPage/UserDtailsPage/AppliedJobPage.js";
 import HelpAndSupport from "./Components/UserPage/HelpAndSupport.js";
 import SingleQnAPage from "./Components/LawPages/QueAndAns/SingleQueAns.js";
+import IndustryList from "./Components/FrontPage/homepage/IndustryList.js";
+import LawDegrees from "./Components/FrontPage/homepage/LawDegreesList.js";
+import SingleArticle from "./Components/LawPages/Articles/SiglePageArticle.js";
+import AllArticles from "./Components/LawPages/Articles/AllArticles.js";
+import CreateArticles from "./Components/UserPage/articles/CreateArticle.js";
+import UpdateArticles from "./Components/UserPage/articles/UpdateArticle.js";
+import ManageAllArticles from "./Components/UserPage/articles/ManageArticles.js";
+import AllBlogs from "./Components/LawPages/BlogPage/AllBlogs.js";
+import SingleBlogPage from "./Components/LawPages/BlogPage/SingleBlogPage.js";
+import AllNews from "./Components/LawPages/NewsPage/AllNews.js";
+import SingleNews from "./Components/LawPages/NewsPage/SingleNews.js";
+import CreateBlogs from "./Components/UserPage/blogs/CreateBlog.js";
+import UpdateBlogs from "./Components/UserPage/blogs/UpdateBlog.js";
 
 function App() {
   return (
@@ -79,6 +89,8 @@ function App() {
               />
             </>
             <Route path="/get-all-jobs" element={<AlljobsPage />} />
+            <Route path="/get-practice-area" element={<IndustryList />} />
+            <Route path="/get-law_degrees" element={<LawDegrees />} />
             <Route
               path="/get-single-job/details/:id"
               element={<SingleJobPage />}
@@ -86,11 +98,14 @@ function App() {
             {/* // header routes Pages */}
             <Route path="/legal-draft" element={<LegalDraft />} />
             <Route path="/drafts/:slug" element={<SingleDraft />} />
-            <Route path="/top-stories" element={<TopStories />} />
-            <Route path="/stories/:id" element={<SingleStory />} />
+            <Route path="/all-blogs" element={<AllBlogs />} />
+            <Route path="/single-blog/:slug" element={<SingleBlogPage />} />
+            <Route path="/all-articles" element={<AllArticles />} />
+            <Route path="/article/:slug" element={<SingleArticle />} />
+            <Route path="/all-news" element={<AllNews />} />
+            <Route path="/news/:slug" element={<SingleNews />} />
             <Route path="/library" element={<Library />} />
             <Route path="/videos-news" element={<VideosPage />} />
-
             <Route path="/exam-preparation" element={<ExamPreparation />} />
             <Route path="/q-and-a" element={<QAndA />} />
             <Route path="/q-and-a/:slug" element={<SingleQnAPage />} />
@@ -136,6 +151,82 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["user"]}>
                   <AppliedJobPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* article routes  start*/}
+            <Route
+              path="/create-article"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <CreateArticles />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/update-article/:slug"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <UpdateArticles />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/manage-articles"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <ManageAllArticles />
+                </ProtectedRoute>
+              }
+            />
+            {/* Blogs routes  start*/}
+            <Route
+              path="/create-blogs"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <CreateBlogs />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/update-blog/:slug"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <UpdateBlogs />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/manage-blogs"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  {/* < /> */}
+                </ProtectedRoute>
+              }
+            />
+            {/* News routes  start*/}
+            <Route
+              path="/create-article"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <CreateArticles />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/update-article/:slug"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <UpdateArticles />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/manage-articles"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <ManageAllArticles />
                 </ProtectedRoute>
               }
             />
