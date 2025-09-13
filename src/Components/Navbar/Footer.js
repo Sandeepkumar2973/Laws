@@ -7,10 +7,10 @@ import {
   Link,
   VStack,
   HStack,
-  IconButton,
+  Icon,
   Image,
   Circle,
-  Icon,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import {
   FaFacebookF,
@@ -20,7 +20,7 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { MdLocationOn, MdPhone, MdEmail } from "react-icons/md";
-import logo from "./../Assets/logo/logo.png"; // Adjust the path as necessary
+import logo from "./../Assets/logo/logo.png"; // Adjust path as needed
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
 
@@ -35,16 +35,16 @@ const Footer = () => {
     },
     { icon: FaTwitter, url: "https://x.com/LawvsF" },
   ];
+
   return (
-    <Box bg="black" color="white" py={10} px={5}>
-      <Flex
-        direction={{ base: "column", md: "row" }}
+    <Box bg="black" color="white" py={10} px={{ base: 5, md: 10, lg: 20 }}>
+      <SimpleGrid
+        columns={{ base: 2, md: 3, lg: 4 }}
+        spacing={{ base: 8, md: 10, lg: 14 }}
         maxW="1200px"
         mx="auto"
-        justify="space-between"
-        gap={10}
       >
-        {/* Logo + Social Icons */}
+        {/* Logo + Social */}
         <VStack align="flex-start" spacing={5}>
           <ChakraLink as={RouterLink} to="/">
             <Image
@@ -52,23 +52,24 @@ const Footer = () => {
               alt="Logo"
               height="70px"
               width="200px"
-              backgroundColor="white!important"
+              backgroundColor="white"
               p="5px"
             />
           </ChakraLink>
-          <Text>SATISFYING ALL LEGAL NEEDS</Text>
+          <Text fontSize="sm" textAlign="left">
+            SATISFYING ALL LEGAL NEEDS
+          </Text>
           <HStack spacing={3}>
             {socialLinks.map((social, idx) => (
               <Link
                 href={social.url}
-                isExternal // adds target="_blank" rel="noopener noreferrer"
+                isExternal
                 key={idx}
                 _hover={{ textDecoration: "none" }}
               >
                 <Circle
                   size="32px"
                   bg="#D29B3F"
-                  borderRadius="full"
                   color="black"
                   _hover={{ bg: "gray.700", color: "white" }}
                 >
@@ -84,11 +85,11 @@ const Footer = () => {
           <Text fontWeight="bold" borderBottom="2px solid gold">
             Pages
           </Text>
-          <Link href="#">Home</Link>
+
           <Link href="#">About Us</Link>
           <Link href="#">Articles</Link>
           <Link href="#">Events</Link>
-          <Link href="#">Contact</Link>
+          <Link href="/contact">Contact</Link>
           <Link href="#">Privacy and Security</Link>
           <Link href="#">Terms and Conditions</Link>
         </VStack>
@@ -109,26 +110,25 @@ const Footer = () => {
           <Text fontWeight="bold" borderBottom="2px solid gold">
             Quick Contact
           </Text>
-          <HStack align="flex-start">
+          <HStack align="flex-start" spacing={3}>
             <MdLocationOn size="20" />
-            <Text align={"left"}>
+            <Text fontSize="sm" textAlign="left">
               Office No.101, <br />
-              Himland House, Commercial Complex,
-              <br /> Karampura,
-              <br />
+              Himland House, Commercial Complex, <br />
+              Karampura, <br />
               Delhi-110015, India
             </Text>
           </HStack>
-          <HStack>
+          <HStack spacing={3}>
             <MdPhone size="20" />
-            <Text>8171974067</Text>
+            <Text fontSize="sm">8171974067</Text>
           </HStack>
-          <HStack>
+          <HStack spacing={3}>
             <MdEmail size="20" />
-            <Text>info@lawvs.com</Text>
+            <Text fontSize="sm">info@lawvs.com</Text>
           </HStack>
         </VStack>
-      </Flex>
+      </SimpleGrid>
     </Box>
   );
 };

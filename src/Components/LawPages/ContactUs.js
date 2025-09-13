@@ -98,8 +98,8 @@ const ContactUs = () => {
                 <Text>
                   <b>Between 10.00am - 8.00pm (IST)</b>
                 </Text>
-                <Text>+8171974067</Text>
-                <Text>+8171974067</Text>
+                <Text>+91 81719 74067</Text>
+                {/* <Text>+8171974067</Text> */}
               </Box>
             </HStack>
 

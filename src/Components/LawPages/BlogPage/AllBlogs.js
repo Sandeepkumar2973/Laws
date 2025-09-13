@@ -83,12 +83,12 @@ export default function AllBlogs() {
       });
       return;
     }
-    navigate("/create-blogs"); // Redirect to create article page
+    navigate("/create-blog"); // Redirect to create article page
   };
   return (
     <>
       <Header />
-      <Container maxW="7xl" py={8}>
+      <Container maxW="7xl">
         <Box
           bgGradient="linear(to-r, gray.50, gray.100)"
           py={{ base: 5, md: 10 }}
@@ -96,7 +96,7 @@ export default function AllBlogs() {
           mb={3}
         >
           <Heading as="h1" size="2xl" mb={2}>
-            Top Blogs
+            Legal Blogs
           </Heading>
           <Text fontSize="2xl" color="orange.600" fontWeight="bold">
             Top Blogs Content Goes Here
@@ -119,12 +119,12 @@ export default function AllBlogs() {
           </Button>
         </Flex>
 
-        <SimpleGrid columns={[1, 2, 3, 4]} spacing={8}>
+        <SimpleGrid columns={{ base: 1, sm: 1, md: 3, lg: 3 }} spacing={8}>
           {currentBlogs.map((blog) => (
             <Box
               key={blog?.id}
-              borderWidth="1px"
-              borderRadius="2xl"
+              // borderWidth="1px"
+              // borderRadius="2xl"
               overflow="hidden"
               boxShadow="md"
               bg="white"
@@ -152,20 +152,6 @@ export default function AllBlogs() {
                 <Text
                   align="left"
                   fontSize="sm"
-                  color="gray.600"
-                  mb={3}
-                  backgroundColor="red.200"
-                  px={3}
-                  py={1}
-                  borderRadius="full"
-                  display="inline-block"
-                  w="100%"
-                >
-                  Author-{blog?.authorName} • {blog?.postedOn.split("T")[0]}
-                </Text>
-                <Text
-                  align="left"
-                  fontSize="lg"
                   fontWeight="extrabold"
                   mb={2}
                   noOfLines={2}
@@ -174,14 +160,40 @@ export default function AllBlogs() {
                 >
                   {blog?.title}
                 </Text>
-
-                <Box align="left" fontSize="md" color="gray.700">
+                <Text align="left" fontSize="sm" color="red.600" w="100%">
+                  {blog?.authorName}.
+                  {blog?.postedOn && new Date(blog?.postedOn).toLocaleString()}
+                </Text>
+                <Box
+                  align="left"
+                  fontSize="md"
+                  color="gray.700"
+                  sx={{
+                    ".ql-editor, .ql-editor *": {
+                      fontSize: "13px !important",
+                      fontWeight: "normal !important",
+                      lineHeight: "1.7 !important",
+                      color: "#4a5568 !important",
+                      textAlign: "justify !important",
+                      margin: "0 !important",
+                      padding: "0 !important",
+                    },
+                    ".ql-container.ql-bubble": {
+                      border: "none",
+                      padding: 0,
+                      margin: 0,
+                      background: "transparent",
+                      minHeight: "80px",
+                    },
+                  }}
+                >
                   <ReactQuill
-                    value={truncate(blog?.description || "", 100)} // 150 chars with formatting
+                    value={truncate(blog?.description || "", 150)} // 150 chars with formatting
                     readOnly
                     theme="bubble"
                     style={{
-                      minHeight: "100px",
+                      minHeight: "70px",
+                      maxHeight: "70px",
                       background: "transparent",
                       border: "none",
                       padding: 0,

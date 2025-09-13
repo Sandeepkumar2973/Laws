@@ -9,6 +9,7 @@ import {
   useToast,
   Link as ChakraLink,
   Spinner,
+  Flex,
 } from "@chakra-ui/react";
 import { Link, useParams } from "react-router-dom";
 import Header from "../../Navbar/Header";
@@ -95,15 +96,15 @@ export default function SingleNews() {
           flexDir={{ base: "column", md: "row" }}
         >
           {/* Left Side - Story Details */}
-          <Box flex="3" p={{ base: 2, md: 6 }}>
+          <Box flex="70%" p={{ base: 2, md: 6 }}>
             <Heading
-              fontSize={{ base: "2xl", md: "3xl" }}
+              fontSize={{ base: "xl", md: "2xl" }}
               mb={4}
               color="gray.800"
               lineHeight="short"
               textAlign="left"
             >
-              {news?.title.toUpperCase()}
+              {news?.title}
             </Heading>
 
             <Image
@@ -147,8 +148,9 @@ export default function SingleNews() {
                     fontFamily: "serif",
                   },
                 ".ql-editor img": {
-                  maxWidth: "100%", // responsive
-                  height: "auto",
+                  maxWidth: "400px", // responsive
+                  minWidth: "500px", // responsive
+                  height: "300px",
                   borderRadius: "12px", // rounded corners
                   margin: "16px 0", // top-bottom space
                   boxShadow: "0 4px 12px rgba(0,0,0,0.1)", // soft shadow
@@ -175,16 +177,16 @@ export default function SingleNews() {
 
           {/* Right Side - Latest Stories */}
           <Box
-            flex="1"
+            flex="30%"
             position="sticky"
             top="100px"
             align="start"
             border="1px solid"
             borderColor="gray.200"
             borderRadius="xl"
-            p={5}
+            p={1}
             maxW={{ base: "100%", md: "400px" }}
-            minH="300px"
+            minH="600px"
             bg="white"
             boxShadow="md"
             transition="all 0.3s ease"
@@ -194,7 +196,7 @@ export default function SingleNews() {
               size="md"
               mb={5}
               textAlign="center"
-              backgroundColor="gray.100"
+              backgroundColor="yellow.500"
               py={3}
               borderRadius="md"
               fontWeight="semibold"
@@ -204,9 +206,9 @@ export default function SingleNews() {
             </Heading>
 
             <VStack align="start" spacing={5}>
-              {latestNews?.map((s) => (
+              {latestNews?.map((ns) => (
                 <HStack
-                  key={s.slug}
+                  key={ns?.slug}
                   spacing={4}
                   align="center"
                   w="100%"
@@ -215,28 +217,33 @@ export default function SingleNews() {
                   transition="all 0.3s ease"
                   _hover={{ bg: "gray.50", transform: "translateX(6px)" }}
                 >
-                  <Image
-                    src={s.NewsImage}
-                    alt={s.title}
-                    boxSize="70px"
-                    objectFit="cover"
-                    borderRadius="md"
-                    boxShadow="sm"
-                    transition="all 0.3s ease"
-                    _hover={{ boxShadow: "md" }}
-                  />
-                  <ChakraLink
-                    as={Link}
-                    to={`/news/${s.slug}`}
-                    fontWeight="semibold"
-                    fontSize={{ base: "sm", md: "md" }}
-                    color="gray.700"
-                    noOfLines={2}
-                    transition="color 0.2s"
-                    _hover={{ color: "teal.600" }}
-                  >
-                    {s.title}
-                  </ChakraLink>
+                  <Flex>
+                    {" "}
+                    <Image
+                      src={ns?.NewsImage}
+                      alt={ns?.title}
+                      height="80px"
+                      width="120px"
+                      objectFit="cover"
+                      borderRadius="md"
+                      boxShadow="sm"
+                      transition="all 0.3s ease"
+                      _hover={{ boxShadow: "md" }}
+                    />
+                    <ChakraLink
+                      as={Link}
+                      to={`/news/${ns?.slug}`}
+                      fontWeight="semibold"
+                      fontSize={{ base: "sm", md: "md" }}
+                      color="gray.700"
+                      noOfLines={2}
+                      transition="color 0.2s"
+                      _hover={{ color: "teal.600" }}
+                      marginLeft={3}
+                    >
+                      {ns?.title}
+                    </ChakraLink>
+                  </Flex>
                 </HStack>
               ))}
             </VStack>

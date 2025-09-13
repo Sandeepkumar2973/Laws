@@ -47,18 +47,6 @@ const DashHeader = () => {
           >
             Dashboard
           </MenuButton>
-          {/* <MenuList>
-            <MenuItem as={RouterLink} to="/user-auth-dashboard">
-              Profile
-            </MenuItem>
-            <MenuItem as={RouterLink} to="/user-dashboard/settings">
-              My Application
-            </MenuItem>
-            <MenuItem onClick={onOpen}>More Options</MenuItem>
-            <MenuItem>
-              <LogoutButton />
-            </MenuItem>
-          </MenuList> */}
         </Menu>
       ) : currentUser?.user?.role === "mootUser" ? (
         <Button
@@ -70,30 +58,46 @@ const DashHeader = () => {
           Dashboard
         </Button>
       ) : (
-        <ChakraLink
-          as={RouterLink}
-          to="/moot-user-signup"
-          textDecoration="none"
-          textAlign="center"
-          color="white"
-          fontWeight="bold"
-          borderRadius="full"
-          padding={2}
-          px={6}
-          display="inline-block"
-          animation={`${pulseAnimation} 2s ease-in-out infinite`}
-          _hover={{
-            textDecoration: "none",
-            transform: "scale(1.08)",
-            boxShadow: "0 0 20px rgba(206, 67, 238, 0.49)",
-            bg: "#20ebebffff",
-            _before: {
-              left: "100%",
-            },
-          }}
-        >
-          Moot Court Signup
-        </ChakraLink>
+        <Box position="relative" display="inline-block">
+          <ChakraLink
+            as={RouterLink}
+            to="/moot-user-login"
+            textDecoration="none"
+            textAlign="center"
+            color="white"
+            fontWeight="bold"
+            borderRadius="full"
+            padding={2}
+            px={6}
+            display="inline-block"
+            animation={`${pulseAnimation} 2s ease-in-out infinite`}
+            _hover={{
+              textDecoration: "none",
+              transform: "scale(1.08)",
+              boxShadow: "0 0 20px rgba(206, 67, 238, 0.49)",
+              bg: "#20ebebff",
+            }}
+          >
+            Memorial Submission
+          </ChakraLink>
+
+          {/* Hurry Up Badge */}
+          <Box
+            position="absolute"
+            top="-15px"
+            right="15px"
+            bg="red.500" // ✅ green.500 bhi use kar sakte ho
+            color="white"
+            fontSize="xs"
+            fontWeight="bold"
+            px={2}
+            py={0.5}
+            borderRadius="full"
+            boxShadow="md"
+          >
+            Hurry Up!
+          </Box>
+        </Box>
       )}
 
       {/* Side Drawer */}
@@ -112,16 +116,16 @@ const DashHeader = () => {
             <Button as={RouterLink} to="/manage-articles" onClick={onClose}>
               Manage Articles
             </Button>
-            <Button as={RouterLink} to="/manage-articles" onClick={onClose}>
+            <Button as={RouterLink} to="/manage-blogs" onClick={onClose}>
               Manage Blogs
             </Button>
-            <Button as={RouterLink} to="/manage-articles" onClick={onClose}>
+            {/* <Button as={RouterLink} to="/manage-articles" onClick={onClose}>
               Manage News
-            </Button>
+            </Button> */}
             <Button as={RouterLink} to="/user-help&suport" onClick={onClose}>
               Help & Support
             </Button>
-            <LogoutButton />
+            <LogoutButton onClick={onClose} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

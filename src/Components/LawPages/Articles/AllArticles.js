@@ -35,9 +35,9 @@ export default function AllArticles() {
       const { data } = await axios.get(
         `${mod.api_url}/api/v1/article/get_active_articles`
       );
-      if (data?.length === 0) {
+      if (data?.Articles?.length === 0) {
         toast({
-          title: "No stories found",
+          title: "No Article found",
           status: "info",
           duration: 3000,
           isClosable: true,
@@ -91,15 +91,16 @@ export default function AllArticles() {
   return (
     <>
       <Header />
-      <Container maxW="7xl" py={8}>
+      <Container maxW="7xl" width="100%">
         <Box
           bgGradient="linear(to-r, gray.50, gray.100)"
-          py={{ base: 5, md: 10 }}
+          py={{ base: 5, md: 12 }}
           textAlign="center"
           mb={3}
+          width="100%"
         >
           <Heading as="h1" size="2xl" mb={2}>
-            Top Articles
+            Legal Articles
           </Heading>
           <Text fontSize="2xl" color="orange.600" fontWeight="bold">
             Top Articles Content Goes Here
@@ -124,100 +125,96 @@ export default function AllArticles() {
         </Flex>
 
         {/* 📰 Articles Grid */}
-        <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={8}>
-          {currentArticles.map((article) => (
-            <Box
-              key={article?.id}
-              as={Link}
-              to={`/article/${article?.slug}`}
-              borderWidth="1px"
-              borderRadius="2xl"
-              overflow="hidden"
-              boxShadow="md"
-              bg="white"
-              transition="all 0.4s ease-in-out"
-              _hover={{
-                transform: "translateY(-8px) scale(1.03)",
-                boxShadow: "xl",
-                borderColor: "transparent",
-                bgGradient: "linear(to-br, teal.50, pink.50)",
-              }}
-            >
-              {/* Blog Image */}
-              <Image
-                src={article?.articleImage}
-                alt={article?.title}
-                w="100%"
-                h="220px"
-                objectFit="cover"
-                transition="all 0.3s"
-                _hover={{ filter: "brightness(1.1) saturate(1.2)" }}
-              />
+        <Box p={5}>
+          <SimpleGrid columns={{ base: 1, sm: 1, md: 3, lg: 3 }} spacing={8}>
+            {currentArticles.map((article) => (
+              <Box
+                key={article?.id}
+                as={Link}
+                to={`/article/${article?.slug}`}
+                // borderWidth="1px"
+                overflow="hidden"
+                boxShadow="md"
+                bg="white"
+                transition="all 0.4s ease-in-out"
+                _hover={{
+                  transform: "translateY(-4px) scale(1.03)",
+                  boxShadow: "xl",
+                  borderColor: "transparent",
+                  bgGradient: "linear(to-br, teal.50, pink.50)",
+                }}
+              >
+                {/* Blog Image */}
+                <Image
+                  src={article?.articleImage}
+                  alt={article?.title}
+                  w="100%"
+                  h="220px"
+                  objectFit="cover"
+                  transition="all 0.3s"
+                  borderRadius="xl"
+                  _hover={{ filter: "brightness(1.1) saturate(1.2)" }}
+                />
 
-              {/* Blog Content */}
-              <Box p={5}>
-                <Text
-                  align="left"
-                  fontSize="sm"
-                  color="gray.600"
-                  mb={3}
-                  backgroundColor="red.200"
-                  px={3}
-                  py={1}
-                  borderRadius="full"
-                  display="inline-block"
-                >
-                  {article?.authorName} • {article?.postedOn?.split("T")[0]}
-                </Text>
-
-                <Text
-                  align="left"
-                  fontSize="lg"
-                  fontWeight="extrabold"
-                  mb={2}
-                  noOfLines={2}
-                  color="gray.800"
-                  _groupHover={{ color: "teal.600" }}
-                >
-                  {article?.title?.toUpperCase()}
-                </Text>
-
-                {/* Blog Description Preview */}
-                <Box
-                  sx={{
-                    ".ql-editor": {
-                      fontSize: "15px !important",
-                      lineHeight: "1.7",
-                      color: "#4a5568",
-                      textAlign: "justify",
-                    },
-                    ".ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6":
-                      {
-                        fontSize: "15px !important",
-                        fontWeight: "normal",
-                        lineHeight: "1.7",
+                {/* Blog Content */}
+                <Box p={5}>
+                  <Text
+                    align="justify"
+                    fontSize="sm"
+                    fontWeight="extrabold"
+                    mb={1}
+                    noOfLines={2}
+                    color="gray.800"
+                    _groupHover={{ color: "teal.600" }}
+                  >
+                    {article?.title}
+                  </Text>
+                  <Text textAlign="left" fontSize="sm" color="red.600">
+                    {article?.authorName} •{" "}
+                    {article?.postedOn &&
+                      new Date(article.postedOn).toLocaleString()}
+                  </Text>
+                  {/* Blog Description Preview */}
+                  <Box
+                    sx={{
+                      ".ql-editor, .ql-editor *": {
+                        fontSize: "13px !important",
+                        fontWeight: "normal !important",
+                        lineHeight: "1.7 !important",
+                        color: "#4a5568 !important",
+                        textAlign: "justify !important",
+                        margin: "0 !important",
+                        padding: "0 !important",
                       },
-                    ".ql-container.ql-bubble": {
-                      border: "none",
-                      padding: 0,
-                      margin: 0,
-                      background: "transparent",
-                      minHeight: "80px",
-                      lineHeight: "1.7",
-                    },
-                  }}
-                >
-                  <ReactQuill
-                    value={truncate(article?.description || "", 100)}
-                    readOnly
-                    theme="bubble"
-                    modules={{ toolbar: false }}
-                  />
+                      ".ql-container.ql-bubble": {
+                        border: "none",
+                        padding: 0,
+                        margin: 0,
+                        background: "transparent",
+                        minHeight: "80px",
+                      },
+                    }}
+                  >
+                    <ReactQuill
+                      value={truncate(article?.description || "", 150)}
+                      readOnly
+                      theme="bubble"
+                      modules={{ toolbar: false }}
+                      style={{
+                        minHeight: "70px",
+                        maxHeight: "70px",
+                        background: "transparent",
+                        border: "none",
+                        padding: 0,
+                        margin: 0,
+                      }}
+                    />
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-          ))}
-        </SimpleGrid>
+            ))}
+          </SimpleGrid>
+        </Box>
 
         {/* 📄 Pagination */}
         <Flex justify="center" mt={8} gap={2} wrap="wrap">

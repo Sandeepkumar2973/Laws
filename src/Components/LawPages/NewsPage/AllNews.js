@@ -91,7 +91,7 @@ export default function AllNews() {
   return (
     <>
       <Header />
-      <Container maxW="7xl" py={8}>
+      <Container maxW="7xl">
         <Box
           bgGradient="linear(to-r, gray.50, gray.100)"
           py={{ base: 5, md: 10 }}
@@ -114,24 +114,24 @@ export default function AllNews() {
             maxW="50%"
             bg="white"
           />
-          <Button
+          {/* <Button
             onClick={handleCreateNews}
             backgroundColor="green"
             color={"white"}
           >
             Create News
-          </Button>
+          </Button> */}
         </Flex>
 
         {/* 📰 News Grid */}
-        <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={8}>
+        <SimpleGrid columns={{ base: 1, sm: 1, md: 2, lg: 3 }} spacing={8}>
           {currentArticles.map((news) => (
             <Box
               key={news?.id}
               as={Link}
               to={`/news/${news?.slug}`}
-              borderWidth="1px"
-              borderRadius="2xl"
+              // borderWidth="1px"
+              // borderRadius="2xl"
               overflow="hidden"
               boxShadow="md"
               bg="white"
@@ -159,43 +159,31 @@ export default function AllNews() {
                 <Text
                   align="left"
                   fontSize="sm"
-                  color="gray.600"
-                  mb={3}
-                  backgroundColor="red.200"
-                  px={3}
-                  py={1}
-                  borderRadius="full"
-                  display="inline-block"
-                >
-                  {news?.authorName} • {news?.postedOn?.split("T")[0]}
-                </Text>
-
-                <Text
-                  align="left"
-                  fontSize="lg"
                   fontWeight="extrabold"
                   mb={2}
                   noOfLines={2}
                   color="gray.800"
                   _groupHover={{ color: "teal.600" }}
                 >
-                  {news?.title?.toUpperCase()}
+                  {news?.title}
+                </Text>
+                <Text align="left" fontSize="sm" color="red.600">
+                  {news?.authorName} •{" "}
+                  {news?.postedOn && new Date(news.postedOn).toLocaleString()}
                 </Text>
 
                 {/* Blog Description Preview */}
                 <Box
                   sx={{
-                    ".ql-editor": {
-                      fontSize: "15px !important",
-                      lineHeight: "1.7",
-                      color: "#4a5568",
-                      textAlign: "justify",
+                    ".ql-editor, .ql-editor *": {
+                      fontSize: "13px !important",
+                      fontWeight: "normal !important",
+                      lineHeight: "1.7 !important",
+                      color: "#4a5568 !important",
+                      textAlign: "justify !important",
+                      margin: "0 !important",
+                      padding: "0 !important",
                     },
-                    ".ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6":
-                      {
-                        fontSize: "15px !important",
-                        fontWeight: "normal",
-                      },
                     ".ql-container.ql-bubble": {
                       border: "none",
                       padding: 0,

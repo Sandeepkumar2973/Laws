@@ -23,14 +23,12 @@ import Header from "../../Navbar/Header";
 import Footer from "../../Navbar/Footer";
 import { useParams, useNavigate } from "react-router-dom";
 
-const storedData = JSON.parse(sessionStorage.getItem("superAdminLawvs"));
-const token = storedData?.data?.token;
+const userInfo = JSON.parse(localStorage.getItem("lawvsuserinfo"));
+const token = userInfo?.data?.token;
 const config = { headers: { Authorization: `${token}` } };
 
-const SIDEBAR_WIDTH = "250px";
-
 const UpdateBlogs = () => {
-  const { slug } = useParams(); // blog id from route
+  const { slug } = useParams();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
@@ -110,7 +108,7 @@ const UpdateBlogs = () => {
       }
 
       await axios.put(
-        `${mod.api_url}/api/v1/blogs/update_blog/${slug}`,
+        `${mod.api_url}/api/v1/blogs/update_blogs/${slug}`,
         {
           title,
           description: content,
@@ -162,9 +160,8 @@ const UpdateBlogs = () => {
   return (
     <>
       <Header />
-
-      <Box mt="100px" ml={{ base: 0, md: SIDEBAR_WIDTH }} p={4}>
-        <Container maxW="" bg="white" p={6} borderRadius="md" boxShadow="md">
+      <Box>
+        <Container maxW="7xl" bg="white" p={1} borderRadius="md" boxShadow="md">
           <Text
             fontSize={{ base: "xl", md: "2xl" }}
             fontWeight="bold"
@@ -177,31 +174,13 @@ const UpdateBlogs = () => {
             Update Blogs
           </Text>
 
-          <VStack spacing={5} align="stretch">
+          <VStack spacing={5} align="stretch" p={5}>
             <FormControl>
               <FormLabel> Blog Title</FormLabel>
               <Input
                 placeholder="Enter Title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-              />
-            </FormControl>
-
-            <FormControl>
-              <FormLabel>Short Blogs Description</FormLabel>
-              <Textarea
-                placeholder="Enter short description"
-                value={sortDes}
-                onChange={(e) => setSortDes(e.target.value)}
-              />
-            </FormControl>
-
-            <FormControl>
-              <FormLabel>Blogs Sub Title</FormLabel>
-              <Input
-                placeholder="Enter Sub Title"
-                value={subTitle}
-                onChange={(e) => setSubTitle(e.target.value)}
               />
             </FormControl>
 

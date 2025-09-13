@@ -62,7 +62,7 @@ const CreateArticles = () => {
       if (wordCount < 300 || wordCount > 1000 || !title || !imageFile) {
         toast({
           title: "Validation failed",
-          description: "Please check word count, title & image",
+          description: "Please check word count min-300 to max-1000 & image",
           status: "warning",
         });
         setIsSubmitting(false);

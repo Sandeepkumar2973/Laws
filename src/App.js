@@ -65,12 +65,15 @@ import AllNews from "./Components/LawPages/NewsPage/AllNews.js";
 import SingleNews from "./Components/LawPages/NewsPage/SingleNews.js";
 import CreateBlogs from "./Components/UserPage/blogs/CreateBlog.js";
 import UpdateBlogs from "./Components/UserPage/blogs/UpdateBlog.js";
+import ScrollToTop from "./utils/ScrollToTop.js";
+import ManageAllBlogs from "./Components/UserPage/blogs/ManageBlogs.js";
 
 function App() {
   return (
     <>
       <div className="App">
         <Router>
+          <ScrollToTop />
           <Routes>
             <>
               <Route path="/" element={<FrontPage />} />
@@ -182,7 +185,7 @@ function App() {
             />
             {/* Blogs routes  start*/}
             <Route
-              path="/create-blogs"
+              path="/create-blog"
               element={
                 <ProtectedRoute allowedRoles={["user"]}>
                   <CreateBlogs />
@@ -201,7 +204,7 @@ function App() {
               path="/manage-blogs"
               element={
                 <ProtectedRoute allowedRoles={["user"]}>
-                  {/* < /> */}
+                  <ManageAllBlogs />
                 </ProtectedRoute>
               }
             />
@@ -249,7 +252,7 @@ function App() {
 
             {/* Protected Routes  by mootusers */}
             <Route path="/moot-user-login" element={<MootUserlogin />} />
-            <Route path="/moot-user-signup" element={<SignupForm />} />
+            <Route path="/mootusernewsignup" element={<SignupForm />} />
             <Route path="/moot-user-forget" element={<ForgotPassword />} />
             <Route
               path="/moot-user-profile-update"

@@ -9,6 +9,7 @@ import {
   useToast,
   Link as ChakraLink,
   Spinner,
+  Flex,
 } from "@chakra-ui/react";
 import { Link, useParams } from "react-router-dom";
 import Header from "../../Navbar/Header";
@@ -94,8 +95,16 @@ export default function SingleBlogPage() {
           flexDir={{ base: "column", md: "row" }}
         >
           {/* Left Side - Story Details */}
-          <Box flex="3" align="start" p={4} m={4}>
-            <Heading mb={2}>{blog?.title}</Heading>
+          <Box flex="70%" align="start" p={4} m={4}>
+            <Heading mb={2} fontSize={{ base: "xl", md: "2xl" }}>
+              {blog?.title}
+            </Heading>
+            <Text color="red.500" mb={1} fontSize={{ base: "sm", md: "md" }}>
+              {blog?.authorName}
+            </Text>
+            <Text color="gray.500" mb={1} fontSize={{ base: "sm", md: "md" }}>
+              {blog?.postedOn && new Date(blog?.postedOn).toLocaleString()}
+            </Text>
             <Image
               src={blog?.blogImage}
               alt={blog?.title}
@@ -109,10 +118,6 @@ export default function SingleBlogPage() {
               _hover={{ transform: "scale(1.02)", boxShadow: "xl" }}
             />
 
-            <Text color="gray.500" mb={6} fontSize={{ base: "sm", md: "md" }}>
-              {blog?.authorName} • {blog?.postedOn?.split("T")[0]}
-            </Text>
-
             {/* Full Content (HTML) */}
             <Box
               sx={{
@@ -121,28 +126,36 @@ export default function SingleBlogPage() {
                   color: "#2d3748", // gray.800
                   textAlign: "justify",
                   fontFamily: "serif",
+                  fontSize: "20px !important",
                 },
                 // ".ql-editor p": { marginBottom: "1em" },
                 ".ql-editor p": {
                   marginTop: "1 !important",
                   marginBottom: "0 !important", // sirf niche space
-                  fontSize: "16px !important",
-                  fontFamily: "serif",
-                },
-                ".ql-editor h1, .ql-editor h2, .ql-editor h3": {
-                  marginTop: "1px !important",
-                  marginBottom: "0 !important",
                   fontSize: "20px !important",
                   fontFamily: "serif",
+                  lineHeight: "1.7",
                 },
+
                 ".ql-editor img": {
-                  maxWidth: "100%", // responsive
-                  height: "auto",
+                  maxWidth: "400px", // responsive
+                  minWidth: "500px", // responsive
+                  height: "300px",
                   borderRadius: "12px", // rounded corners
                   margin: "16px 0", // top-bottom space
                   boxShadow: "0 4px 12px rgba(0,0,0,0.1)", // soft shadow
                   objectFit: "cover",
                   alignItems: "center",
+                },
+                ".ql-editor, .ql-editor *": {
+                  fontSize: "20px !important",
+                  // fontWeight: "normal !important",
+                  lineHeight: "1.7 !important",
+                  // color: "#4a5568 !important",
+                  textAlign: "justify !important",
+                  margin: "0 !important",
+                  padding: "0 !important",
+                  fontFamily: "serif !important",
                 },
               }}
             >
@@ -163,16 +176,16 @@ export default function SingleBlogPage() {
 
           {/* Right Side - Latest Stories */}
           <Box
-            flex="1"
+            flex="30%"
             position="sticky"
             top="100px"
             align="start"
             border="1px solid"
             borderColor="gray.200"
             borderRadius="xl"
-            p={5}
+            p={1}
             maxW={{ base: "100%", md: "400px" }}
-            minH="300px"
+            minH="90vh"
             bg="white"
             boxShadow="md"
             transition="all 0.3s ease"
@@ -182,7 +195,7 @@ export default function SingleBlogPage() {
               size="md"
               mb={5}
               textAlign="center"
-              backgroundColor="gray.100"
+              backgroundColor="yellow.500"
               py={3}
               borderRadius="md"
               fontWeight="semibold"
@@ -203,28 +216,33 @@ export default function SingleBlogPage() {
                   transition="all 0.3s ease"
                   _hover={{ bg: "gray.50", transform: "translateX(6px)" }}
                 >
-                  <Image
-                    src={s.blogImage}
-                    alt={s.title}
-                    boxSize="70px"
-                    objectFit="cover"
-                    borderRadius="md"
-                    boxShadow="sm"
-                    transition="all 0.3s ease"
-                    _hover={{ boxShadow: "md" }}
-                  />
-                  <ChakraLink
-                    as={Link}
-                    to={`/single-blog/${s.slug}`}
-                    fontWeight="semibold"
-                    fontSize={{ base: "sm", md: "md" }}
-                    color="gray.700"
-                    noOfLines={2}
-                    transition="color 0.2s"
-                    _hover={{ color: "teal.600" }}
-                  >
-                    {s.title}
-                  </ChakraLink>
+                  <Flex>
+                    {" "}
+                    <Image
+                      src={s.blogImage}
+                      alt={s.title}
+                      height="80px"
+                      width="120px"
+                      borderRadius="md"
+                      boxShadow="sm"
+                      transition="all 0.3s ease"
+                      _hover={{ boxShadow: "md" }}
+                      // marginRight={3}
+                    />
+                    <ChakraLink
+                      as={Link}
+                      marginLeft={3}
+                      to={`/single-blog/${s.slug}`}
+                      fontWeight="semibold"
+                      fontSize={{ base: "sm", md: "md" }}
+                      color="gray.700"
+                      noOfLines={2}
+                      transition="color 0.2s"
+                      _hover={{ color: "teal.600" }}
+                    >
+                      {s.title}
+                    </ChakraLink>
+                  </Flex>
                 </HStack>
               ))}
             </VStack>

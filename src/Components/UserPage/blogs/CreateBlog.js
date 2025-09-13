@@ -20,12 +20,12 @@ import * as mod from "../../../url";
 import { formats, modules } from "../../../utils/Quill";
 import Header from "../../Navbar/Header";
 import Footer from "../../Navbar/Footer";
-const storedData = JSON.parse(sessionStorage.getItem("superAdminLawvs"));
-const token = storedData?.data?.token;
+
+const userInfo = JSON.parse(localStorage.getItem("lawvsuserinfo"));
+const userId = userInfo?.data?.userData._id;
+const userType = userInfo?.data?.userData.role;
+const token = userInfo?.data?.token;
 const config = { headers: { Authorization: `${token}` } };
-
-const SIDEBAR_WIDTH = "250px";
-
 const CreateBlogs = () => {
   const [title, setTitle] = useState("");
   const [sortDes, setSortDes] = useState("");
@@ -60,6 +60,17 @@ const CreateBlogs = () => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
+      const wordCount = content.trim().split(/\s+/).length;
+
+      if (wordCount < 300 || wordCount > 1000 || !title || !imageFile) {
+        toast({
+          title: "Validation failed",
+          description: "Please check word count min-300 to max-1000 & image",
+          status: "warning",
+        });
+        setIsSubmitting(false);
+        return;
+      }
       let uploadedImageUrl = "";
 
       if (imageFile) {
@@ -79,6 +90,8 @@ const CreateBlogs = () => {
           metaKeyword: metaKeyword,
           metaDescription: metaDes,
           authorName: author,
+          userId: userId,
+          userType: userType,
         },
         config
       );
@@ -122,8 +135,8 @@ const CreateBlogs = () => {
   return (
     <>
       <Header />
-      <Box ml={{ base: 0 }} p={4}>
-        <Container maxW="" bg="white" p={6} borderRadius="md" boxShadow="md">
+      <Box ml={{ base: 0 }} p={1}>
+        <Container maxW="" bg="white" p={1} borderRadius="md" boxShadow="md">
           <Text
             fontSize={{ base: "xl", md: "2xl" }}
             fontWeight="bold"
@@ -133,10 +146,10 @@ const CreateBlogs = () => {
             borderRadius="md"
             textAlign="center"
           >
-            Add Articles
+            Add Blogs
           </Text>
 
-          <VStack spacing={5} align="stretch">
+          <VStack spacing={5} align="stretch" p={5}>
             <FormControl>
               <FormLabel> Blog Title</FormLabel>
               <Input

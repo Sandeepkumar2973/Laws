@@ -41,6 +41,7 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import DashHeader from "./Headerdashoard";
+import MobileFooterNav from "./MobileFooterNav";
 
 // Social media links
 const socialLinks = [
@@ -207,13 +208,11 @@ const MootCourtMenu = () => {
   );
 };
 
-// export default MootCourtMenu;
-
-// ─── TopHeader ─────────────────────────────────────────────
+// ───--------------- TopHeader ─────────────────────────────────────────────
 const TopHeader = React.forwardRef((props, ref) => (
   <Box
     ref={ref}
-    {...props} // ✅ Pass props to avoid Chakra warnings
+    {...props} //  Pass props to avoid Chakra warnings
     bg="#2E3338"
     color="white"
     px={{ base: 4, md: 8 }}
@@ -474,7 +473,7 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
           <ChakraLink as={RouterLink} to="/videos-news" marginLeft={3}>
             Videos&News
           </ChakraLink>
-          <ChakraLink
+          {/* <ChakraLink
             as={RouterLink}
             to="/all-articles"
             textDecoration="none"
@@ -482,8 +481,8 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
             marginLeft={3}
           >
             Articles
-          </ChakraLink>
-          <ChakraLink
+          </ChakraLink> */}
+          {/* <ChakraLink
             as={RouterLink}
             to="/all-blogs"
             textDecoration="none"
@@ -491,8 +490,8 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
             marginLeft={3}
           >
             Blogs
-          </ChakraLink>
-          <ChakraLink
+          </ChakraLink> */}
+          {/* <ChakraLink
             as={RouterLink}
             to="/all-news"
             textDecoration="none"
@@ -500,7 +499,7 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
             marginLeft={3}
           >
             News
-          </ChakraLink>
+          </ChakraLink> */}
           {/* <ChakraLink as={RouterLink} to="/top-stories" marginLeft={3}>
             Top Stories
           </ChakraLink> */}
@@ -514,9 +513,9 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
           {/* <ChakraLink as={RouterLink} to="/exam-preparation" marginLeft={3}>
             Exams Preparation
           </ChakraLink> */}
-          <ChakraLink as={RouterLink} to="/q-and-a" marginLeft={3}>
+          {/* <ChakraLink as={RouterLink} to="/q-and-a" marginLeft={3}>
             Q & A
-          </ChakraLink>
+          </ChakraLink> */}
           {/* <ChakraLink as={RouterLink} to="/contact" marginLeft={3}>
             Contact Us
           </ChakraLink> */}
@@ -532,6 +531,8 @@ const Header = () => {
   const [showTopHeader, setShowTopHeader] = useState(true);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const prevScrollY = useRef(0);
+
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const toggleMobileNav = () => setIsMobileNavOpen((prev) => !prev);
 
@@ -552,19 +553,30 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!isMobile) {
+      setIsMobileNavOpen(false);
+    }
+  }, [isMobile]);
+
   return (
     <>
-      <Box
-        transform={showTopHeader ? "translateY(0)" : "translateY(-100%)"}
-        transition="transform 0.3s ease"
-      >
-        <TopHeader />
-      </Box>
+      {/* TopHeader hide in mobile view */}
+      {!isMobile && (
+        <Box
+          transform={showTopHeader ? "translateY(0)" : "translateY(-100%)"}
+          transition="transform 0.3s ease"
+        >
+          <TopHeader />
+        </Box>
+      )}
 
       <MainHeader
         isMobileNavOpen={isMobileNavOpen}
         toggleMobileNav={toggleMobileNav}
       />
+
+      <MobileFooterNav />
     </>
   );
 };

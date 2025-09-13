@@ -9,6 +9,7 @@ import {
   useToast,
   Link as ChakraLink,
   Spinner,
+  Flex,
 } from "@chakra-ui/react";
 import { Link, useParams } from "react-router-dom";
 import Header from "../../Navbar/Header";
@@ -97,17 +98,32 @@ export default function SingleArticle() {
           flexDir={{ base: "column", md: "row" }}
         >
           {/* Left Side - Story Details */}
-          <Box flex="3" p={{ base: 2, md: 6 }}>
+          <Box flex="70%" p={{ base: 2, md: 6 }}>
             <Heading
-              fontSize={{ base: "2xl", md: "3xl" }}
+              fontSize={{ base: "xl", md: "2xl" }}
               mb={4}
               color="gray.800"
               lineHeight="short"
               textAlign="justify"
             >
-              {article?.title.toUpperCase()}
+              {article?.title}
             </Heading>
-
+            <Text
+              color="red.500"
+              mb={1}
+              fontSize={{ base: "sm", md: "md" }}
+              textAlign={"left"}
+            >
+              {article?.authorName}
+            </Text>
+            <Text
+              color="gray.500"
+              mb={1}
+              fontSize={{ base: "sm", md: "md" }}
+              textAlign={"left"}
+            >
+              {article?.postedOn && new Date(article.postedOn).toLocaleString()}
+            </Text>
             <Image
               src={article?.articleImage}
               alt={article?.title}
@@ -120,10 +136,6 @@ export default function SingleArticle() {
               transition="all 0.4s ease"
               _hover={{ transform: "scale(1.02)", boxShadow: "xl" }}
             />
-
-            <Text color="gray.500" mb={6} fontSize={{ base: "sm", md: "md" }}>
-              {article?.authorName} • {article?.postedOn?.split("T")[0]}
-            </Text>
 
             {/* Full Content (HTML) */}
             <Box
@@ -143,22 +155,26 @@ export default function SingleArticle() {
                   fontFamily: "serif",
                   lineHeight: "1.7",
                 },
-                ".ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4,.ql-editor h5, .ql-editor b":
-                  {
-                    marginTop: "1px !important",
-                    marginBottom: "0 !important",
-                    fontSize: "20px !important",
-                    fontFamily: "serif",
-                    lineHeight: "1.7",
-                  },
+
                 ".ql-editor img": {
-                  maxWidth: "100%", // responsive
-                  height: "auto",
+                  maxWidth: "400px", // responsive
+                  minWidth: "500px", // responsive
+                  height: "300px",
                   borderRadius: "12px", // rounded corners
                   margin: "16px 0", // top-bottom space
                   boxShadow: "0 4px 12px rgba(0,0,0,0.1)", // soft shadow
                   objectFit: "cover",
                   alignItems: "center",
+                },
+                ".ql-editor, .ql-editor *": {
+                  fontSize: "20px !important",
+                  // fontWeight: "normal !important",
+                  lineHeight: "1.7 !important",
+                  // color: "#4a5568 !important",
+                  textAlign: "justify !important",
+                  margin: "0 !important",
+                  padding: "0 !important",
+                  fontFamily: "serif !important",
                 },
               }}
             >
@@ -180,18 +196,18 @@ export default function SingleArticle() {
 
           {/* Right Side - Latest Stories */}
           <Box
-            flex="1"
+            flex="30%"
             position="sticky"
             top="100px"
             align="start"
             border="1px solid"
             borderColor="gray.200"
             borderRadius="xl"
-            p={5}
-            maxW={{ base: "100%", md: "400px" }}
-            minH="300px"
+            p={1}
+            maxW={{ base: "100%", md: "500px" }}
+            minH="600px"
             bg="white"
-            boxShadow="md"
+            // boxShadow="md"
             transition="all 0.3s ease"
             _hover={{ boxShadow: "xl", transform: "translateY(-4px)" }}
           >
@@ -199,7 +215,7 @@ export default function SingleArticle() {
               size="md"
               mb={5}
               textAlign="center"
-              backgroundColor="gray.100"
+              backgroundColor="yellow.400"
               py={3}
               borderRadius="md"
               fontWeight="semibold"
@@ -220,28 +236,33 @@ export default function SingleArticle() {
                   transition="all 0.3s ease"
                   _hover={{ bg: "gray.50", transform: "translateX(6px)" }}
                 >
-                  <Image
-                    src={s.articleImage}
-                    alt={s.title}
-                    boxSize="70px"
-                    objectFit="cover"
-                    borderRadius="md"
-                    boxShadow="sm"
-                    transition="all 0.3s ease"
-                    _hover={{ boxShadow: "md" }}
-                  />
-                  <ChakraLink
-                    as={Link}
-                    to={`/article/${s.slug}`}
-                    fontWeight="semibold"
-                    fontSize={{ base: "sm", md: "md" }}
-                    color="gray.700"
-                    noOfLines={2}
-                    transition="color 0.2s"
-                    _hover={{ color: "teal.600" }}
-                  >
-                    {s.title}
-                  </ChakraLink>
+                  <Flex>
+                    {" "}
+                    <Image
+                      src={s.articleImage}
+                      alt={s.title}
+                      width="120px"
+                      height="80px"
+                      borderRadius="md"
+                      boxShadow="sm"
+                      transition="all 0.3s ease"
+                      _hover={{ boxShadow: "md" }}
+                    />
+                    <ChakraLink
+                      as={Link}
+                      to={`/article/${s.slug}`}
+                      fontWeight="semibold"
+                      fontSize={{ base: "sm", md: "md" }}
+                      color="gray.700"
+                      noOfLines={2}
+                      transition="color 0.2s"
+                      _hover={{ color: "teal.600" }}
+                      textAlign="justify"
+                      marginLeft={3}
+                    >
+                      {s?.title}
+                    </ChakraLink>
+                  </Flex>
                 </HStack>
               ))}
             </VStack>

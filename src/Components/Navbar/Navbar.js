@@ -24,8 +24,6 @@ import { FiMessageCircle } from "react-icons/fi";
 import * as mod from "../../url";
 import LogoutButton from "../../routes/LogoutButton";
 
-const SIDEBAR_WIDTH = "250px";
-
 const Navbar = () => {
   const [notificationCount, setNotificationCount] = useState(0);
   const [messageCount, setmessageCount] = useState(0);

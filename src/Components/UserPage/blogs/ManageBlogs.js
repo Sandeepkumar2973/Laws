@@ -27,10 +27,11 @@ import * as mod from "../../../url";
 import { formats, modules } from "../../../utils/Quill";
 import Header from "../../Navbar/Header";
 import Footer from "../../Navbar/Footer"; // Update with your actual URL file path
-const token = JSON.parse(sessionStorage.getItem("superAdminLawvs"))?.data
-  ?.token;
-const config = { headers: { Authorization: token } };
-const SIDEBAR_WIDTH = "250px";
+const userInfo = JSON.parse(localStorage.getItem("lawvsuserinfo"));
+const userId = userInfo?.data?.userData._id;
+// const userType = userInfo?.data?.userData.role;
+const token = userInfo?.data?.token;
+const config = { headers: { Authorization: `${token}` } };
 const RECORDS_PER_PAGE = 20;
 
 const ManageAllBlogs = () => {
@@ -42,39 +43,40 @@ const ManageAllBlogs = () => {
   // Fetch blogs from API
   const fetchAllBlogs = async () => {
     try {
-      const { data } = await axios.get(`${mod.api_url}/api/v1/blogs/get_blogs`);
-      //   console.log(data, "ijoijdsps");
-      setBlogs(data.blogs);
+      const { data } = await axios.get(
+        `${mod.api_url}/api/v1/blogs/get_blogs/${userId}`
+      );
+      setBlogs(data.Blogs);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching blogs:", error);
       setLoading(false);
     }
   };
-
-  const handleStatusToggle = async (slug, currentStatus) => {
-    const newStatus = currentStatus === "active" ? "inactive" : "active";
-    try {
-      await axios.put(
-        `${mod.api_url}/api/v1/blogs/status_blogs/${slug}`,
-        { status: newStatus },
-        config
-      );
-
-      setBlogs((prevStory) =>
-        prevStory.map((blogs) =>
-          blogs.slug === slug ? { ...blogs, status: newStatus } : blogs
-        )
-      );
-    } catch (error) {
-      console.error("Failed to update status", error);
-    }
-  };
-
   useEffect(() => {
     fetchAllBlogs();
   }, []);
-  const handleDelete = async (slug) => {
+  const handleDelete = async (slug, postedOn) => {
+    if (postedOn) {
+      const postedDate = new Date(postedOn);
+      const now = new Date();
+
+      // Difference in milliseconds
+      const diffMs = now - postedDate;
+
+      // Convert to hours
+      const diffHours = diffMs / (1000 * 60 * 60);
+
+      if (diffHours >= 24) {
+        toast({
+          title: "You cannot delete this article after 24 hours of posting.",
+          status: "warning",
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+    }
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this blogs?"
     );
@@ -117,8 +119,8 @@ const ManageAllBlogs = () => {
     <>
       <Header />
 
-      <Box mt="100px" ml={{ base: 0, md: SIDEBAR_WIDTH }} p={6}>
-        <Text fontSize="2xl" mb={4} size="md" bg="#D29B3F" p={3}>
+      <Box ml={{ base: 0 }}>
+        <Text fontSize="2xl" mb={1} size="md" bg="#D29B3F" p={3}>
           <strong>All Blogs</strong>
         </Text>
 
@@ -142,7 +144,7 @@ const ManageAllBlogs = () => {
               colorScheme="blue"
               leftIcon={<AddIcon />}
               as={RouterLink}
-              to="/create-article"
+              to="/create-blog"
               _hover={{ bg: "blue.100" }}
               textDecoration="none"
             >
@@ -152,7 +154,13 @@ const ManageAllBlogs = () => {
         </Flex>
 
         <Box bg="white" p={4} borderRadius="md" boxShadow="sm">
-          <Text fontWeight="bold" fontSize="lg" mb={4}>
+          <Text
+            // fontWeight="bold"
+            fontSize="sm"
+            mb={1}
+            textAlign={"right"}
+            align={"right"}
+          >
             Total Record: {blogs?.length}
           </Text>
           {/* <Text fontSize="sm"></Text> */}
@@ -176,7 +184,6 @@ const ManageAllBlogs = () => {
                     <Th border="1px solid #ccc">Title</Th>
                     <Th border="1px solid #ccc">Posted on</Th>
                     <Th border="1px solid #ccc">Action</Th>
-                    <Th border="1px solid #ccc">Status</Th>
                     <Th border="1px solid #ccc">Delete</Th>
                   </Tr>
                 </Thead>
@@ -191,9 +198,8 @@ const ManageAllBlogs = () => {
                         <Image
                           src={blogs?.blogImage}
                           alt="Story"
-                          boxSize="80px" // you can adjust to your needs, like boxSize="100px"
-                          objectFit="cover"
-                          borderRadius="md"
+                          width="150px"
+                          height="80px"
                         />
                       </Td>
 
@@ -214,7 +220,7 @@ const ManageAllBlogs = () => {
                       <Td border="1px solid #ccc">
                         <ChakraLink
                           as={RouterLink}
-                          to={`/update-blogs/${blogs?.slug}`} // navigate to single blogs page
+                          to={`/update-blog/${blogs?.slug}`} // navigate to single blogs page
                           color="blue.500"
                           _hover={{ textDecoration: "underline" }}
                         >
@@ -226,19 +232,6 @@ const ManageAllBlogs = () => {
                           />
                         </ChakraLink>
                       </Td>
-                      <Td border="1px solid #ccc">
-                        <Button
-                          size="sm"
-                          colorScheme={
-                            blogs?.status === "active" ? "green" : "red"
-                          }
-                          onClick={() =>
-                            handleStatusToggle(blogs?.slug, blogs?.status)
-                          }
-                        >
-                          {blogs?.status === "active" ? "Active" : "Inactive"}
-                        </Button>
-                      </Td>
 
                       <Td border="1px solid #ccc">
                         <IconButton
@@ -246,7 +239,9 @@ const ManageAllBlogs = () => {
                           colorScheme="red"
                           size="sm"
                           aria-label="Delete"
-                          onClick={() => handleDelete(blogs?.slug)}
+                          onClick={() =>
+                            handleDelete(blogs?.slug, blogs?.postedOn)
+                          }
                         />
                       </Td>
                     </Tr>

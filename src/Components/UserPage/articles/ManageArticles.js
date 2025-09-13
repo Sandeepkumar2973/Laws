@@ -30,7 +30,6 @@ const userInfo = JSON.parse(localStorage.getItem("lawvsuserinfo"))?.data?.token;
 const userId = userInfo?.data?.userData._id;
 // const userType = userInfo?.data?.userData.role;
 const config = { headers: { Authorization: token } };
-const SIDEBAR_WIDTH = "250px";
 const RECORDS_PER_PAGE = 20;
 
 const ManageAllArticles = () => {
@@ -45,7 +44,6 @@ const ManageAllArticles = () => {
       const { data } = await axios.get(
         `${mod.api_url}/api/v1/article/get_user_articles/${userId}`
       );
-      console.log(data, "ijoijdsps");
 
       setArticles(data.Articles);
       setLoading(false);
@@ -58,18 +56,39 @@ const ManageAllArticles = () => {
   useEffect(() => {
     fetchAllArticles();
   }, []);
-  const handleDelete = async (slug) => {
+  const handleDelete = async (slug, postedOn) => {
+    if (postedOn) {
+      const postedDate = new Date(postedOn);
+      const now = new Date();
+
+      // Difference in milliseconds
+      const diffMs = now - postedDate;
+
+      // Convert to hours
+      const diffHours = diffMs / (1000 * 60 * 60);
+
+      if (diffHours >= 24) {
+        toast({
+          title: "You cannot delete this article after 24 hours of posting.",
+          status: "warning",
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+    }
+
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this article?"
     );
     if (!confirmDelete) return;
+
     try {
       await axios.delete(
         `${mod.api_url}/api/v1/article/delete_article/${slug}`,
         config
       );
 
-      // Update state to remove the deleted article
       setArticles((prevStory) =>
         prevStory.filter((article) => article?.slug !== slug)
       );
@@ -137,7 +156,13 @@ const ManageAllArticles = () => {
         </Flex>
 
         <Box bg="white" p={4} borderRadius="md" boxShadow="sm">
-          <Text fontWeight="bold" fontSize="lg" mb={4}>
+          <Text
+            // fontWeight="bold"
+            fontSize="sm"
+            mb={1}
+            textAlign={"right"}
+            align={"right"}
+          >
             Total Record: {allArticles?.length}
           </Text>
           {/* <Text fontSize="sm"></Text> */}
@@ -174,17 +199,16 @@ const ManageAllArticles = () => {
                       <Td border="1px solid #ccc">
                         <Image
                           src={article?.articleImage}
-                          alt="Story"
-                          boxSize="80px" // you can adjust to your needs, like boxSize="100px"
-                          objectFit="cover"
-                          borderRadius="md"
+                          alt="Article"
+                          width="150px"
+                          height="80px"
                         />
                       </Td>
 
                       <Td border="1px solid #ccc">
                         <ChakraLink
                           as={RouterLink}
-                          to={`/single-article/${article?.slug}`} // navigate to single article page
+                          to={`/article/${article?.slug}`} // navigate to single article page
                           color="blue.500"
                           _hover={{ textDecoration: "underline" }}
                         >
@@ -217,7 +241,9 @@ const ManageAllArticles = () => {
                           colorScheme="red"
                           size="sm"
                           aria-label="Delete"
-                          onClick={() => handleDelete(article?.slug)}
+                          onClick={() =>
+                            handleDelete(article?.slug, article.postedOn)
+                          }
                         />
                       </Td>
                     </Tr>
