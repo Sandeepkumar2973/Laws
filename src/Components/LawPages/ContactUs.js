@@ -12,32 +12,55 @@ import {
   Heading,
   FormControl,
   FormLabel,
+  useToast,
 } from "@chakra-ui/react";
 import { FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
 import Footer from "../Navbar/Footer";
 import Header from "../Navbar/Header";
 import MapPage from "./Map";
-
+import { useState } from "react";
+import axios from "axios";
 const ContactUs = () => {
-  const contacts = [
-    {
-      address:
-        "Delhi office: Office No.105, Himland House, Commercial Complex Karampura, Delhi - 110015",
-      phone: "+91 81719 74067",
-      email: "hr@lawvs.com",
-    },
-    {
-      address:
-        "AT 8, Marina View, Level 42, Asia Square Tower 1, Suite No: 42030, Singapore",
-      phone: "+91 81719 74067",
-      email: "hr@lawvs.com",
-    },
-    {
-      address: "6263, Ali Chamber, Nagindas Master Road Fort, Mumbai - 400023",
-      phone: "+91 (22) 22641653",
-      email: "hr@lawvs.com",
-    },
-  ];
+  const toast = useToast();
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    message: "",
+  });
+
+  // handle change
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("https://yourapi.com/api/contact", formData);
+
+      toast({
+        title: "Query submitted successfully!",
+        description: "We’ll contact you soon.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      setFormData({ name: "", phone: "", email: "", message: "" });
+    } catch (err) {
+      toast({
+        title: "Submission failed",
+        description: "Something went wrong. Please try again.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -63,19 +86,6 @@ const ContactUs = () => {
           </Text>
 
           <VStack align="start" spacing={6}>
-            <HStack align="start" spacing={4}>
-              <Box bg="yellow.500" p={3} borderRadius="full">
-                <Icon as={FaMapMarkerAlt} color="white" boxSize={5} />
-              </Box>
-              <Box>
-                <Text fontWeight="bold">Corporate Office</Text>
-                <Text>
-                  Office No.105, Himland House, Commercial Complex, Karampura,
-                  Delhi-110015, India
-                </Text>
-              </Box>
-            </HStack>
-
             <HStack align="start" spacing={4}>
               <Box bg="yellow.500" p={3} borderRadius="full">
                 <Icon as={FaMapMarkerAlt} color="white" boxSize={5} />
@@ -126,26 +136,52 @@ const ContactUs = () => {
           <Heading size="lg" mb={6}>
             Do You Have Any Queries?
           </Heading>
-          <form>
+          <form onSubmit={handleSubmit}>
             <Flex direction={{ base: "column", md: "row" }} gap={4} mb={4}>
-              <FormControl>
+              <FormControl isRequired>
                 <FormLabel>Your Name:</FormLabel>
-                <Input placeholder="Your Name" />
+                <Input
+                  name="name"
+                  placeholder="Your Name"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
               </FormControl>
-              <FormControl>
+              <FormControl isRequired>
                 <FormLabel>Phone:</FormLabel>
-                <Input placeholder="Phone Number" />
+                <Input
+                  name="phone"
+                  placeholder="Phone Number"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
               </FormControl>
             </Flex>
-            <FormControl mb={4}>
+
+            <FormControl mb={4} isRequired>
               <FormLabel>Email Address:</FormLabel>
-              <Input placeholder="Your Email" />
+              <Input
+                name="email"
+                type="email"
+                placeholder="Your Email"
+                value={formData.email}
+                onChange={handleChange}
+              />
             </FormControl>
-            <FormControl mb={6}>
+
+            <FormControl mb={6} isRequired>
               <FormLabel>Message:</FormLabel>
-              <Textarea placeholder="Your Message" rows={5} />
+              <Textarea
+                name="message"
+                placeholder="Your Message"
+                rows={5}
+                value={formData.message}
+                onChange={handleChange}
+              />
             </FormControl>
+
             <Button
+              type="submit"
               bg="yellow.500"
               color="white"
               w="full"
@@ -196,3 +232,22 @@ const ContactUs = () => {
   );
 };
 export default ContactUs;
+const contacts = [
+  {
+    address:
+      "Delhi office: Office No.105, Himland House, Commercial Complex Karampura, Delhi - 110015",
+    phone: "+91 81719 74067",
+    email: "hr@lawvs.com",
+  },
+  {
+    address:
+      "AT 8, Marina View, Level 42, Asia Square Tower 1, Suite No: 42030, Singapore",
+    phone: "+91 81719 74067",
+    email: "hr@lawvs.com",
+  },
+  {
+    address: "6263, Ali Chamber, Nagindas Master Road Fort, Mumbai - 400023",
+    phone: "+91 (22) 22641653",
+    email: "hr@lawvs.com",
+  },
+];

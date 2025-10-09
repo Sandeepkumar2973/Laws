@@ -18,7 +18,7 @@
 
 /* Add an A↕ icon to line-height dropdown */
 .ql-lineheight .ql-picker-label::after {
-  content: "A↕";
+  content: "A ↕";
   font-size: 14px;
   margin-left: 4px;
   color: #444;

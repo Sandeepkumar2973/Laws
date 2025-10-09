@@ -124,7 +124,6 @@ export default function AllArticles() {
           </Button>
         </Flex>
 
-        {/* 📰 Articles Grid */}
         <Box p={5}>
           <SimpleGrid columns={{ base: 1, sm: 1, md: 3, lg: 3 }} spacing={8}>
             {currentArticles.map((article) => (
@@ -150,7 +149,7 @@ export default function AllArticles() {
                   alt={article?.title}
                   w="100%"
                   h="220px"
-                  objectFit="cover"
+                  // objectFit="cover"
                   transition="all 0.3s"
                   borderRadius="xl"
                   _hover={{ filter: "brightness(1.1) saturate(1.2)" }}
@@ -201,8 +200,8 @@ export default function AllArticles() {
                       theme="bubble"
                       modules={{ toolbar: false }}
                       style={{
-                        minHeight: "70px",
-                        maxHeight: "70px",
+                        minHeight: "73px",
+                        maxHeight: "73px",
                         background: "transparent",
                         border: "none",
                         padding: 0,

@@ -78,7 +78,7 @@ const DashHeader = () => {
               bg: "#20ebebff",
             }}
           >
-            Memorial Submission
+            mootCourt
           </ChakraLink>
 
           {/* Hurry Up Badge */}
@@ -86,7 +86,7 @@ const DashHeader = () => {
             position="absolute"
             top="-15px"
             right="15px"
-            bg="red.500" // ✅ green.500 bhi use kar sakte ho
+            bg="red.500" //  green.500 bhi use kar sakte ho
             color="white"
             fontSize="xs"
             fontWeight="bold"
@@ -95,7 +95,7 @@ const DashHeader = () => {
             borderRadius="full"
             boxShadow="md"
           >
-            Hurry Up!
+            login!
           </Box>
         </Box>
       )}
@@ -119,9 +119,6 @@ const DashHeader = () => {
             <Button as={RouterLink} to="/manage-blogs" onClick={onClose}>
               Manage Blogs
             </Button>
-            {/* <Button as={RouterLink} to="/manage-articles" onClick={onClose}>
-              Manage News
-            </Button> */}
             <Button as={RouterLink} to="/user-help&suport" onClick={onClose}>
               Help & Support
             </Button>

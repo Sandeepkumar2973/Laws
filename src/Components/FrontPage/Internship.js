@@ -71,9 +71,10 @@ const Internship = () => {
   const fetchLatestInternship = async () => {
     try {
       const response = await axios.get(
-        `${mode.api_url}/api/v1/job/get-latest-internship-jobs`
+        `${mode.api_url}/api/v1/job/get-internship-jobs`
       );
       const data = response.data;
+      // console.log(data, "latest internship jobs");
       if (data.success) {
         setInternship(data.data);
       }

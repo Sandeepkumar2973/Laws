@@ -67,6 +67,13 @@ import CreateBlogs from "./Components/UserPage/blogs/CreateBlog.js";
 import UpdateBlogs from "./Components/UserPage/blogs/UpdateBlog.js";
 import ScrollToTop from "./utils/ScrollToTop.js";
 import ManageAllBlogs from "./Components/UserPage/blogs/ManageBlogs.js";
+import TestingPage from "./Components/FrontPage/TestingPage.js";
+import TermsAndConditions from "./Components/footerpage/TermAndCondition.js";
+import PrivacyAndPolicy from "./Components/footerpage/PrivacyAndPolicy.js";
+import LegalLawProgram from "./Components/footerpage/LegalLawPrograms.js";
+import LegalLawJobs from "./Components/footerpage/LegalLawJobs.js";
+import LawInternShip from "./Components/footerpage/LawInternship.js";
+import MeetUserForm from "./Components/contactpage/MeetUser.js";
 
 function App() {
   return (
@@ -77,6 +84,7 @@ function App() {
           <Routes>
             <>
               <Route path="/" element={<FrontPage />} />
+              <Route path="/join-meeting-form" element={<MeetUserForm />} />
               <Route path="/update-job/:id" element={<UpdateJob />} />
               <Route path="/all-application" element={<UserApplications />} />
               <Route path="/all-users" element={<AllUsers />} />
@@ -91,6 +99,8 @@ function App() {
                 element={<AdminNotifications />}
               />
             </>
+
+            <Route path="/get-test" element={<TestingPage />} />
             <Route path="/get-all-jobs" element={<AlljobsPage />} />
             <Route path="/get-practice-area" element={<IndustryList />} />
             <Route path="/get-law_degrees" element={<LawDegrees />} />
@@ -98,6 +108,15 @@ function App() {
               path="/get-single-job/details/:id"
               element={<SingleJobPage />}
             />
+            {/* other pages */}
+            <Route
+              path="/terms-and-conditions"
+              element={<TermsAndConditions />}
+            />
+            <Route path="/privacy-and-policy" element={<PrivacyAndPolicy />} />
+            <Route path="/legal-law-program" element={<LegalLawProgram />} />
+            <Route path="/legal-law-jobs" element={<LegalLawJobs />} />
+            <Route path="/law-internship" element={<LawInternShip />} />
             {/* // header routes Pages */}
             <Route path="/legal-draft" element={<LegalDraft />} />
             <Route path="/drafts/:slug" element={<SingleDraft />} />

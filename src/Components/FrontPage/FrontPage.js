@@ -16,6 +16,7 @@ import TopCompanies from "./TopCompanies";
 import TopStories from "./TopStories";
 import LegalBanner from "./LegalBanner";
 import JobPage from "./homepage/jobPage/Jobpage";
+import NewsletterSubscribe from "../footerpage/NewsletterSubscribe";
 
 const FrontPage = () => {
   return (
@@ -36,6 +37,7 @@ const FrontPage = () => {
       <JoinRevolutionSection />
       <TestimonialPage />
       <LibraryWebinarPage />
+      <NewsletterSubscribe />
       <Footer />
     </>
   );

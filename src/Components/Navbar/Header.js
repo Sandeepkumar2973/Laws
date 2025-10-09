@@ -18,6 +18,12 @@ import {
   MenuList,
   MenuItem,
   Link,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerHeader,
+  DrawerBody,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
@@ -26,6 +32,11 @@ import {
   FaBars,
   FaTimes,
   FaWhatsapp,
+  FaFileAlt,
+  FaVideo,
+  FaNewspaper,
+  FaBlog,
+  FaQuestionCircle,
 } from "react-icons/fa";
 
 import logo from "../Assets/logo/logo.png";
@@ -42,7 +53,11 @@ import {
 } from "react-icons/fa";
 import DashHeader from "./Headerdashoard";
 import MobileFooterNav from "./MobileFooterNav";
-
+import KnowladgeMenu from "./KnowladgeMenu";
+const userInfo = JSON.parse(localStorage.getItem("lawvsuserinfo"));
+const userId = userInfo?.data?.userData._id;
+// const userType = userInfo?.data?.userData.role;
+// const token = userInfo?.data?.token;
 // Social media links
 const socialLinks = [
   { icon: FaFacebookF, url: "https://www.facebook.com/lawvslegalservices" },
@@ -54,8 +69,6 @@ const socialLinks = [
   },
   { icon: FaTwitter, url: "https://x.com/LawvsF" },
 ];
-
-// dashboard
 
 // ─── JobsMenu ──────────────────────────────────────────────
 const JobsMenu = () => {
@@ -91,6 +104,56 @@ const JobsMenu = () => {
           <MenuItem>
             <ChakraLink as={RouterLink} to={"/get-all-jobs"}>
               Browse All Jobs
+            </ChakraLink>
+          </MenuItem>
+        </MenuList>
+      </Menu>
+    </Box>
+  );
+};
+// ─── knowledge menu ──────────────────────────────────────────────
+const Knowledgemenu = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Box
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
+      <Menu isOpen={isOpen}>
+        <MenuButton
+          as={Button}
+          rightIcon={<ChevronDownIcon />}
+          variant="ghost"
+          _hover={{ bg: "gray.100" }}
+          _expanded={{ bg: "gray.200" }}
+        >
+          Search Jobs
+        </MenuButton>
+        <MenuList>
+          <MenuItem>
+            <ChakraLink as={RouterLink} to="/legal-draft">
+              Legal Drafts
+            </ChakraLink>
+          </MenuItem>
+          <MenuItem>
+            <ChakraLink as={RouterLink} to="/videos-news">
+              Videos
+            </ChakraLink>
+          </MenuItem>
+          <MenuItem>
+            <ChakraLink as={RouterLink} to="/all-articles">
+              Articles
+            </ChakraLink>
+          </MenuItem>
+          <MenuItem>
+            <ChakraLink as={RouterLink} to="/all-blogs">
+              Blogs
+            </ChakraLink>
+          </MenuItem>
+          <MenuItem>
+            <ChakraLink as={RouterLink} to="/all-news">
+              News
             </ChakraLink>
           </MenuItem>
         </MenuList>
@@ -156,11 +219,7 @@ const MootCourtMenu = () => {
                     RULES AND REGULATIONS OF COMPETITION
                   </ChakraLink>
                 </MenuItem>
-                {/* <MenuItem>
-                  <ChakraLink as={RouterLink} to={"/moot_proposition"}>
-                    MOOT PROPOSITION
-                  </ChakraLink>
-                </MenuItem> */}
+
                 <MenuItem>
                   <ChakraLink as={RouterLink} to={"/steps_to_register"}>
                     STEPS TO REGISTER
@@ -252,48 +311,40 @@ const TopHeader = React.forwardRef((props, ref) => (
 
       {/* Buttons */}
       <HStack spacing={3}>
-        {/* <ChakraLink
-          as={RouterLink}
-          to="/moot-user-signup"
-          textDecoration="none"
-          _hover={{ textDecoration: "none" }}
-          size="sm"
-          bg="#D29B3F"
-          color="white"
-          borderRadius="full"
-          padding={2}
-          px={6}
-        >
-          Moot Court Participation
-        </ChakraLink> */}
-        <ChakraLink
-          as={RouterLink}
-          to="/user-auth-login"
-          textDecoration="none"
-          _hover={{ textDecoration: "none" }}
-          size="sm"
-          bg="#D29B3F"
-          color="white"
-          borderRadius="full"
-          padding={2}
-          px={6}
-        >
-          Login/Register
-        </ChakraLink>
-        <ChakraLink
-          as={RouterLink}
-          to="/admin-auth-login"
-          textDecoration="none"
-          _hover={{ textDecoration: "none" }}
-          size="sm"
-          bg="#D29B3F"
-          color="white"
-          borderRadius="full"
-          padding={2}
-          px={6}
-        >
-          Job/Internship Post
-        </ChakraLink>
+        {userId ? (
+          ""
+        ) : (
+          <>
+            <ChakraLink
+              as={RouterLink}
+              to="/user-auth-login"
+              textDecoration="none"
+              _hover={{ textDecoration: "none" }}
+              size="sm"
+              bg="#D29B3F"
+              color="white"
+              borderRadius="full"
+              padding={2}
+              px={6}
+            >
+              Login/Register
+            </ChakraLink>
+            <ChakraLink
+              as={RouterLink}
+              to="/admin-auth-login"
+              textDecoration="none"
+              _hover={{ textDecoration: "none" }}
+              size="sm"
+              bg="#D29B3F"
+              color="white"
+              borderRadius="full"
+              padding={2}
+              px={6}
+            >
+              Create Opportunity
+            </ChakraLink>
+          </>
+        )}
       </HStack>
 
       {/* Social Icons */}
@@ -354,9 +405,10 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
         {/* Navigation */}
         {isMobile ? (
           <IconButton
-            icon={isMobileNavOpen ? <FaTimes /> : <FaBars />}
+            icon={<FaBars />}
             onClick={toggleMobileNav}
             variant="ghost"
+            fontSize="20px"
             aria-label="Toggle Navigation"
           />
         ) : (
@@ -368,165 +420,117 @@ const MainHeader = ({ isMobileNavOpen, toggleMobileNav }) => {
             as="nav"
           >
             <MootCourtMenu />
-            <JobsMenu />
-            <ChakraLink
-              as={RouterLink}
-              to="/legal-draft"
-              textDecoration="none"
-              _hover={{ textDecoration: "none" }}
-            >
+            {/* <JobsMenu /> */}
+            <KnowladgeMenu />
+
+            <ChakraLink as={RouterLink} to="/legal-draft">
               Legal Drafts
             </ChakraLink>
-            <ChakraLink
-              as={RouterLink}
-              to="/videos-news"
-              textDecoration="none"
-              _hover={{ textDecoration: "none" }}
-            >
+            <ChakraLink as={RouterLink} to="/videos-news">
               Videos
             </ChakraLink>
-            <ChakraLink
-              as={RouterLink}
-              to="/all-articles"
-              textDecoration="none"
-              _hover={{ textDecoration: "none" }}
-            >
+            {/* <ChakraLink as={RouterLink} to="/all-articles">
               Articles
             </ChakraLink>
-            <ChakraLink
-              as={RouterLink}
-              to="/all-blogs"
-              textDecoration="none"
-              _hover={{ textDecoration: "none" }}
-            >
+            <ChakraLink as={RouterLink} to="/all-blogs">
               Blogs
             </ChakraLink>
-            <ChakraLink
-              as={RouterLink}
-              to="/all-news"
-              textDecoration="none"
-              _hover={{ textDecoration: "none" }}
-            >
+            <ChakraLink as={RouterLink} to="/all-news">
               News
-            </ChakraLink>
-            {/* <ChakraLink
-              as={RouterLink}
-              to="/library"
-              textDecoration="none"
-              _hover={{ textDecoration: "none" }}
-            >
-              Library
             </ChakraLink> */}
-            {/* <ChakraLink
-              as={RouterLink}
-              to="/opportunity"
-              textDecoration="none"
-              _hover={{ textDecoration: "none" }}
-            >
-              Opportunity
-            </ChakraLink> */}
-            {/* <ChakraLink
-              as={RouterLink}
-              to="/exam-preparation"
-              textDecoration="none"
-              _hover={{ textDecoration: "none" }}
-            >
-              Exams Preparation
-            </ChakraLink> */}
-            <ChakraLink
-              as={RouterLink}
-              to="/q-and-a"
-              textDecoration="none"
-              _hover={{ textDecoration: "none" }}
-            >
+            <ChakraLink as={RouterLink} to="/q-and-a">
               Q & A
-            </ChakraLink>
-            <ChakraLink
-              as={RouterLink}
-              to="/contact"
-              textDecoration="none"
-              _hover={{ textDecoration: "none" }}
-            >
-              {/* Contact Us */}
             </ChakraLink>
             <DashHeader />
           </HStack>
         )}
       </Flex>
 
-      {/* Mobile Dropdown Menu */}
-      <Collapse in={isMobileNavOpen} animateOpacity>
-        <VStack
-          mt={4}
-          spacing={4}
-          fontSize="sm"
-          fontWeight="medium"
-          color="gray.700"
-          align="start"
-          textDecoration="none"
-        >
-          <MootCourtMenu />
-          {/* <JobsMenu /> */}
-          <ChakraLink as={RouterLink} to="/legal-draft" marginLeft={3}>
-            Legal Drafts
-          </ChakraLink>
-          <ChakraLink as={RouterLink} to="/videos-news" marginLeft={3}>
-            Videos&News
-          </ChakraLink>
-          {/* <ChakraLink
-            as={RouterLink}
-            to="/all-articles"
-            textDecoration="none"
-            _hover={{ textDecoration: "none" }}
-            marginLeft={3}
+      {/* Mobile Drawer Menu */}
+      <Drawer
+        placement="left"
+        onClose={toggleMobileNav}
+        isOpen={isMobileNavOpen}
+      >
+        <DrawerOverlay />
+        <DrawerContent bg="gray.50">
+          <DrawerCloseButton />
+          <DrawerHeader
+            borderBottomWidth="1px"
+            bg="gray.200"
+            color="white"
+            fontWeight="bold"
           >
-            Articles
-          </ChakraLink> */}
-          {/* <ChakraLink
-            as={RouterLink}
-            to="/all-blogs"
-            textDecoration="none"
-            _hover={{ textDecoration: "none" }}
-            marginLeft={3}
-          >
-            Blogs
-          </ChakraLink> */}
-          {/* <ChakraLink
-            as={RouterLink}
-            to="/all-news"
-            textDecoration="none"
-            _hover={{ textDecoration: "none" }}
-            marginLeft={3}
-          >
-            News
-          </ChakraLink> */}
-          {/* <ChakraLink as={RouterLink} to="/top-stories" marginLeft={3}>
-            Top Stories
-          </ChakraLink> */}
+            <ChakraLink as={RouterLink} to="/">
+              <Image
+                src={logo}
+                alt="Logo"
+                height="50px"
+                width="200px"
+                objectFit="contain"
+                m={0}
+                p={0}
+              />
+            </ChakraLink>
+          </DrawerHeader>
+          <DrawerBody>
+            <VStack
+              align="stretch"
+              spacing={4}
+              fontSize="md"
+              fontWeight="medium"
+              color="gray.700"
+              pt={4}
+            >
+              <MootCourtMenu />
+              <JobsMenu />
+              <ChakraLink
+                as={RouterLink}
+                to="/legal-draft"
+                display="flex"
+                alignItems="center"
+                p={2}
+                borderRadius="md"
+                _hover={{ bg: "blue.100", color: "blue.700" }}
+              >
+                <FaFileAlt style={{ marginRight: "8px" }} />
+                <Text>Legal Drafts</Text>
+              </ChakraLink>
+              <ChakraLink
+                as={RouterLink}
+                to="/videos-news"
+                display="flex"
+                alignItems="center"
+                p={2}
+                borderRadius="md"
+                _hover={{ bg: "blue.100", color: "blue.700" }}
+              >
+                <FaVideo style={{ marginRight: "8px" }} />
+                <Text>Videos & News</Text>
+              </ChakraLink>
 
-          {/* <ChakraLink as={RouterLink} to="/library" marginLeft={3}>
-            Library
-          </ChakraLink> */}
-          {/* <ChakraLink as={RouterLink} to="/opportunity" marginLeft={3}>
-            Opportunity
-          </ChakraLink> */}
-          {/* <ChakraLink as={RouterLink} to="/exam-preparation" marginLeft={3}>
-            Exams Preparation
-          </ChakraLink> */}
-          {/* <ChakraLink as={RouterLink} to="/q-and-a" marginLeft={3}>
-            Q & A
-          </ChakraLink> */}
-          {/* <ChakraLink as={RouterLink} to="/contact" marginLeft={3}>
-            Contact Us
-          </ChakraLink> */}
-          <DashHeader />
-        </VStack>
-      </Collapse>
+              <ChakraLink
+                as={RouterLink}
+                to="/q-and-a"
+                display="flex"
+                alignItems="center"
+                p={2}
+                borderRadius="md"
+                _hover={{ bg: "blue.100", color: "blue.700" }}
+              >
+                <FaQuestionCircle style={{ marginRight: "8px" }} />
+                <Text>Q & A</Text>
+              </ChakraLink>
+              <DashHeader />
+            </VStack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </Box>
   );
 };
 
-// ─── Header Wrapper ────────────────────────────────────────
+// ─── Header Wrapper  mobile view ────────────────────────────────────────
 const Header = () => {
   const [showTopHeader, setShowTopHeader] = useState(true);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);

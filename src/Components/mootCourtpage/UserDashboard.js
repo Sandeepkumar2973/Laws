@@ -179,7 +179,7 @@ const DashboardPage = () => {
             p={4}
             backgroundColor={"gray.50"}
           >
-            {mootUser?.memorial ? (
+            {/* {mootUser?.memorial ? (
               <Button
                 as="a"
                 href={mootUser?.memorial}
@@ -195,9 +195,9 @@ const DashboardPage = () => {
               >
                 View your memorial
               </Button>
-            ) : (
-              <MemorialManager userId={userId} />
-            )}
+            ) : ( */}
+            <MemorialManager userId={userId} />
+            {/* )} */}
 
             <Text
               fontSize="2xl"

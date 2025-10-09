@@ -18,6 +18,7 @@ import {
   Tr,
   Td,
   Tbody,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import axios from "axios";
 import * as mod from "../../../url";
@@ -28,6 +29,7 @@ import Sidebar from "../../Sidebar";
 import parse from "html-react-parser";
 import LocationSelector from "../../../utils/LocationSelector";
 import { Form } from "react-router-dom";
+import { Label } from "recharts";
 
 const SIDEBAR_WIDTH = "250px";
 const steps = [
@@ -64,6 +66,7 @@ const CreateJob = () => {
     country: "",
     state: "",
     city: "",
+    workTypes: "",
   });
   // console.log(formData, "formData");
   const handleChange = (e) => {
@@ -76,13 +79,14 @@ const CreateJob = () => {
     switch (step) {
       case 0:
         return (
-          formData.title &&
-          formData.country &&
-          formData.state &&
-          formData.city &&
-          formData.openings &&
-          formData.salaryRange &&
-          formData.workMode &&
+          formData.workTypes &&
+          // formData.title &&
+          // formData.country &&
+          // formData.state &&
+          // formData.city &&
+          // formData.openings &&
+          // formData.salaryRange &&
+          // formData.workMode &&
           formData.deadline
         );
       case 1:
@@ -156,6 +160,7 @@ const CreateJob = () => {
         country: "",
         state: "",
         city: "",
+        workTypes: "",
       });
       setStep(0);
     } catch (err) {
@@ -191,9 +196,9 @@ const CreateJob = () => {
     <>
       <Navbar />
       <Sidebar />
-      <Box mt="100px" ml={{ base: 0, md: SIDEBAR_WIDTH }} p={6}>
+      <Box mt="70px" ml={{ base: 0, md: SIDEBAR_WIDTH }} p={6}>
         <Heading mb={6} background="yellow.400" borderRadius="50px" padding={1}>
-          Create Job
+          Create Opportunity
         </Heading>
 
         {/* Stepper */}
@@ -238,42 +243,196 @@ const CreateJob = () => {
 
         {/* Step-wise Form */}
         <Stack spacing={4}>
+          <FormControl isRequired backgroundColor="gray.200" p={2}>
+            <ButtonGroup isAttached>
+              <Button
+                variant={formData.workTypes === "job" ? "solid" : "outline"}
+                colorScheme="green"
+                onClick={() =>
+                  setFormData((prev) => ({ ...prev, workTypes: "job" }))
+                }
+              >
+                Job / Internship
+              </Button>
+              <Button
+                variant={
+                  formData.workTypes === "freelancing" ? "solid" : "outline"
+                }
+                colorScheme="blue"
+                onClick={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    workTypes: "freelancing",
+                  }))
+                }
+              >
+                Freelancing
+              </Button>
+            </ButtonGroup>
+          </FormControl>
           {step === 0 && (
             <>
-              <FormControl isRequired>
-                <FormLabel>Job Title / Designation</FormLabel>
-                <Select
-                  placeholder="Select Job Title / Designation"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleChange}
-                  isRequired
-                >
-                  <option value="legal-intern">Legal Intern</option>
-                  <option value="judicial-intern">Judicial Intern</option>
-                  <option value="ngo-intern">NGO/Policy Intern</option>
-                  <option value="junior-advocate">Junior Advocate</option>
-                  <option value="associate">Associate (Law Firm)</option>
-                  <option value="litigation-associate">
-                    Litigation Associate
-                  </option>
-                  <option value="legal-researcher">Legal Researcher</option>
-                  <option value="advocate">Advocate (Litigation)</option>
-                  <option value="corporate-lawyer">
-                    Corporate Lawyer (In-house)
-                  </option>
-                  <option value="legal-advisor">Legal Advisor</option>
-                  <option value="legal-officer">
-                    Legal Officer (PSU/Bank/Insurance)
-                  </option>
-                  <option value="public-prosecutor">Public Prosecutor</option>
-                  <option value="arbitration-specialist">
-                    Arbitration & Dispute Resolution Specialist
-                  </option>
-                  <option value="law-lecturer">Law Lecturer / Academic</option>
-                  <option value="policy-analyst">Policy Analyst</option>
-                </Select>
-              </FormControl>
+              <Flex
+                gap={4}
+                direction={{ base: "column", md: "row" }} // mobile = column, desktop = row
+                w="100%"
+              ></Flex>
+
+              {formData.workTypes === "job" && (
+                <>
+                  <FormControl isRequired>
+                    <FormLabel>Job Title / Designation</FormLabel>
+                    <Select
+                      placeholder="Select Job Title / Designation"
+                      name="title"
+                      value={formData.title}
+                      onChange={handleChange}
+                      isRequired
+                    >
+                      <option value="legal-intern">Legal Intern</option>
+                      <option value="judicial-intern">Judicial Intern</option>
+                      <option value="ngo-intern">NGO/Policy Intern</option>
+                      <option value="junior-advocate">Junior Advocate</option>
+                      <option value="associate">Associate (Law Firm)</option>
+                      <option value="litigation-associate">
+                        Litigation Associate
+                      </option>
+                      <option value="legal-researcher">Legal Researcher</option>
+                      <option value="advocate">Advocate (Litigation)</option>
+                      <option value="corporate-lawyer">
+                        Corporate Lawyer (In-house)
+                      </option>
+                      <option value="legal-advisor">Legal Advisor</option>
+                      <option value="legal-officer">
+                        Legal Officer (PSU/Bank/Insurance)
+                      </option>
+                      <option value="public-prosecutor">
+                        Public Prosecutor
+                      </option>
+                      <option value="arbitration-specialist">
+                        Arbitration & Dispute Resolution Specialist
+                      </option>
+                      <option value="law-lecturer">
+                        Law Lecturer / Academic
+                      </option>
+                      <option value="policy-analyst">Policy Analyst</option>
+                    </Select>
+                  </FormControl>
+                  <Flex>
+                    <FormControl>
+                      <FormLabel>Openings</FormLabel>
+                      <Input
+                        placeholder="Openings"
+                        name="openings"
+                        type="number"
+                        value={formData.openings}
+                        onChange={handleChange}
+                        isRequired
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Salary</FormLabel>
+                      <Select
+                        placeholder="Salary Range "
+                        name="salaryRange"
+                        value={formData.salaryRange}
+                        onChange={handleChange}
+                        isRequired
+                      >
+                        <option value="₹0 – ₹2 LPA">₹0 – ₹2 LPA</option>
+                        <option value="₹2 – ₹5 LPA">₹2 – ₹5 LPA</option>
+                        <option value="₹5 – ₹10 LPA">₹5 – ₹10 LPA</option>
+                        <option value="₹10 – ₹20 LPA">₹10 – ₹20 LPA</option>
+                        <option value="₹20 – ₹30 LPA">₹20 – ₹30 LPA</option>
+                        <option value="₹30 LPA & above">₹30 LPA & above</option>
+                      </Select>
+                    </FormControl>
+                  </Flex>
+
+                  <FormControl isRequired>
+                    <FormLabel>Work Mode</FormLabel>
+                    <Select
+                      name="workMode"
+                      value={formData.workMode}
+                      onChange={handleChange}
+                      placeholder="Select work mode"
+                      isRequired
+                    >
+                      <option value="Remote">Remote</option>
+                      <option value="Hybrid">Hybrid</option>
+                      <option value="Onsite">On-Site</option>
+                    </Select>
+                  </FormControl>
+                </>
+              )}
+
+              {formData.workTypes === "freelancing" && (
+                <>
+                  <FormControl isRequired>
+                    <FormLabel>Freelance Work Title / Designation</FormLabel>
+                    <Select
+                      placeholder="Select Freelancing Title / Designation"
+                      name="title"
+                      value={formData.title}
+                      onChange={handleChange}
+                      isRequired
+                    >
+                      <option value="legal-research">
+                        Legal Research & Writing
+                      </option>
+                      <option value="contract-drafting">
+                        Contract Drafting & Review
+                      </option>
+                      <option value="legal-consulting">Legal Consulting</option>
+                      <option value="policy-research">
+                        Policy Research / Analysis
+                      </option>
+                      <option value="compliance-check">
+                        Compliance & Due Diligence
+                      </option>
+                      <option value="trademark-copyright">
+                        Trademark / Copyright Filing
+                      </option>
+                      <option value="corporate-advisory">
+                        Corporate Advisory (Freelance)
+                      </option>
+                      <option value="arbitration-mediation">
+                        Arbitration / Mediation Assistance
+                      </option>
+                      <option value="court-document-prep">
+                        Court Documentation & Drafting
+                      </option>
+                      <option value="ngo-legal-support">
+                        NGO / Social Sector Legal Support
+                      </option>
+                      <option value="freelance-paralegal">
+                        Paralegal / Legal Assistance
+                      </option>
+                      <option value="research-assistant">
+                        Research Assistant (Freelance)
+                      </option>
+                    </Select>
+                  </FormControl>
+
+                  <FormControl>
+                    <FormLabel>Budget</FormLabel>
+                    <Select
+                      placeholder="Salary Range "
+                      name="salaryRange"
+                      value={formData.salaryRange}
+                      onChange={handleChange}
+                      isRequired
+                    >
+                      <option value="₹0 – ₹2 K">₹0 – ₹2 K</option>
+                      <option value="₹2 – ₹5 K">₹2 – ₹5 K</option>
+                      <option value="₹5 – ₹10 K">₹5 – ₹10 K</option>
+                      <option value="₹10 – ₹20 K">₹10 – ₹20 K</option>
+                      <option value="₹20 – ₹30 K">₹20 – ₹30 K</option>
+                      <option value="₹30 K & above">₹30 K & above</option>
+                    </Select>
+                  </FormControl>
+                </>
+              )}
               <FormControl isRequired>
                 <FormLabel>Location</FormLabel>
                 <LocationSelector
@@ -287,51 +446,8 @@ const CreateJob = () => {
                   }}
                 />
               </FormControl>
-              <Flex
-                gap={4}
-                direction={{ base: "column", md: "row" }} // mobile = column, desktop = row
-                w="100%"
-              >
-                <Input
-                  placeholder="Openings"
-                  name="openings"
-                  type="number"
-                  value={formData.openings}
-                  onChange={handleChange}
-                  isRequired
-                />
-
-                <Select
-                  placeholder="Salary Range "
-                  name="salaryRange"
-                  value={formData.salaryRange}
-                  onChange={handleChange}
-                  isRequired
-                >
-                  <option value="₹0 – ₹2 LPA">₹0 – ₹2 LPA</option>
-                  <option value="₹2 – ₹5 LPA">₹2 – ₹5 LPA</option>
-                  <option value="₹5 – ₹10 LPA">₹5 – ₹10 LPA</option>
-                  <option value="₹10 – ₹20 LPA">₹10 – ₹20 LPA</option>
-                  <option value="₹20 – ₹30 LPA">₹20 – ₹30 LPA</option>
-                  <option value="₹30 LPA & above">₹30 LPA & above</option>
-                </Select>
-              </Flex>
-              <Flex gap={4} direction={{ base: "column", md: "row" }} w="100%">
-                <FormControl isRequired>
-                  <FormLabel>Work Mode</FormLabel>
-                  <Select
-                    name="workMode"
-                    value={formData.workMode}
-                    onChange={handleChange}
-                    placeholder="Select work mode"
-                    isRequired
-                  >
-                    <option value="Remote">Remote</option>
-                    <option value="Hybrid">Hybrid</option>
-                    <option value="Onsite">On-Site</option>
-                  </Select>
-                </FormControl>
-
+              {/* Common field for both */}
+              <Flex>
                 <FormControl isRequired>
                   <FormLabel>Application Deadline</FormLabel>
                   <Input
@@ -340,6 +456,20 @@ const CreateJob = () => {
                     value={formData.deadline}
                     onChange={handleChange}
                     border="1px solid #ccc"
+                    isRequired
+                  />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel variant="floating" isRequired>
+                    Address{" "}
+                  </FormLabel>
+
+                  <Input
+                    type="textarea"
+                    placeholder="address"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
                     isRequired
                   />
                 </FormControl>
@@ -409,6 +539,7 @@ const CreateJob = () => {
                     <option value="Full-time">Full-time</option>
                     <option value="Part-time">Part-time</option>
                     <option value="Internship">Internship</option>
+                    <option value="Freelancing">Freelancing</option>
                     <option value="Remote">Remote</option>
                     <option value="Contract">Contract</option>
                   </Select>
@@ -617,17 +748,4 @@ const lawDegrees = [
     value: "diploma_arbitration",
   },
   { label: "Diploma in Taxation Law", value: "diploma_taxation" },
-
-  // --- Certifications ---
-  // { label: "Certificate in Cyber Law", value: "cert_cyber" },
-  // {
-  //   label: "Certificate in IPR (Intellectual Property Rights)",
-  //   value: "cert_ipr",
-  // },
-  // { label: "Certificate in International Trade Law", value: "cert_trade" },
-  // { label: "Certificate in Corporate Governance", value: "cert_governance" },
-  // { label: "Certificate in Human Rights Law", value: "cert_human_rights" },
-  // { label: "Certificate in Competition Law", value: "cert_competition" },
-  // { label: "Certificate in Sports Law", value: "cert_sports" },
-  // { label: "Certificate in Media & Entertainment Law", value: "cert_media" },
 ];

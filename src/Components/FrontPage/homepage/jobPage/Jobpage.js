@@ -16,6 +16,7 @@ import axios from "axios";
 import logo from "./../../../Assets/logo/logo.png";
 import { Link } from "react-router-dom";
 import { IoLocation } from "react-icons/io5";
+import { CiStopwatch } from "react-icons/ci";
 const JobPage = () => {
   const [jobs, setJobs] = useState([]);
   const [appliedJobs, setAppliedJobs] = useState([]); // 👈 Track applied jobs
@@ -139,17 +140,17 @@ const JobPage = () => {
             rounded="xl"
             borderWidth="1px"
             shadow="sm"
-            p={6}
+            p={5}
             _hover={{ shadow: "lg", transform: "scale(1.02)" }}
             transition="all 0.2s"
           >
             <Img
               src={logo}
               alt={job?.name}
-              boxSize="80px"
+              boxSize="100px"
               objectFit="contain"
               mx="auto"
-              mb={3}
+              mb={1}
             />
 
             <Text fontSize="lg" fontWeight="bold" mb={1}>
@@ -163,14 +164,28 @@ const JobPage = () => {
               <Text>
                 <b>Experience:</b> {job?.experienceRequired}
               </Text>
-              <Flex align="center">
-                <IoLocation
-                  size="18px"
-                  color="blue.500"
-                  style={{ marginRight: "4px" }}
-                />
-                {job?.city}
+              <Flex align="center" gap={6}>
+                <Flex
+                  align="center"
+                  color="blue.600"
+                  fontSize="sm"
+                  fontWeight="500"
+                >
+                  <IoLocation size="18px" style={{ marginRight: "6px" }} />
+                  {job?.city || "Location"}
+                </Flex>
+
+                <Flex
+                  align="center"
+                  color="green.600"
+                  fontSize="sm"
+                  fontWeight="500"
+                >
+                  <CiStopwatch size="18px" style={{ marginRight: "6px" }} />
+                  {job?.jobType || "Work Type"}
+                </Flex>
               </Flex>
+
               <Text>
                 <b>CTC:</b> {job?.salaryRange}
               </Text>

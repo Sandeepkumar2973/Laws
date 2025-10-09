@@ -143,7 +143,7 @@ export default function AllBlogs() {
                 alt={blog?.title}
                 w="100%"
                 h="220px"
-                objectFit="cover"
+                // objectFit="cover"
                 transition="all 0.3s"
                 _hover={{ filter: "brightness(1.1) saturate(1.2)" }}
               />
@@ -192,8 +192,8 @@ export default function AllBlogs() {
                     readOnly
                     theme="bubble"
                     style={{
-                      minHeight: "70px",
-                      maxHeight: "70px",
+                      minHeight: "80px",
+                      maxHeight: "80px",
                       background: "transparent",
                       border: "none",
                       padding: 0,

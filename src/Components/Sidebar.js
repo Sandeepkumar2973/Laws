@@ -130,7 +130,7 @@ const Sidebar = () => {
           label="All Application"
           to="/all-application"
         />
-        <SidebarItem icon={FaPlus} label="Create Job" to="/create-job" />
+        <SidebarItem icon={FaPlus} label=" Opportunities" to="/create-job" />
         <SidebarItem icon={FaTasks} label="Manage Job" to="/manage-job" />
         {/* <SidebarItem icon={FaFileAlt} label="All Users" to="/all-users" /> */}
         {/* <SidebarItem icon={FiMessageCircle} label="Message" to="/message" /> */}

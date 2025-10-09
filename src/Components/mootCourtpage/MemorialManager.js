@@ -18,7 +18,7 @@ const MemorialManager = ({ userId }) => {
 
   // Countdown logic
   useEffect(() => {
-    const deadline = new Date("2025-09-22T23:59:59").getTime();
+    const deadline = new Date("2025-09-25T23:59:59").getTime();
 
     const interval = setInterval(() => {
       const now = new Date().getTime();
@@ -64,6 +64,15 @@ const MemorialManager = ({ userId }) => {
 
     const formData = new FormData();
     formData.append("memorial", file);
+    // const MAX_SIZE = 9 * 1024 * 1024; // 9 MB
+
+    // function validateFile(file) {
+    //   if (file.size > MAX_SIZE) {
+    //     alert("File size must not exceed 9 MB");
+    //     return false;
+    //   }
+    //   return true;
+    // }
 
     try {
       setLoading(true);
@@ -126,10 +135,11 @@ const MemorialManager = ({ userId }) => {
       />
       <Text
         backgroundColor="yellow.400"
-        p={3}
+        p={1}
         borderRadius="md"
         mb={5}
-        fontSize="xl"
+        fontSize="30px"
+        fontWeight="600"
       >
         Time Countdown
       </Text>
@@ -144,7 +154,7 @@ const MemorialManager = ({ userId }) => {
         >
           Note:
         </b>{" "}
-        You can submit your memorial here. Please note that you may upload your
+        You can submit your memorial. Please note that you may upload your
         memorial in PDF format only, and submissions are allowed just once. Once
         uploaded, you will not be able to make any changes.
       </Text>
@@ -187,7 +197,14 @@ const MemorialManager = ({ userId }) => {
         p={4}
         borderRadius="md"
         isDisabled={expired}
-        onClick={handleClick}
+        onClick={() => {
+          const phone = "918171974067"; // apna mobile number (country code ke saath, +91 for India)
+          const message = "hi"; // default message
+          window.open(
+            `https://wa.me/${phone}?text=${encodeURIComponent(message)}`,
+            "_blank"
+          );
+        }}
         m={2}
         _hover={{ backgroundColor: expired ? "gray.400" : "green.600" }}
       >

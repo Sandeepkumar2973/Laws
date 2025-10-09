@@ -149,7 +149,7 @@ export default function AllNews() {
                 alt={news?.title}
                 w="100%"
                 h="220px"
-                objectFit="cover"
+                // objectFit="cover"
                 transition="all 0.3s"
                 _hover={{ filter: "brightness(1.1) saturate(1.2)" }}
               />

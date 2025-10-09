@@ -112,8 +112,8 @@ export default function SingleNews() {
               alt={news?.title}
               mb={6}
               w="100%"
-              maxH="450px"
-              objectFit="cover"
+              maxH="400px"
+              // objectFit="cover"
               borderRadius="xl"
               boxShadow="md"
               transition="all 0.4s ease"

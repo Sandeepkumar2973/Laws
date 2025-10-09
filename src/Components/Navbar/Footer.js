@@ -2,7 +2,6 @@
 import React from "react";
 import {
   Box,
-  Flex,
   Text,
   Link,
   VStack,
@@ -86,12 +85,24 @@ const Footer = () => {
             Pages
           </Text>
 
-          <Link href="#">About Us</Link>
-          <Link href="#">Articles</Link>
-          <Link href="#">Events</Link>
-          <Link href="/contact">Contact</Link>
-          <Link href="#">Privacy and Security</Link>
-          <Link href="#">Terms and Conditions</Link>
+          <ChakraLink as={RouterLink} to="/about">
+            About Us
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="/all-articles">
+            Articles
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="/events">
+            Events
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="/contact">
+            Contact
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="/privacy-and-policy">
+            Privacy and Security
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="/terms-and-conditions">
+            Terms and Conditions
+          </ChakraLink>
         </VStack>
 
         {/* Other Pages */}
@@ -99,10 +110,16 @@ const Footer = () => {
           <Text fontWeight="bold" borderBottom="2px solid gold">
             Other Pages
           </Text>
-          <Link href="#">Legal law jobs</Link>
-          <Link href="#">Legal law programs</Link>
-          <Link href="#">Law Internship</Link>
-          <Link href="#">Posting</Link>
+          <ChakraLink as={RouterLink} to="/legal-law-jobs">
+            Legal law jobs
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="/legal-law-program">
+            Legal law programs
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="/law-internship">
+            Law Internship Posting
+          </ChakraLink>
+          <ChakraLink as={RouterLink} to="#"></ChakraLink>
         </VStack>
 
         {/* Quick Contact */}

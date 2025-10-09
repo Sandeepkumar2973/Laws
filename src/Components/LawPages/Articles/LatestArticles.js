@@ -20,7 +20,7 @@ export default function LatestArticles() {
   const getActiveArticles = async () => {
     try {
       const { data } = await axios.get(
-        `${mod.api_url}/api/v1/news/get_latest_news`
+        `${mod.api_url}/api/v1/article/get_latest_articles`
       );
       if (data?.length === 0) {
         toast({
